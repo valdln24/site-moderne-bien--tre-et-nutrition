@@ -30,7 +30,6 @@ CONFIG = {
     "linkedin": "https://www.linkedin.com/in/valentin-delaine-61956533b",
     "siren": "103 127 288",
     "domain": "https://www.votre-domaine.fr",
-    "form_action": "https://REMPLACER-avec-formspree-ou-brevo.example/votre-id",
     # Domaine Plausible (https://plausible.io) pour des statistiques respectueuses
     # de la vie privée, chargées uniquement après consentement aux cookies.
     # Laissez vide ("") pour ne pas activer d'analytics.
@@ -122,7 +121,8 @@ INDEPENDENT_DISCLOSURE = (
 # --------------------------------------------------------------------------
 def head(title, description, path, extra_jsonld="", noindex=False):
     canonical = CONFIG["domain"].rstrip("/") + "/" + (path if path != "index.html" else "")
-    og_title = "%s — %s" % (title, CONFIG["site_name"]) if title != CONFIG["site_name"] else title
+    # `title` inclut déjà le nom du site (voir les appels à page()) : ne pas le rajouter ici.
+    og_title = title
     og_image = CONFIG["domain"].rstrip("/") + "/assets/img/og-image.png"
     favicon = (
         "data:image/svg+xml,"
@@ -1386,7 +1386,9 @@ def build_quiz():
         </div>
         <div style="margin-top:34px;border-top:1px solid var(--line);padding-top:28px;">
           <h3 style="font-size:1.1rem;">Recevoir mes conseils personnalisés par email</h3>
-          <form data-form action="%s" method="POST">
+          <form data-form name="quiz" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/merci.html">
+            <input type="hidden" name="form-name" value="quiz">
+            <p hidden><label>Ne pas remplir : <input name="bot-field"></label></p>
             <div class="grid grid-2">
               <div class="field"><label for="qz-name">Prénom</label><input id="qz-name" name="prenom" type="text" required></div>
               <div class="field"><label for="qz-email">Email</label><input id="qz-email" name="email" type="email" required></div>
@@ -1409,7 +1411,6 @@ def build_quiz():
 """ % (
         breadcrumb("Quiz bien-être"),
         q1_html, q2_html, icon("arrow"), q3_html, icon("arrow"),
-        CONFIG["form_action"],
         notice("Ce quiz est un outil d'orientation générale et non un test médical ou diagnostique. Il ne remplace en aucun cas l'avis d'un professionnel de santé.", ic="info"),
     )
     return page("quiz.html", "Quiz bien-être gratuit : quel accompagnement vous correspond ? — %s" % CONFIG["site_name"],
@@ -1504,7 +1505,9 @@ def build_contact():
   <div class="container">
     <div class="split">
       <div data-reveal>
-        <form data-form action="%s" method="POST" class="card">
+        <form data-form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/merci.html" class="card">
+          <input type="hidden" name="form-name" value="contact">
+          <p hidden><label>Ne pas remplir : <input name="bot-field"></label></p>
           <div class="field"><label for="c-name">Nom & prénom</label><input id="c-name" name="nom" type="text" required></div>
           <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" required></div>
           <div class="field"><label for="c-topic">Votre priorité du moment</label>
@@ -1555,7 +1558,6 @@ def build_contact():
 </section>
 """ % (
         breadcrumb("Contact"),
-        CONFIG["form_action"],
         icon("mail"), CONFIG["email"], CONFIG["email"],
         icon("phone"), CONFIG["phone"],
         icon("pin"), CONFIG["city"],
@@ -1612,7 +1614,7 @@ def build_mentions_legales():
 <p>Conformément aux règles contractuelles applicables aux partenaires LR, <strong>aucune commande, aucun paiement et aucune transaction ne sont réalisés sur ce Site</strong>. Chaque bouton « Boutique LR » ou « Commander » redirige vers la boutique en ligne officielle et personnelle du partenaire, hébergée et exploitée par LR Health &amp; Beauty, seule plateforme autorisée pour l'achat des produits de la marque. Ce Site ne constitue donc pas un site de commerce électronique au sens du droit de la consommation ; il a une vocation strictement informative et d'orientation.</p>
 
 <h2>4. Hébergement</h2>
-<p>Le Site est hébergé par : [À COMPLÉTER — raison sociale de l'hébergeur, adresse, contact]. Cette information doit obligatoirement figurer ici conformément à l'article 6-III de la loi n°2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique.</p>
+<p>Le Site est hébergé par : Netlify, Inc. — 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis — <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a>.</p>
 
 <h2>5. Propriété intellectuelle</h2>
 <p>Les contenus éditoriaux du Site (textes, structure, mise en page, code) sont la propriété de %s, sauf mention contraire. Toute reproduction non autorisée est interdite. Les marques, logos et dénominations LR Health &amp; Beauty restent la propriété de leur titulaire.</p>
@@ -1667,7 +1669,7 @@ def build_confidentialite():
 
 <h2>5. Destinataires</h2>
 <p>Seul(e) %s, ainsi que ses éventuels prestataires techniques (hébergeur, outil d'emailing ou de formulaire — voir ci-dessous), ont accès à ces données, dans la stricte limite de leurs missions.</p>
-<p>Prestataires techniques utilisés : [À COMPLÉTER — ex. hébergeur, Formspree, Brevo/Sendinblue, etc.]. Vérifiez que chaque prestataire est conforme au RGPD avant intégration.</p>
+<p>Prestataires techniques utilisés : Netlify, Inc. (hébergement du Site et traitement des soumissions des formulaires de contact et du quiz). Netlify agit en tant que sous-traitant au sens du RGPD ; sa politique de confidentialité est consultable sur <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">netlify.com/privacy</a>.</p>
 
 <h2>6. Cookies</h2>
 <p>Le Site utilise uniquement, par défaut, des cookies techniques strictement nécessaires (ex. mémorisation de votre consentement aux cookies). Aucun cookie publicitaire ou de mesure d'audience n'est déposé sans votre accord préalable via le bandeau prévu à cet effet. Si vous ajoutez un outil de statistiques (ex. Google Analytics, Plausible), pensez à mettre à jour cette section et à recueillir le consentement requis avant tout dépôt de cookie non essentiel.</p>
@@ -1764,6 +1766,36 @@ def build_404():
 
 
 # --------------------------------------------------------------------------
+# PAGE DE CONFIRMATION (formulaires Netlify)
+# --------------------------------------------------------------------------
+def build_merci():
+    body = """
+<section class="section" style="padding-top:110px;text-align:center;">
+  <div class="container" style="max-width:600px;">
+    <div class="icon-badge" style="margin:0 auto 24px;">%s</div>
+    <div class="eyebrow center" style="justify-content:center;display:flex;">Message envoyé</div>
+    <h1 style="font-size:clamp(2.4rem,6vw,3.4rem);">Merci !</h1>
+    <p class="lede center" style="margin:0 auto 8px;">
+      Votre message a bien été reçu. %s vous répond généralement sous 48h ouvrées.
+    </p>
+    <div class="hero-actions" style="justify-content:center;margin-top:30px;">
+      %s
+      %s
+    </div>
+  </div>
+</section>
+""" % (
+        icon("check"),
+        CONFIG["partner_name"],
+        btn("Retour à l'accueil", "index.html", variant="primary"),
+        btn("Découvrir les gammes LR", "gammes-lr.html", variant="outline"),
+    )
+    return page("merci.html", "Message envoyé — %s" % CONFIG["site_name"],
+                "Votre message a bien été envoyé, merci de votre confiance.",
+                body, active="", noindex=True)
+
+
+# --------------------------------------------------------------------------
 # GÉNÉRATION
 # --------------------------------------------------------------------------
 def main():
@@ -1786,6 +1818,7 @@ def main():
         for slug in pages
     )
     pages["404.html"] = build_404()
+    pages["merci.html"] = build_merci()
 
     for slug, html in pages.items():
         with open(os.path.join(ROOT, slug), "w", encoding="utf-8") as f:

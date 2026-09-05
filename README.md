@@ -28,22 +28,23 @@ activité), elles s'intègrent facilement : dans `assets/css/style.css`, remplac
 
 ## ⚠️ À faire avant mise en ligne
 
-Le lien de votre eShop LR est déjà renseigné. Ouvrez `scripts/build.py` et complétez
-le reste du dictionnaire `CONFIG` en tête de fichier :
+L'essentiel est déjà renseigné dans `CONFIG` (coordonnées, eShop LR, LinkedIn, SIREN,
+hébergeur Netlify). Il reste à mettre à jour `domain` une fois votre nom de domaine
+choisi, et éventuellement `analytics_domain` (voir plus bas) :
 
 ```python
 CONFIG = {
     "site_name": "Vitalis",                # gardez ou changez le nom de marque
-    "partner_name": "...",                 # VOTRE nom et prénom
+    "partner_name": "Valentin Delaine",
     "partner_title": "Partenaire indépendant(e) LR Health & Beauty",
-    "city": "...",                         # votre ville
-    "email": "...",
-    "phone": "...",
-    "shop_url": "https://shop.lrworld.com/home?PHP=...",  # déjà renseigné
-    "instagram": "...",
-    "facebook": "...",
-    "domain": "https://www.votre-domaine.fr",
-    "form_action": "...",                  # endpoint Formspree / Brevo / autre (voir plus bas)
+    "city": "Dole",
+    "email": "delaineval@gmail.com",
+    "phone": "06 36 47 01 31",
+    "shop_url": "https://shop.lrworld.com/home?PHP=...",   # déjà renseigné
+    "linkedin": "https://www.linkedin.com/in/...",         # déjà renseigné
+    "siren": "103 127 288",                                # déjà renseigné
+    "domain": "https://www.votre-domaine.fr",              # à mettre à jour une fois le domaine choisi
+    "analytics_domain": "",                                # voir section « Statistiques »
 }
 ```
 
@@ -53,19 +54,18 @@ Puis régénérez toutes les pages :
 python3 scripts/build.py
 ```
 
-Cette commande réécrit les 15 fichiers `.html` à la racine à partir des gabarits — ne
+Cette commande réécrit les 16 fichiers `.html` à la racine à partir des gabarits — ne
 modifiez jamais un fichier `.html` directement à la racine, il serait écrasé au prochain
 `build.py`. Modifiez le contenu dans `scripts/build.py` (textes, produits, FAQ...).
 
+Il reste encore quelques `[À COMPLÉTER]` ponctuels dans `scripts/build.py` (date de
+dernière mise à jour des pages légales, adresse postale complète, médiateur de la
+consommation le cas échéant) — cherchez `[À COMPLÉTER]` dans le fichier.
+
 Pensez aussi à :
-- compléter la page **`a-propos.html`** (généré depuis `build_apropos()`) avec votre
-  vrai parcours — les crochets `[À COMPLÉTER]` marquent les passages à personnaliser ;
-- compléter les 3 pages légales (`mentions-legales.html`, `confidentialite-cookies.html`,
-  `cgu-avertissement.html`) : hébergeur, éventuel SIREN/RSAC, médiateur de la
-  consommation — voir les `[À COMPLÉTER]` dans `scripts/build.py` ;
 - **faire relire l'ensemble par le service conformité/marketing LR** et, en cas de doute,
   par un professionnel du droit — voir `CONFORMITE.md` pour le détail des points de
-  vigilance identifiés.
+  vigilance identifiés ;
 - remplacer les icônes/illustrations vectorielles par de vraies photos si vous le
   souhaitez (le design fonctionne aussi très bien sans photo, en 100% vectoriel/typo).
 
@@ -81,18 +81,22 @@ robots.txt, sitemap.xml                  → SEO technique (générés par build
 CONFORMITE.md                            → note de cadrage légal (à lire avant publication)
 ```
 
-## Formulaires (contact, quiz, newsletter)
+## Formulaires (contact, quiz)
 
-Le site est statique : les formulaires ne font rien tant que `form_action` dans `CONFIG`
-n'est pas renseigné. Deux options simples, sans backend à héberger :
+Le site étant hébergé sur **Netlify**, les deux formulaires (contact et quiz) utilisent
+**Netlify Forms** — aucun compte tiers, aucune clé à configurer :
 
-1. **Formspree** (https://formspree.io) : créez un formulaire, copiez l'URL fournie
-   dans `form_action`.
-2. **Brevo / Sendinblue** ou un autre outil d'emailing : utilisez leur formulaire
-   embarqué ou leur endpoint de collecte.
+1. Déployez le site sur Netlify (voir ci-dessous). Netlify détecte automatiquement les
+   formulaires marqués `data-netlify="true"` au moment du build.
+2. Les soumissions apparaissent dans **Netlify → votre site → Forms**. Vous pouvez y
+   activer une notification par email à chaque nouvelle soumission (Settings → Forms →
+   Form notifications).
+3. Un champ piège anti-spam (`bot-field`, invisible pour un humain) est déjà en place.
 
-Tant que `form_action` contient le mot `REMPLACER`, le site affiche un message
-explicatif à la place d'un envoi silencieux qui échouerait.
+Après envoi, les deux formulaires redirigent vers `merci.html`, une page de
+confirmation dédiée. Si vous changez un jour d'hébergeur, il faudra remplacer ce
+système par un service tiers (Formspree, Brevo...) et retirer les attributs
+`data-netlify`.
 
 ## Lancer le site en local
 
@@ -103,11 +107,25 @@ python3 -m http.server 8000
 # puis ouvrir http://localhost:8000
 ```
 
-## Déploiement
+## Déploiement (Netlify)
 
-Le site est 100% statique : il se déploie tel quel sur **Netlify**, **Vercel**,
-**GitHub Pages**, **Cloudflare Pages** ou tout hébergeur mutualisé classique (upload
-FTP du dossier). Aucune base de données, aucun serveur applicatif requis.
+Le site est hébergé sur **Netlify** — mentions légales et politique de confidentialité
+mises à jour en conséquence. Deux façons de déployer :
+
+1. **Depuis GitHub (recommandé)** : sur [app.netlify.com](https://app.netlify.com),
+   « Add new site → Import an existing project », connectez ce dépôt GitHub. Aucune
+   commande de build n'est nécessaire (site déjà généré) — laissez « Build command »
+   vide et « Publish directory » sur `.` (la racine). Chaque push sur la branche
+   redéploiera automatiquement le site.
+2. **Glisser-déposer** : sur app.netlify.com, faites glisser le dossier du projet
+   directement dans l'interface « Deploys ».
+
+Pensez à :
+- configurer votre nom de domaine dans Netlify (Site settings → Domain management)
+  puis mettre à jour `domain` dans `CONFIG` et régénérer le site ;
+- activer les notifications email des formulaires (Site settings → Forms) ;
+- vérifier que `404.html` est bien servi comme page d'erreur (Netlify le fait
+  automatiquement pour un fichier à ce nom placé à la racine).
 
 ## SEO
 

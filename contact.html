@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Vitalis — Vitalis</title>
+<title>Contact — Vitalis</title>
 <meta name="description" content="Contactez Valentin Delaine, Partenaire indépendant(e) LR Health & Beauty, pour toute question sur l'énergie, l'immunité, la nutrition ou les produits LR Health & Beauty.">
 <link rel="canonical" href="https://www.votre-domaine.fr/contact.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Vitalis">
-<meta property="og:title" content="Contact — Vitalis — Vitalis">
+<meta property="og:title" content="Contact — Vitalis">
 <meta property="og:description" content="Contactez Valentin Delaine, Partenaire indépendant(e) LR Health & Beauty, pour toute question sur l'énergie, l'immunité, la nutrition ou les produits LR Health & Beauty.">
 <meta property="og:url" content="https://www.votre-domaine.fr/contact.html">
 <meta property="og:image" content="https://www.votre-domaine.fr/assets/img/og-image.png">
@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Contact — Vitalis — Vitalis">
+<meta name="twitter:title" content="Contact — Vitalis">
 <meta name="twitter:description" content="Contactez Valentin Delaine, Partenaire indépendant(e) LR Health & Beauty, pour toute question sur l'énergie, l'immunité, la nutrition ou les produits LR Health & Beauty.">
 <meta name="twitter:image" content="https://www.votre-domaine.fr/assets/img/og-image.png">
 <meta name="robots" content="index, follow">
@@ -71,7 +71,9 @@
   <div class="container">
     <div class="split">
       <div data-reveal>
-        <form data-form action="https://REMPLACER-avec-formspree-ou-brevo.example/votre-id" method="POST" class="card">
+        <form data-form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/merci.html" class="card">
+          <input type="hidden" name="form-name" value="contact">
+          <p hidden><label>Ne pas remplir : <input name="bot-field"></label></p>
           <div class="field"><label for="c-name">Nom & prénom</label><input id="c-name" name="nom" type="text" required></div>
           <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" required></div>
           <div class="field"><label for="c-topic">Votre priorité du moment</label>

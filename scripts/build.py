@@ -370,11 +370,16 @@ def check_list(items):
     return '<ul class="check-list">%s</ul>' % lis
 
 
-def product_card(tag, title, desc, bullets, href, swatch_color, icon_name):
+def product_card(tag, title, desc, bullets, href, swatch_color, icon_name, bestseller=False):
     lis = "\n".join("<li>%s</li>" % b for b in bullets)
+    bestseller_chip = (
+        '<span class="chip-float chip--br dark">%s +60M vendues</span>' % icon("sparkle")
+        if bestseller else ""
+    )
     return """<div class="product-card" data-reveal>
   <div class="swatch photo-block" style="background:%s;">
     <span class="chip-float chip--tl">%s%s</span>
+    %s
     %s
   </div>
   <div class="body">
@@ -383,7 +388,7 @@ def product_card(tag, title, desc, bullets, href, swatch_color, icon_name):
     <ul>%s</ul>
     <a class="btn btn-outline btn-sm" href="%s" target="_blank" rel="noopener sponsored"><span class="btn-label">Voir sur ma boutique LR</span><span class="btn-circle">%s</span></a>
   </div>
-</div>""" % (swatch_color, icon("check"), tag, icon(icon_name), title, desc, lis, href, icon("arrow"))
+</div>""" % (swatch_color, icon("check"), tag, icon(icon_name), bestseller_chip, title, desc, lis, href, icon("arrow"))
 
 
 def pillar_teaser_card(href, title, ic, desc, tone="", kicker="Pilier bien-être"):
@@ -733,11 +738,24 @@ PILLAR_PAGES = [
             dict(icon="leaf", title="Faire des pauses alimentaires", text="Laisser un temps de digestion suffisant entre les repas, éviter le grignotage permanent."),
             dict(icon="bolt", title="Bouger régulièrement", text="L'activité physique améliore la sensibilité à l'insuline et le métabolisme des graisses."),
         ],
-        range_title="Aloe Vera — le rituel de légèreté",
-        range_lede="L'Aloe Vera est traditionnellement utilisé dans une démarche de bien-être digestif global, en cure et en complément d'une alimentation équilibrée.",
+        range_title="Health Mission — le soin du foie et du métabolisme",
+        range_lede="Liver Support en produit phare, associé à l'Aloe Vera et aux fibres pour accompagner le métabolisme hépatique, intestinal et cellulaire.",
         products=[
-            dict(tag="Aloe Vera", title="Aloe Vera Drinking Gel Original", desc="Le format de référence, à intégrer en cure de plusieurs semaines.", bullets=["Aloe Vera à haute teneur", "Sans conservateurs de synthèse", "Format buvable quotidien"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="leaf"),
-            dict(tag="Health Mission", title="Complexe Chardon-Marie & Artichaut", desc="Des plantes traditionnellement associées au confort digestif après les repas.", bullets=["Plantes traditionnelles", "Format gélules", "Cure ponctuelle"], href=SHOP, swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="drop"),
+            dict(
+                tag="Foie & métabolisme", title="LR LIFETAKT Liver Support",
+                desc="La formule phare de la gamme Health Mission, ciblée sur le soutien du métabolisme hépatique et cellulaire.",
+                bullets=["Formule ciblée métabolisme hépatique et cellulaire", "À utiliser en cure ponctuelle", "En complément d'une hygiène de vie équilibrée"],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_liver_support.html?productAlias=81330-99&casrnc=101e0f",
+                swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="leaf",
+            ),
+            dict(
+                tag="Best-seller", title="Aloe Vera Drinking Gel Pêche",
+                desc="98% de gel de feuilles d'Aloe Vera à la saveur pêche, sans sucres ajoutés.",
+                bullets=["Métabolisme énergétique, système nerveux & immunitaire", "98% de gel de feuilles d'Aloe Vera", "100% des AJR en vitamine C par ration"],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_aloe_vera_drinking_gel_peche.html?productAlias=80750-684&casrnc=ac73c",
+                swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="drop",
+                bestseller=True,
+            ),
             dict(tag="Body Mission", title="Fiber Boost", desc="Un apport en fibres pour accompagner un transit et un confort digestif normal.", bullets=["Fibres végétales", "Se mélange facilement", "Usage quotidien"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="loop"),
         ],
         testimonials=[
@@ -780,11 +798,23 @@ PILLAR_PAGES = [
             dict(icon="moon", title="Gérer son stress", text="La cohérence cardiaque ou la marche peuvent apaiser l'axe intestin-cerveau."),
         ],
         range_title="Health Mission — le confort digestif",
-        range_lede="Des formules pensées pour accompagner l'équilibre digestif au quotidien, en complément d'une alimentation adaptée.",
+        range_lede="Pro 12+ et Colostrum en formules ciblées, associés aux fibres pour accompagner l'équilibre digestif au quotidien.",
         products=[
-            dict(tag="Health Mission", title="Probiotiques complexes", desc="Des ferments sélectionnés pour accompagner l'équilibre de la flore intestinale.", bullets=["Souches sélectionnées", "Gélules gastro-résistantes", "Cure de 1 mois conseillée"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="loop"),
-            dict(tag="Body Mission", title="Fiber Boost", desc="Un complément en fibres à associer à une hydratation suffisante.", bullets=["Fibres solubles et insolubles", "Se mélange facilement", "Usage quotidien"], href=SHOP, swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="apple"),
-            dict(tag="Aloe Vera", title="Aloe Vera Drinking Gel", desc="Une routine simple à intégrer le matin, en cure.", bullets=["Aloe Vera à haute teneur", "Format buvable", "Cure de plusieurs semaines"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="leaf"),
+            dict(
+                tag="Digestion", title="Capsules Pro 12+",
+                desc="Complexe TRIPLEBIOTIC à double encapsulation : prébiotiques, bactéries et postbiotiques réunis.",
+                bullets=["1 milliard de bactéries par gélule", "12 souches bactériennes différentes", "Double encapsulation brevetée"],
+                href="https://shop.lrworld.com/product/fr/fr/capsules_pro_12_+.html?productAlias=81180-99&casrnc=634a2",
+                swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="loop",
+            ),
+            dict(
+                tag="Immunité & digestion", title="LR LIFETAKT Colostrum Liquid",
+                desc="Un produit haut de gamme à base de colostrum de vaches européennes, dégraissé et décaséiné.",
+                bullets=["Premier lait de vaches exclusivement européennes", "Sans antibiotiques ni stéroïdes anabolisants", "Fabriqué en Allemagne, procédé à froid doux"],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_colostrum_liquid.html?productAlias=80361-404&casrnc=827ed",
+                swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="shield",
+            ),
+            dict(tag="Body Mission", title="Fiber Boost", desc="Un complément en fibres à associer à une hydratation suffisante.", bullets=["Fibres solubles et insolubles", "Se mélange facilement", "Usage quotidien"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="apple"),
         ],
         testimonials=[
             (5, "En mangeant plus varié et en buvant davantage d'eau, mes ballonnements ont nettement diminué en quelques semaines.", "Laura, 39 ans"),
@@ -798,6 +828,7 @@ PILLAR_PAGES = [
     ),
     dict(
         slug="immunite.html",
+        products_grid="grid-4",
         eyebrow="Pilier bien-être",
         title="Système immunitaire",
         lede="Changement de saison, fatigue qui traîne, petits maux à répétition : vos défenses naturelles se construisent chaque jour, bien avant l'hiver. Voici comment les soutenir intelligemment.",
@@ -825,12 +856,37 @@ PILLAR_PAGES = [
             dict(icon="bolt", title="Bouger modérément", text="Une activité physique régulière et modérée soutient l'immunité (l'excès inverse l'effet)."),
             dict(icon="loop", title="Chouchouter son intestin", text="Un microbiote équilibré est l'un des meilliers alliés de vos défenses naturelles."),
         ],
-        range_title="Super Omega-3 & Vita Active — le soutien ciblé",
-        range_lede="Des formules pensées pour accompagner l'organisme lors des périodes de fatigue saisonnière ou de sollicitation accrue.",
+        range_title="Reishi, Pro 12+, Cistus Incanus & Colostrum — le soutien ciblé",
+        range_lede="Quatre approches complémentaires pour accompagner vos défenses naturelles lors des périodes de fatigue saisonnière ou de sollicitation accrue.",
         products=[
-            dict(tag="Super Omega", title="Super Omega-3 Activ", desc="Des oméga-3 EPA/DHA certifiés pêche durable (Friend of the Sea).", bullets=["EPA & DHA marins", "Certifié pêche durable", "Cure quotidienne"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="drop"),
-            dict(tag="Vitalité", title="Vita Active", desc="Un complexe multivitamines incluant vitamine D et zinc.", bullets=["Vitamine D & zinc", "Formule complète", "Usage quotidien"], href=SHOP, swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="shield"),
-            dict(tag="Health Mission", title="Vitamine C naturelle", desc="Un apport en vitamine C, notamment issue de sources naturelles comme l'acérola.", bullets=["Source naturelle", "Format pratique", "Cure ponctuelle"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="sparkle"),
+            dict(
+                tag="Cœur & vitalité", title="Reishi Plus en gélules",
+                desc="Un champignon utilisé depuis des siècles dans la tradition asiatique, associé à la vitamine C.",
+                bullets=["Contribue à un métabolisme énergétique normal", "Aide à réduire la fatigue et l'épuisement", "Végan, sans lactose — 30 gélules"],
+                href="https://shop.lrworld.com/product/fr/fr/reishi_plus_en_gelules.html?productAlias=80331-799&casrnc=29c02",
+                swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="leaf",
+            ),
+            dict(
+                tag="Digestion & immunité", title="Capsules Pro 12+",
+                desc="Complexe TRIPLEBIOTIC à double encapsulation : prébiotiques, bactéries et postbiotiques.",
+                bullets=["1 milliard de bactéries par gélule", "12 souches bactériennes différentes", "Double encapsulation brevetée"],
+                href="https://shop.lrworld.com/product/fr/fr/capsules_pro_12_+.html?productAlias=81180-99&casrnc=634a2",
+                swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="loop",
+            ),
+            dict(
+                tag="Immunité", title="Cistus Incanus en gélules",
+                desc="Extrait concentré de Cistus Incanus, associé au zinc et à la vitamine C.",
+                bullets=["Extrait de Cistus Incanus à 72%", "100% des AJR en vitamine C, 20% en zinc", "Gélules à enveloppe végétale — 60 gélules"],
+                href="https://shop.lrworld.com/product/fr/fr/cistus_incanus_en_gelules.html?productAlias=80325-699&casrnc=f06f7",
+                swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="shield",
+            ),
+            dict(
+                tag="Immunité & digestion", title="LR LIFETAKT Colostrum Liquid",
+                desc="Un produit haut de gamme à base de colostrum de vaches européennes, dégraissé et décaséiné.",
+                bullets=["Premier lait de vaches exclusivement européennes", "Sans antibiotiques ni stéroïdes anabolisants", "Fabriqué en Allemagne, procédé à froid doux"],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_colostrum_liquid.html?productAlias=80361-404&casrnc=827ed",
+                swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="shield",
+            ),
         ],
         testimonials=[
             (5, "Depuis que je fais attention à mon sommeil et que j'ai ajouté une cure de vitamines à l'automne, je suis beaucoup moins souvent malade.", "Elodie, 44 ans"),
@@ -1224,38 +1280,103 @@ def build_nutrition():
 # --------------------------------------------------------------------------
 RANGES = [
     dict(
-        id="body-mission",
+        id="health-mission",
         icon="leaf",
-        name="Body Mission",
-        subtitle="Silhouette, nutrition sportive & équilibre du poids",
-        desc="Une gamme complète de shakes, soupes, en-cas et compléments pour accompagner un objectif minceur ou une prise de masse maîtrisée, au sein d'une alimentation variée.",
+        kind="Gamme principale",
+        name="Health Mission",
+        subtitle="Foie, digestion, détente & immunité — la gamme santé au quotidien",
+        desc="La gamme phare pour accompagner le métabolisme hépatique, intestinal et cellulaire, ainsi que la détente et les défenses naturelles, au sein d'une alimentation variée.",
         products=[
-            dict(tag="Repas", title="Shake Repas Minceur", desc="Un repas équilibré et riche en protéines, pratique au quotidien.", bullets=["Plusieurs saveurs", "Riche en protéines", "Faible en sucres ajoutés"]),
-            dict(tag="Sportif", title="Protein Power", desc="Un concentré de protéines pour la construction musculaire.", bullets=["Haute teneur en protéines", "Idéal post-effort", "Préparation rapide"]),
-            dict(tag="Complément", title="Pro Balance", desc="Vitamines et minéraux pour accompagner un rééquilibrage alimentaire.", bullets=["Formule complète", "Usage quotidien", "Format pratique"]),
+            dict(
+                tag="Foie & métabolisme", title="LR LIFETAKT Liver Support",
+                desc="Une formule ciblée pour accompagner le foie dans ses fonctions naturelles, notamment lors des périodes de sollicitation accrue.",
+                bullets=[
+                    "Formule ciblée métabolisme hépatique et cellulaire",
+                    "À utiliser en cure ponctuelle",
+                    "Produit phare de la gamme Health Mission",
+                    "En complément d'une hygiène de vie équilibrée",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_liver_support.html?productAlias=81330-99&casrnc=101e0f",
+                icon_name="leaf",
+            ),
+            dict(
+                tag="Digestion", title="Capsules Pro 12+",
+                desc="Complexe TRIPLEBIOTIC à double encapsulation : prébiotiques, bactéries et postbiotiques réunis.",
+                bullets=[
+                    "1 milliard de bactéries par gélule",
+                    "12 souches bactériennes différentes",
+                    "Prébiotiques + bactéries + postbiotiques",
+                    "Double encapsulation brevetée",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/capsules_pro_12_+.html?productAlias=81180-99&casrnc=634a2",
+                icon_name="loop",
+            ),
+            dict(
+                tag="Détente", title="Magnésium marin",
+                desc="Contribue à une fonction musculaire et psychologique normale.",
+                bullets=["Bien toléré", "Cure de 4 semaines", "Sans excipients superflus"],
+                icon_name="moon",
+            ),
+            dict(
+                tag="Immunité & digestion", title="LR LIFETAKT Colostrum Liquid",
+                desc="Un produit haut de gamme à base de colostrum de vaches européennes, dégraissé et décaséiné.",
+                bullets=[
+                    "Premier lait de vaches exclusivement européennes",
+                    "Sans antibiotiques ni stéroïdes anabolisants",
+                    "Sans colorants ni conservateurs",
+                    "Fabriqué en Allemagne, procédé à froid doux",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_colostrum_liquid.html?productAlias=80361-404&casrnc=827ed",
+                icon_name="shield",
+            ),
+        ],
+        products_grid="grid-2",
+        link="foie-detox.html",
+        link_label="Comprendre le pilier Foie & Détox cellulaire",
+    ),
+    dict(
+        id="body-mission",
+        icon="dumbbell",
+        kind="Gamme principale",
+        name="Body Mission",
+        subtitle="Substituts et soutiens de repas pour la silhouette et le sport",
+        desc="Une gamme complète de shakes (substituts de repas) et de compléments (soutiens de repas) pour accompagner un objectif minceur ou une prise de masse maîtrisée.",
+        products=[
+            dict(tag="Substitut de repas", title="Shake Repas Minceur", desc="Un repas équilibré et riche en protéines, pratique au quotidien.", bullets=["Plusieurs saveurs", "Riche en protéines", "Faible en sucres ajoutés"]),
+            dict(
+                tag="Soutien de repas", title="Protein Power Vanille",
+                desc="80% de protéines précieuses issues de 5 sources différentes, au bon goût vanille.",
+                bullets=[
+                    "80% de protéines de 5 sources différentes",
+                    "Contribue au maintien et au développement musculaire",
+                    "Avec magnésium & vitamine B6",
+                    "Idéal après l'effort",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_boisson_en_poudre_protein_power_vanille.html?productAlias=80550-411",
+                icon_name="dumbbell",
+            ),
+            dict(
+                tag="Soutien de repas", title="Pro Balance en comprimés",
+                desc="Un mélange harmonisé de minéraux et oligoéléments basiques pour l'équilibre intérieur.",
+                bullets=[
+                    "Citrates, carbonates & gluconates",
+                    "Pensé pour l'équilibre acido-basique",
+                    "Sans lactose",
+                    "Format comprimés pratique",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/pro_balance_en_comprimes.html?productAlias=80102-404&casrnc=b7b82",
+                icon_name="leaf",
+            ),
             dict(tag="Digestif", title="Fiber Boost", desc="Un apport en fibres pour un confort digestif normal.", bullets=["Fibres solubles/insolubles", "Se mélange facilement", "Sans arôme artificiel"]),
         ],
+        products_grid="grid-2",
         link="nutrition-objectifs.html",
         link_label="Voir le programme nutrition associé",
     ),
     dict(
-        id="health-mission",
-        icon="shield",
-        name="Health Mission",
-        subtitle="Digestion, détente, immunité & vitalité générale",
-        desc="Des compléments ciblés pour accompagner le confort digestif, la détente du soir et le soutien des défenses naturelles, en fonction de vos besoins du moment.",
-        products=[
-            dict(tag="Digestion", title="Probiotiques complexes", desc="Des ferments sélectionnés pour l'équilibre de la flore intestinale.", bullets=["Souches sélectionnées", "Gélules gastro-résistantes", "Cure de 1 mois"]),
-            dict(tag="Détente", title="Magnésium marin", desc="Contribue à une fonction musculaire et psychologique normale.", bullets=["Bien toléré", "Cure de 4 semaines", "Sans excipients superflus"]),
-            dict(tag="Digestif", title="Chardon-Marie & Artichaut", desc="Plantes traditionnellement associées au confort digestif.", bullets=["Plantes traditionnelles", "Format gélules", "Cure ponctuelle"]),
-            dict(tag="Immunité", title="Vitamine C naturelle", desc="Un apport en vitamine C issue de sources naturelles.", bullets=["Source naturelle (acérola)", "Format pratique", "Cure ponctuelle"]),
-        ],
-        link="digestion-microbiote.html",
-        link_label="Comprendre le pilier Digestion & Microbiote",
-    ),
-    dict(
         id="mind-master",
         icon="bolt",
+        kind="Spécialiste LR — Performance, énergie & récupération",
         name="Mind Master",
         subtitle="Énergie mentale, concentration & vigilance",
         desc="Une gamme pensée pour les journées denses : boissons Formula Red et Gold, stick Extreme à emporter, et un concentré multivitamine avec Vita Active.",
@@ -1309,31 +1430,257 @@ RANGES = [
         link_label="Comprendre le pilier Énergie & Vitalité",
     ),
     dict(
-        id="super-omega",
-        icon="drop",
-        name="Super Omega",
-        subtitle="Oméga-3 EPA/DHA certifiés pêche durable",
-        desc="Des acides gras oméga-3 de qualité, certifiés Friend of the Sea, pour accompagner l'équilibre cardiovasculaire et cognitif au sein d'une alimentation variée.",
+        id="nutriments",
+        icon="apple",
+        kind="Spécialiste LR",
+        name="Faire le plein de nutriments",
+        subtitle="Le socle nutritionnel du quotidien",
+        desc="Oméga-3, minéraux et Aloe Vera : les trois piliers pour ne manquer de rien, quel que soit votre rythme de vie.",
         products=[
-            dict(tag="Oméga-3", title="Super Omega-3 Activ", desc="EPA et DHA marins certifiés pêche durable.", bullets=["Certifié Friend of the Sea", "EPA & DHA", "Cure quotidienne"]),
+            dict(
+                tag="Oméga-3", title="Capsules Super Omega",
+                desc="Des oméga-3 marins pour le bien-être cardiaque, issus de la pêche durable.",
+                bullets=["Huile de poisson riche en oméga-3", "Contribue au bien-être cardiaque", "Certifié Friend of the Sea", "60 gélules"],
+                href="https://shop.lrworld.com/product/fr/fr/capsules_super_omega.html?productAlias=80338-699&casrnc=333bd",
+                icon_name="drop",
+            ),
+            dict(
+                tag="Équilibre", title="Pro Balance en comprimés",
+                desc="Un mélange harmonisé de minéraux et oligoéléments basiques pour l'équilibre intérieur.",
+                bullets=["Citrates, carbonates & gluconates", "Équilibre acido-basique", "Sans lactose"],
+                href="https://shop.lrworld.com/product/fr/fr/pro_balance_en_comprimes.html?productAlias=80102-404&casrnc=b7b82",
+                icon_name="leaf",
+            ),
+            dict(
+                tag="Best-seller", title="Aloe Vera Drinking Gel Pêche",
+                desc="Le best-seller LR à la saveur pêche : 98% de gel de feuilles d'Aloe Vera, sans sucres ajoutés.",
+                bullets=[
+                    "Contribue au métabolisme énergétique, système nerveux & immunitaire",
+                    "98% de gel de feuilles d'Aloe Vera",
+                    "100% des AJR en vitamine C par ration",
+                    "Certifié SGS Institut Fresenius & IASC",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_aloe_vera_drinking_gel_peche.html?productAlias=80750-684&casrnc=ac73c",
+                icon_name="leaf",
+                bestseller=True,
+            ),
         ],
+        products_grid="grid-3",
+        link="energie-vitalite.html",
+        link_label="Voir le pilier Énergie & Vitalité",
+    ),
+    dict(
+        id="coeur-circulation",
+        icon="drop",
+        kind="Spécialiste LR",
+        name="Cœur et circulation",
+        subtitle="Accompagner le bien-être cardiovasculaire",
+        desc="Des extraits traditionnels et de l'Aloe Vera pour soutenir l'énergie et la vitalité liées à une bonne circulation.",
+        products=[
+            dict(
+                tag="Cœur & vitalité", title="Reishi Plus en gélules",
+                desc="Un champignon utilisé depuis des siècles dans la tradition asiatique, associé à la vitamine C.",
+                bullets=[
+                    "Contribue à un métabolisme énergétique normal",
+                    "Aide à réduire la fatigue et l'épuisement",
+                    "Extraits et poudre de Reishi + vitamine C",
+                    "Végan, sans lactose — 30 gélules",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/reishi_plus_en_gelules.html?productAlias=80331-799&casrnc=29c02",
+                icon_name="leaf",
+            ),
+            dict(
+                tag="Aloe Vera", title="Aloe Vera Drinking Gel Intense Sivera",
+                desc="L'Aloe Vera allié à l'extrait d'ortie et au miel véritable, en pack de 3.",
+                bullets=["Extrait d'ortie & miel véritable", "Pack de 3 flacons", "Issu de la recherche LR"],
+                href="https://shop.lrworld.com/product/fr/fr/aloe_vera_drinking_gel_intense_sivera_en_pack_de_3.html?productAlias=80823-405&casrnc=eff14",
+                icon_name="drop",
+            ),
+        ],
+        products_grid="grid-2",
+        link="quiz.html",
+        link_label="Faire le quiz pour cibler vos besoins",
+    ),
+    dict(
+        id="immunite-gamme",
+        icon="shield",
+        kind="Spécialiste LR",
+        name="Système immunitaire",
+        subtitle="Renforcer les défenses naturelles",
+        desc="Reishi, probiotiques, plantes et colostrum : plusieurs approches complémentaires pour soutenir l'immunité selon vos besoins.",
+        products=[
+            dict(
+                tag="Digestion & immunité", title="Capsules Pro 12+",
+                desc="Complexe TRIPLEBIOTIC à double encapsulation : prébiotiques, bactéries et postbiotiques.",
+                bullets=["1 milliard de bactéries par gélule", "12 souches bactériennes différentes", "Double encapsulation brevetée"],
+                href="https://shop.lrworld.com/product/fr/fr/capsules_pro_12_+.html?productAlias=81180-99&casrnc=634a2",
+                icon_name="loop",
+            ),
+            dict(
+                tag="Immunité", title="Cistus Incanus en gélules",
+                desc="Extrait concentré de Cistus Incanus, associé au zinc et à la vitamine C.",
+                bullets=[
+                    "Extrait de Cistus Incanus à 72%",
+                    "100% des AJR en vitamine C, 20% en zinc",
+                    "Zinc & vitamine C : fonctionnement normal du système immunitaire",
+                    "Gélules à enveloppe végétale — 60 gélules",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/cistus_incanus_en_gelules.html?productAlias=80325-699&casrnc=f06f7",
+                icon_name="shield",
+            ),
+            dict(
+                tag="Immunité & digestion", title="LR LIFETAKT Colostrum Liquid",
+                desc="Un produit haut de gamme à base de colostrum de vaches européennes.",
+                bullets=["Premier lait de vaches européennes", "Sans antibiotiques ni stéroïdes anabolisants", "Fabriqué en Allemagne, à froid"],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_colostrum_liquid.html?productAlias=80361-404&casrnc=827ed",
+                icon_name="shield",
+            ),
+        ],
+        products_grid="grid-3",
         link="immunite.html",
         link_label="Comprendre le pilier Système immunitaire",
     ),
     dict(
+        id="os-articulations-muscles",
+        icon="dumbbell",
+        kind="Spécialiste LR",
+        name="Os, articulations et muscles",
+        subtitle="Soutenir l'appareil locomoteur",
+        desc="Vitamines, minéraux et protéines pour accompagner une activité physique régulière et le bon fonctionnement de l'appareil locomoteur.",
+        products=[
+            dict(
+                tag="Articulations", title="Aloe Vera Drinking Gel Active Freedom",
+                desc="Au goût fruité d'orange, enrichi en vitamines C et E pour soutenir l'appareil locomoteur.",
+                bullets=[
+                    "Vitamine C : formation normale de collagène (os, cartilage)",
+                    "Vitamine E : protection des cellules",
+                    "Complexe actif pensé pour les articulations",
+                    "Pack de 3 flacons",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/aloe_vera_drinking_gel_active_freedom_en_set_de_3.html?productAlias=80883-482&casrnc=9153c",
+                icon_name="dumbbell",
+            ),
+            dict(
+                tag="Soutien de repas", title="Protein Power Vanille",
+                desc="80% de protéines précieuses issues de 5 sources différentes.",
+                bullets=["Contribue au maintien et au développement musculaire", "Avec magnésium & vitamine B6", "Idéal après l'effort"],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_boisson_en_poudre_protein_power_vanille.html?productAlias=80550-411",
+                icon_name="dumbbell",
+            ),
+            dict(
+                tag="Équilibre", title="Pro Balance en comprimés",
+                desc="Minéraux et oligoéléments basiques harmonisés pour l'équilibre intérieur.",
+                bullets=["Citrates, carbonates & gluconates", "Sans lactose"],
+                href="https://shop.lrworld.com/product/fr/fr/pro_balance_en_comprimes.html?productAlias=80102-404&casrnc=b7b82",
+                icon_name="leaf",
+            ),
+        ],
+        products_grid="grid-3",
+        link="nutrition-objectifs.html",
+        link_label="Voir le programme nutrition sportive",
+    ),
+    dict(
+        id="equilibre-hormonal",
+        icon="loop",
+        kind="Spécialiste LR",
+        name="Équilibre hormonal",
+        subtitle="Le bien-être féminin, notamment à la ménopause",
+        desc="Une formule dédiée pour accompagner les femmes à chaque étape, avec un focus sur la santé osseuse autour de la ménopause.",
+        products=[
+            dict(
+                tag="Équilibre hormonal", title="Woman Phyto en gélules",
+                desc="Pensé pour le bien-être féminin général, notamment autour de la ménopause.",
+                bullets=[
+                    "Calcium : maintien d'une ossature normale",
+                    "Vitamine D : conservation des os normaux",
+                    "Formule phyto dédiée au bien-être féminin",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/woman_phyto_en_gelules.html?productAlias=80332-799&casrnc=10b99c",
+                icon_name="loop",
+            ),
+        ],
+        products_grid="grid-2",
+        link="quiz.html",
+        link_label="Faire le quiz pour cibler vos besoins",
+    ),
+    dict(
+        id="beaute",
+        icon="sparkle",
+        kind="Spécialiste LR",
+        name="La beauté vient de l'intérieur",
+        subtitle="Un rituel quotidien, décliné au féminin et au masculin",
+        desc="Deux shots quotidiens pensés différemment selon vos besoins : éclat et vitalité pour elle, force et énergie pour lui.",
+        products=[
+            dict(
+                tag="Beauté — Femme", title="Beauty Elixir 5en1",
+                desc="Un shot quotidien pensé pour révéler éclat, vitalité et confiance en soi.",
+                bullets=[
+                    "Gel d'Aloe Vera & collagène hydrolysé",
+                    "Vitamines C, E, A et du groupe B",
+                    "Zinc, cuivre & acide hyaluronique",
+                    "Un rituel quotidien pour la peau",
+                ],
+                href="https://shop.lrworld.com/cms/FR/fr/bien-%C3%AAtre/sp%C3%A9cialistes/la_beaut%C3%A9_vient_de_l%27int%C3%A9rieur/la_beaut%C3%A9_vient_de_l%27int%C3%A9rieur.html?casrnc=87a50",
+                icon_name="sparkle",
+                swatch_color="linear-gradient(135deg,#e08bab,#a84e6c)",
+            ),
+            dict(
+                tag="Beauté — Homme", title="5in1 Men's Shot",
+                desc="Un shot quotidien pensé pour la force, l'énergie et le charisme au masculin.",
+                bullets=[
+                    "Gel d'Aloe Vera, collagène & extrait de ginseng",
+                    "Acides aminés : leucine, valine, isoleucine",
+                    "Vitamines C, E, D et zinc",
+                    "Un rituel quotidien, un seul shot",
+                ],
+                href="https://shop.lrworld.com/cms/FR/fr/bien-%C3%AAtre/sp%C3%A9cialistes/la_beaut%C3%A9_vient_de_l%27int%C3%A9rieur/la_beaut%C3%A9_vient_de_l%27int%C3%A9rieur.html?casrnc=87a50",
+                icon_name="shield",
+                swatch_color="linear-gradient(135deg,#4a4a4a,#161616)",
+            ),
+        ],
+        products_grid="grid-2",
+        link="quiz.html",
+        link_label="Faire le quiz pour cibler vos besoins",
+    ),
+    dict(
         id="aloe-vera",
         icon="leaf",
-        name="LR Aloe Via / Aloe Vera",
-        subtitle="Le rituel bien-être historique de LR",
-        desc="Le produit fondateur de LR Health & Beauty : de l'Aloe Vera issu de culture contrôlée, à intégrer dans une routine bien-être quotidienne, en cure.",
+        kind="Spécialiste LR",
+        name="LR Aloe Vera",
+        subtitle="Best-seller historique : plus de 60 millions de bouteilles vendues",
+        desc="Le produit fondateur de LR Health & Beauty : de l'Aloe Vera issu de culture contrôlée, décliné en plusieurs rituels bien-être.",
         products=[
-            dict(tag="Rituel", title="Aloe Vera Drinking Gel Original", desc="Le format de référence, à boire quotidiennement en cure.", bullets=["Aloe Vera à haute teneur", "Sans conservateurs de synthèse", "Plusieurs variantes de goût"]),
+            dict(
+                tag="Best-seller", title="Aloe Vera Drinking Gel Pêche",
+                desc="98% de gel de feuilles d'Aloe Vera à la saveur pêche, sans sucres ajoutés.",
+                bullets=[
+                    "Contribue au métabolisme énergétique, système nerveux & immunitaire",
+                    "98% de gel de feuilles d'Aloe Vera",
+                    "100% des AJR en vitamine C par ration",
+                    "Certifié SGS Institut Fresenius & IASC",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_aloe_vera_drinking_gel_peche.html?productAlias=80750-684&casrnc=ac73c",
+                bestseller=True,
+            ),
+            dict(
+                tag="Ortie & miel", title="Aloe Vera Drinking Gel Intense Sivera",
+                desc="L'Aloe Vera allié à l'extrait d'ortie et au miel véritable, en pack de 3.",
+                bullets=["Extrait d'ortie & miel véritable", "Pack de 3 flacons"],
+                href="https://shop.lrworld.com/product/fr/fr/aloe_vera_drinking_gel_intense_sivera_en_pack_de_3.html?productAlias=80823-405&casrnc=eff14",
+            ),
+            dict(
+                tag="Articulations", title="Aloe Vera Drinking Gel Active Freedom",
+                desc="Au goût fruité d'orange, enrichi en vitamines C et E pour l'appareil locomoteur.",
+                bullets=["Vitamine C : formation normale de collagène", "Pack de 3 flacons"],
+                href="https://shop.lrworld.com/product/fr/fr/aloe_vera_drinking_gel_active_freedom_en_set_de_3.html?productAlias=80883-482&casrnc=9153c",
+                icon_name="dumbbell",
+            ),
         ],
+        products_grid="grid-3",
         link="foie-detox.html",
         link_label="Comprendre le pilier Foie & Détox cellulaire",
     ),
 ]
-
 
 SWATCHES = [
     "linear-gradient(135deg,#5f7a5a,#3f5a3c)",
@@ -1347,7 +1694,8 @@ def build_gammes():
     for r in RANGES:
         cards = "\n".join(
             product_card(tag=p["tag"], title=p["title"], desc=p["desc"], bullets=p["bullets"], href=p.get("href", SHOP),
-                         swatch_color=SWATCHES[i % len(SWATCHES)], icon_name=p.get("icon_name", r["icon"]))
+                         swatch_color=p.get("swatch_color", SWATCHES[i % len(SWATCHES)]), icon_name=p.get("icon_name", r["icon"]),
+                         bestseller=p.get("bestseller", False))
             for i, p in enumerate(r["products"])
         )
         range_blocks.append("""
@@ -1356,14 +1704,14 @@ def build_gammes():
     <div class="split" style="align-items:flex-start;">
       <div data-reveal>
         <div class="icon-badge">%s</div>
-        <div class="eyebrow">Gamme LR</div>
+        <div class="eyebrow">%s</div>
         <h2>%s</h2>
         <p class="lede">%s</p>
         <p>%s</p>
         <a class="card-link" href="%s">%s %s</a>
       </div>
       <div data-reveal>
-        <div class="grid grid-2">
+        <div class="grid %s">
           %s
         </div>
       </div>
@@ -1371,8 +1719,8 @@ def build_gammes():
   </div>
 </section>""" % (
             " section-alt" if RANGES.index(r) % 2 else "",
-            r["id"], icon(r["icon"]), r["name"], r["subtitle"], r["desc"],
-            r["link"], r["link_label"], icon("arrow"), cards,
+            r["id"], icon(r["icon"]), r.get("kind", "Gamme LR"), r["name"], r["subtitle"], r["desc"],
+            r["link"], r["link_label"], icon("arrow"), r.get("products_grid", "grid-2"), cards,
         ))
 
     intro = """

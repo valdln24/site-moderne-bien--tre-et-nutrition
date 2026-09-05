@@ -27,7 +27,8 @@ CONFIG = {
     "email": "delaineval@gmail.com",
     "phone": "06 36 47 01 31",
     "shop_url": "https://shop.lrworld.com/home?PHP=LJp1okG7ANwL63NJr63rAA%3D%3D",
-    "linkedin": "https://www.linkedin.com/in/REMPLACER-votre-profil",
+    "linkedin": "https://www.linkedin.com/in/valentin-delaine-61956533b",
+    "siren": "103 127 288",
     "domain": "https://www.votre-domaine.fr",
     "form_action": "https://REMPLACER-avec-formspree-ou-brevo.example/votre-id",
     # Domaine Plausible (https://plausible.io) pour des statistiques respectueuses
@@ -1596,8 +1597,8 @@ def build_mentions_legales():
 <ul>
   <li>Nom et prénom : %s</li>
   <li>Statut professionnel : %s</li>
-  <li>Adresse : [À COMPLÉTER — adresse postale ou domiciliation professionnelle]</li>
-  <li>Numéro SIREN / RSAC : [À COMPLÉTER si vous êtes immatriculé(e) — l'immatriculation au Registre Spécial des Agents Commerciaux devient obligatoire après 3 années civiles consécutives d'activité de VDI avec une rémunération brute annuelle supérieure à 50%% du plafond annuel de la Sécurité sociale]</li>
+  <li>Ville : %s ([À COMPLÉTER — adresse postale complète ou domiciliation professionnelle])</li>
+  <li>Numéro SIREN : %s</li>
   <li>Email : %s</li>
   <li>Téléphone : %s</li>
   <li>Directeur de la publication : %s</li>
@@ -1626,6 +1627,7 @@ def build_mentions_legales():
 <p>Pour toute question relative au Site, vous pouvez écrire à <a href="mailto:%s">%s</a> ou utiliser le <a href="contact.html">formulaire de contact</a>.</p>
 """ % (
         CONFIG["site_name"], CONFIG["partner_name"], CONFIG["partner_title"],
+        CONFIG["city"], CONFIG["siren"],
         CONFIG["email"], CONFIG["phone"], CONFIG["partner_name"],
         CONFIG["partner_name"],
         CONFIG["partner_name"],

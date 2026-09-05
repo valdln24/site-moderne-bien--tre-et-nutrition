@@ -21,7 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG = {
     "site_name": "Vitalis",
     "tagline": "Énergie, immunité & équilibre au naturel",
-    "partner_name": "REMPLACER : Votre nom & prénom",
+    "partner_name": "Valentin Delaine",
     "partner_title": "Partenaire indépendant(e) LR Health & Beauty",
     "city": "REMPLACER : Votre ville",
     "email": "contact@REMPLACER-votre-domaine.fr",

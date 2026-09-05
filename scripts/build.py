@@ -23,12 +23,11 @@ CONFIG = {
     "tagline": "Énergie, immunité & équilibre au naturel",
     "partner_name": "Valentin Delaine",
     "partner_title": "Partenaire indépendant(e) LR Health & Beauty",
-    "city": "REMPLACER : Votre ville",
-    "email": "contact@REMPLACER-votre-domaine.fr",
-    "phone": "REMPLACER : 06 00 00 00 00",
+    "city": "Dole",
+    "email": "delaineval@gmail.com",
+    "phone": "06 36 47 01 31",
     "shop_url": "https://shop.lrworld.com/home?PHP=LJp1okG7ANwL63NJr63rAA%3D%3D",
-    "instagram": "https://instagram.com/REMPLACER",
-    "facebook": "https://facebook.com/REMPLACER",
+    "linkedin": "https://www.linkedin.com/in/REMPLACER-votre-profil",
     "domain": "https://www.votre-domaine.fr",
     "form_action": "https://REMPLACER-avec-formspree-ou-brevo.example/votre-id",
     # Domaine Plausible (https://plausible.io) pour des statistiques respectueuses
@@ -232,7 +231,7 @@ def footer():
       </div>
       <div class="footer-badges">
         <a class="footer-badge" href="%s" target="_blank" rel="noopener sponsored">%s<span>Ma boutique<small>LR officielle</small></span></a>
-        <a class="footer-badge" href="%s" target="_blank" rel="noopener">%s<span>Instagram<small>Suivre le compte</small></span></a>
+        <a class="footer-badge" href="%s" target="_blank" rel="noopener">%s<span>LinkedIn<small>Me suivre</small></span></a>
       </div>
     </div>
     <div class="footer-grid">
@@ -274,7 +273,7 @@ def footer():
         CONFIG["site_name"],
         CONFIG["tagline"],
         SHOP, icon("cart"),
-        CONFIG["instagram"], icon("sparkle"),
+        CONFIG["linkedin"], icon("sparkle"),
         CONFIG["email"], icon("mail"),
         "tel:" + CONFIG["phone"].replace(" ", ""), icon("phone"),
         pillar_li,
@@ -1426,7 +1425,7 @@ def build_apropos():
     %s
     <div class="eyebrow">À propos</div>
     <h1 style="max-width:760px;">Bonjour, je suis %s</h1>
-    <p class="lede" style="max-width:640px;">%s, basé(e) à %s. [À COMPLÉTER : racontez ici votre histoire personnelle — pourquoi le bien-être, votre déclic avec LR, ce que vous voulez apporter à vos lecteurs. 2 à 4 paragraphes suffisent, avec authenticité.]</p>
+    <p class="lede" style="max-width:640px;">%s, basé à %s. Les produits LR ne sont pas une découverte récente pour moi : je les connais depuis plus de 20 ans et je les utilise depuis toujours, bien avant de devenir partenaire. Le bien-être n'est pas un sujet que j'ai découvert un jour — c'est une valeur transmise par ma famille, pour qui il a toujours été une priorité.</p>
   </div>
 </section>
 
@@ -1436,7 +1435,7 @@ def build_apropos():
       <div class="split-visual" data-reveal>
         <div class="icon-badge">%s</div>
         <h3>Mon parcours</h3>
-        <p>[À COMPLÉTER : votre parcours professionnel/personnel, ce qui vous a menée vers LR Health & Beauty, depuis quand vous êtes partenaire.]</p>
+        <p>Je suis issu d'une famille pour qui le bien-être a toujours été une priorité : j'ai grandi avec ces produits au quotidien, bien avant de penser à en faire mon activité. Devenir partenaire indépendant a été la suite logique d'une conviction déjà ancrée depuis longtemps. Depuis, j'ai accompagné des dizaines de clients dans un changement durable de leurs habitudes de vie, toujours avec la même approche : comprendre avant de recommander.</p>
       </div>
       <div data-reveal>
         <div class="eyebrow">Ma philosophie</div>

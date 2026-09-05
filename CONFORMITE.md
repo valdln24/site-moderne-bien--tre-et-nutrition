@@ -98,10 +98,13 @@ allégations de santé autorisées (base de données de la Commission européenn
   définie, et le respect de leurs droits (accès, rectification, effacement...) —
   traité dans `confidentialite-cookies.html`.
 - **Cookies** : un bandeau de consentement est intégré (`assets/js/main.js`) ; par
-  défaut le site ne dépose aucun cookie non essentiel. Si vous ajoutez un outil de
-  mesure d'audience (Google Analytics, Plausible, Meta Pixel...), il faudra recueillir
-  le consentement **avant** le dépôt du cookie et mettre à jour la politique de
-  confidentialité en conséquence.
+  défaut le site ne dépose aucun cookie non essentiel. Une intégration Plausible
+  (mesure d'audience sans cookie de tracking) est prête dans le code mais **désactivée**
+  tant que `CONFIG["analytics_domain"]` est vide, et ne se charge qu'après acceptation
+  du bandeau — voir le README, section « Statistiques ». Si vous utilisez un autre outil
+  (Google Analytics, Meta Pixel...), gardez la même logique : chargement uniquement
+  après consentement explicite, et mise à jour de la politique de confidentialité en
+  conséquence.
 - **Médiation de la consommation** (art. L.616-1 du Code de la consommation) : dans la
   mesure où ce site ne vend rien directement, l'obligation de désigner un médiateur de
   la consommation relève avant tout de la boutique officielle LR (qui vend réellement).

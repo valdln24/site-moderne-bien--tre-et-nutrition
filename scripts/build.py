@@ -9,6 +9,7 @@ pied de page strictement identiques sur tout le site.
 Utilisation : python3 scripts/build.py
 Les fichiers .html sont (re)générés à la racine du dépôt.
 """
+import json
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,6 +30,10 @@ CONFIG = {
     "facebook": "https://facebook.com/REMPLACER",
     "domain": "https://www.votre-domaine.fr",
     "form_action": "https://REMPLACER-avec-formspree-ou-brevo.example/votre-id",
+    # Domaine Plausible (https://plausible.io) pour des statistiques respectueuses
+    # de la vie privée, chargées uniquement après consentement aux cookies.
+    # Laissez vide ("") pour ne pas activer d'analytics.
+    "analytics_domain": "",
 }
 
 SHOP = CONFIG["shop_url"]
@@ -60,8 +65,10 @@ ICONS = {
 
 def icon(name, cls=""):
     svg = ICONS[name]
+    attrs = 'aria-hidden="true" focusable="false"'
     if cls:
-        svg = svg.replace("<svg ", '<svg class="%s" ' % cls, 1)
+        attrs = 'class="%s" %s' % (cls, attrs)
+    svg = svg.replace("<svg ", "<svg %s " % attrs, 1)
     return svg
 
 
@@ -112,13 +119,14 @@ INDEPENDENT_DISCLOSURE = (
 # --------------------------------------------------------------------------
 # BRIQUES HTML PARTAGÉES
 # --------------------------------------------------------------------------
-def head(title, description, path, extra_jsonld=""):
+def head(title, description, path, extra_jsonld="", noindex=False):
     canonical = CONFIG["domain"].rstrip("/") + "/" + (path if path != "index.html" else "")
     og_title = "%s — %s" % (title, CONFIG["site_name"]) if title != CONFIG["site_name"] else title
+    og_image = CONFIG["domain"].rstrip("/") + "/assets/img/og-image.png"
     favicon = (
         "data:image/svg+xml,"
         "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E"
-        "%3Ccircle cx='50' cy='50' r='48' fill='%233f5a3c'/%3E"
+        "%3Ccircle cx='50' cy='50' r='48' fill='%230d4a32'/%3E"
         "%3Cpath d='M50 20c-16 16-16 44 0 60 16-16 16-44 0-60Z' fill='%23c96f4a'/%3E"
         "%3C/svg%3E"
     )
@@ -129,19 +137,35 @@ def head(title, description, path, extra_jsonld=""):
 <meta name="description" content="%s">
 <link rel="canonical" href="%s">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="%s">
 <meta property="og:title" content="%s">
 <meta property="og:description" content="%s">
 <meta property="og:url" content="%s">
+<meta property="og:image" content="%s">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="robots" content="index, follow">
+<meta name="twitter:title" content="%s">
+<meta name="twitter:description" content="%s">
+<meta name="twitter:image" content="%s">
+<meta name="robots" content="%s">
 <link rel="icon" href="%s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<script>window.__VITALIS_ANALYTICS__=%s;</script>
 %s
-</head>""" % (og_title, description, canonical, og_title, description, canonical, favicon, extra_jsonld)
+</head>""" % (
+        og_title, description, canonical,
+        CONFIG["site_name"], og_title, description, canonical, og_image,
+        og_title, description, og_image,
+        "noindex, nofollow" if noindex else "index, follow",
+        favicon,
+        json.dumps(CONFIG.get("analytics_domain", "") or None),
+        extra_jsonld,
+    )
 
 
 def dropdown_pillars():
@@ -161,8 +185,8 @@ def btn(label, href="#", variant="primary", blank=False, sm=False, block=False, 
         cls += " " + extra_class
     target = ' target="_blank" rel="noopener sponsored"' if blank else ""
     circle_icon = "cart" if blank else "arrow"
-    return '<a class="%s" href="%s"%s><span class="btn-label">%s</span><span class="btn-circle">%s</span></a>' % (
-        cls, href, target, label, icon(circle_icon)
+    return '<a class="%s" href="%s"%s aria-label="%s"><span class="btn-label">%s</span><span class="btn-circle">%s</span></a>' % (
+        cls, href, target, label, label, icon(circle_icon)
     )
 
 
@@ -261,17 +285,20 @@ def footer():
     )
 
 
-def page(slug, title, description, body, active="", extra_jsonld="", extra_scripts=""):
+def page(slug, title, description, body, active="", extra_jsonld="", extra_scripts="", noindex=False):
     return """<!DOCTYPE html>
 <html lang="fr">
 %s
 <body>
+<a class="skip-link" href="#main-content">Aller au contenu</a>
 %s
+<main id="main-content">
 %s
+</main>
 %s
 %s
 </body>
-</html>""" % (head(title, description, slug, extra_jsonld), header(active), body, footer(), extra_scripts)
+</html>""" % (head(title, description, slug, extra_jsonld, noindex=noindex), header(active), body, footer(), extra_scripts)
 
 
 def notice(text, warn=False, ic="info"):
@@ -302,6 +329,15 @@ def section_head(eyebrow, title, lede, center=False):
   <h2>%s</h2>
   <p class="lede">%s</p>
 </div>""" % (" center" if center else "", eyebrow, title, lede)
+
+
+def word_reveal(text):
+    words = text.split(" ")
+    spans = []
+    for i, w in enumerate(words):
+        delay = round(i * 0.045, 3)
+        spans.append('<span class="word" style="animation-delay:%ss">%s</span>' % (delay, w))
+    return " ".join(spans)
 
 
 def breadcrumb(label):
@@ -814,7 +850,7 @@ def build_home():
   <div class="container hero-inner">
     <div data-reveal>
       <div class="eyebrow">%s</div>
-      <h1>Votre énergie, votre immunité, votre équilibre — sans détour marketing.</h1>
+      <h1>%s</h1>
       <p class="lede">%s, %s. J'aide celles et ceux qui veulent comprendre <em>vraiment</em> leur corps — énergie, récupération, foie, intestin, immunité — avant de choisir un complément adapté à leur objectif.</p>
       <div class="hero-actions">
         %s
@@ -827,13 +863,13 @@ def build_home():
       </div>
     </div>
     <div class="bento-hero" data-reveal>
-      <div class="bento-grid">
-        <div class="photo-block ratio-tall">
+      <div class="bento-grid" data-parallax>
+        <div class="photo-block ratio-tall" data-parallax-tile>
           <span class="chip-float chip--bl">%s Cure de 4 semaines</span>
           %s
         </div>
-        <div class="photo-block ratio-square tone-terracotta">%s</div>
-        <div class="photo-block ratio-square tone-gold">
+        <div class="photo-block ratio-square tone-terracotta" data-parallax-tile>%s</div>
+        <div class="photo-block ratio-square tone-gold" data-parallax-tile>
           <span class="chip-float chip--tr">%s 100%% naturel</span>
           %s
         </div>
@@ -921,6 +957,7 @@ def build_home():
 </section>
 """ % (
         CONFIG["tagline"],
+        word_reveal("Votre énergie, votre immunité, votre équilibre — sans détour marketing."),
         CONFIG["partner_name"], CONFIG["partner_title"],
         btn("Faire mon diagnostic gratuit", "quiz.html", variant="primary"),
         btn("Ma boutique LR officielle", SHOP, variant="outline", blank=True),
@@ -1632,6 +1669,41 @@ def build_cgu():
                        content)
 
 # --------------------------------------------------------------------------
+# PAGE 404
+# --------------------------------------------------------------------------
+def build_404():
+    pillar_links = "\n".join(
+        '<a href="%s" class="pillar-chip">%s</a>' % (h, l) for h, l, _ in PILLARS
+    )
+    body = """
+<section class="section" style="padding-top:110px;text-align:center;">
+  <div class="container" style="max-width:640px;">
+    <div class="eyebrow center" style="justify-content:center;display:flex;">Erreur 404</div>
+    <h1 style="font-size:clamp(3.4rem,9vw,6rem);">Perdu·e en chemin ?</h1>
+    <p class="lede center" style="margin:0 auto 8px;">
+      Cette page n'existe pas ou plus — mais votre objectif bien-être, lui, existe toujours.
+      Repartons du bon pied.
+    </p>
+    <div class="hero-actions" style="justify-content:center;margin-top:30px;">
+      %s
+      %s
+    </div>
+    <div class="pillar-nav" style="justify-content:center;">
+      %s
+    </div>
+  </div>
+</section>
+""" % (
+        btn("Retour à l'accueil", "index.html", variant="primary"),
+        btn("Faire le quiz bien-être", "quiz.html", variant="outline"),
+        pillar_links,
+    )
+    return page("404.html", "Page introuvable (404) — %s" % CONFIG["site_name"],
+                "Cette page n'existe pas. Retrouvez l'accueil, le quiz bien-être ou les univers thématiques du site.",
+                body, active="", noindex=True)
+
+
+# --------------------------------------------------------------------------
 # GÉNÉRATION
 # --------------------------------------------------------------------------
 def main():
@@ -1648,16 +1720,17 @@ def main():
     pages["confidentialite-cookies.html"] = build_confidentialite()
     pages["cgu-avertissement.html"] = build_cgu()
 
-    for slug, html in pages.items():
-        with open(os.path.join(ROOT, slug), "w", encoding="utf-8") as f:
-            f.write(html)
-        print("✓ %s" % slug)
-
-    # sitemap.xml
+    # sitemap.xml (avant l'ajout de la page 404, volontairement absente du plan du site)
     urls = "\n".join(
         "  <url><loc>%s/%s</loc></url>" % (CONFIG["domain"].rstrip("/"), slug if slug != "index.html" else "")
         for slug in pages
     )
+    pages["404.html"] = build_404()
+
+    for slug, html in pages.items():
+        with open(os.path.join(ROOT, slug), "w", encoding="utf-8") as f:
+            f.write(html)
+        print("✓ %s" % slug)
     sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n' % urls
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(sitemap)

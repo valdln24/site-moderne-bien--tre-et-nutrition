@@ -53,7 +53,7 @@ Puis régénérez toutes les pages :
 python3 scripts/build.py
 ```
 
-Cette commande réécrit les 14 fichiers `.html` à la racine à partir des gabarits — ne
+Cette commande réécrit les 15 fichiers `.html` à la racine à partir des gabarits — ne
 modifiez jamais un fichier `.html` directement à la racine, il serait écrasé au prochain
 `build.py`. Modifiez le contenu dans `scripts/build.py` (textes, produits, FAQ...).
 
@@ -112,9 +112,57 @@ FTP du dossier). Aucune base de données, aucun serveur applicatif requis.
 ## SEO
 
 - Chaque page a un `<title>`, une `meta description`, une URL canonique et des balises
-  Open Graph propres à son sujet.
+  Open Graph + Twitter Card propres à son sujet (avec image de partage, voir plus bas).
 - Les pages « piliers » embarquent un balisage `FAQPage` (JSON-LD) pour les questions
   fréquentes, favorable aux extraits enrichis Google.
 - `sitemap.xml` et `robots.txt` sont générés automatiquement — pensez à soumettre le
   sitemap dans Google Search Console une fois le domaine final connu (mettez à jour
   `domain` dans `CONFIG` avant de régénérer).
+- Une page **404 personnalisée** (`404.html`) est générée, marquée `noindex` et propose
+  de revenir à l'accueil, au quiz ou à un pilier. Sur Netlify/Vercel/GitHub Pages elle
+  est servie automatiquement ; sur un hébergeur classique, configurez la page d'erreur
+  404 pour pointer vers ce fichier.
+
+## Image de partage (réseaux sociaux)
+
+`assets/img/og-image.png` (1200×630) est utilisée pour l'aperçu du lien sur
+WhatsApp / Facebook / LinkedIn / X. Elle a été générée à partir de
+`scripts/build.py` (palette + logo du site, sans photo). Si vous changez la palette,
+le nom de marque ou souhaitez une vraie photo, régénérez-la avec votre propre outil
+(Canva, Figma...) au même format et remplacez le fichier — le nom doit rester identique
+pour que les balises `og:image` continuent de fonctionner.
+
+## Statistiques (Analytics)
+
+Aucun outil de mesure d'audience n'est activé par défaut. Pour en ajouter un sans
+polluer la conformité RGPD déjà en place :
+
+1. Créez un compte sur [Plausible](https://plausible.io) (respectueux de la vie privée,
+   sans cookie de tracking) et renseignez votre domaine.
+2. Dans `scripts/build.py`, remplissez `CONFIG["analytics_domain"]` avec ce domaine.
+3. Régénérez le site (`python3 scripts/build.py`).
+
+Le script ne se charge **qu'après acceptation du bandeau cookies** (`assets/js/main.js`,
+fonction `loadAnalytics`) — tant que `analytics_domain` est vide, rien n'est chargé.
+Pour utiliser Google Analytics à la place, adaptez cette fonction avec le snippet GA4.
+
+## Accessibilité
+
+- Lien d'évitement (« Aller au contenu ») visible au clavier en tout début de page.
+- Contours de focus visibles sur tous les liens, boutons et champs (`:focus-visible`).
+- Icônes décoratives marquées `aria-hidden` ; les boutons pilule portent un `aria-label`
+  explicite même quand leur texte est masqué visuellement en mobile.
+- Le site n'utilise aucune balise `<img>` (uniquement des dégradés et icônes SVG
+  décoratives) : il n'y a donc pas de texte alternatif à renseigner. Le jour où vous
+  ajoutez de vraies photos, pensez à leur donner un attribut `alt` descriptif.
+- Toutes les animations respectent `prefers-reduced-motion : reduce` : si l'utilisateur
+  a activé cette préférence système, les apparitions au scroll, la parallaxe et les
+  animations de texte sont désactivées et le contenu s'affiche directement.
+
+## Animations
+
+Les interactions (apparition au scroll, survols de boutons/cartes, accordéons,
+mosaïque héro) sont pilotées par `assets/css/style.css` et `assets/js/main.js`, avec
+une régle générale : **transform + opacity uniquement** (performant, pas de saccades),
+jamais de propriétés qui déclenchent un recalcul de mise en page. Tout est
+automatiquement désactivé pour les utilisateurs qui préfèrent un mouvement réduit.

@@ -12,10 +12,24 @@ Site statique (HTML/CSS/JS, aucun framework, aucune base de données) conçu pou
 - rediriger **toutes** les commandes vers la boutique en ligne **officielle** LR (aucune
   vente, aucun paiement traité sur ce site — voir `CONFORMITE.md`).
 
+## Design
+
+Palette vert forêt profond / crème, boutons pilule à pastille circulaire, cartes
+« photo » en dégradé + grain avec badges flottants, bento-grid en page d'accueil,
+accordéon de réassurance — inspiré des interfaces bien-être premium actuelles.
+
+**Aucune vraie photo n'est utilisée** : les emplacements photo (`.photo-block`) sont
+des dégradés vectoriels avec icône, pour éviter d'utiliser des images de personnes
+sans droits. Dès que vous avez vos propres photos (vous, vos produits, votre
+activité), elles s'intègrent facilement : dans `assets/css/style.css`, remplacez le
+`background` de `.photo-block` par une vraie image (`background-image:url(...)` +
+`background-size:cover`), ou ajoutez une balise `<img>` par carte dans `scripts/build.py`
+à la place du `<div class="photo-block">`.
+
 ## ⚠️ À faire avant mise en ligne
 
-Le site est fonctionnel mais contient des **placeholders** à remplacer. Ouvrez
-`scripts/build.py` et modifiez le dictionnaire `CONFIG` en tête de fichier :
+Le lien de votre eShop LR est déjà renseigné. Ouvrez `scripts/build.py` et complétez
+le reste du dictionnaire `CONFIG` en tête de fichier :
 
 ```python
 CONFIG = {
@@ -25,7 +39,7 @@ CONFIG = {
     "city": "...",                         # votre ville
     "email": "...",
     "phone": "...",
-    "shop_url": "...",                     # lien de votre eShop LR personnel (lrworld.com/...)
+    "shop_url": "https://shop.lrworld.com/home?PHP=...",  # déjà renseigné
     "instagram": "...",
     "facebook": "...",
     "domain": "https://www.votre-domaine.fr",

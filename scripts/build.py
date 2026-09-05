@@ -24,7 +24,7 @@ CONFIG = {
     "city": "REMPLACER : Votre ville",
     "email": "contact@REMPLACER-votre-domaine.fr",
     "phone": "REMPLACER : 06 00 00 00 00",
-    "shop_url": "https://REMPLACER-par-le-lien-de-votre-eShop-LR.lrworld.com",
+    "shop_url": "https://shop.lrworld.com/home?PHP=LJp1okG7ANwL63NJr63rAA%3D%3D",
     "instagram": "https://instagram.com/REMPLACER",
     "facebook": "https://facebook.com/REMPLACER",
     "domain": "https://www.votre-domaine.fr",
@@ -138,7 +138,7 @@ def head(title, description, path, extra_jsonld=""):
 <link rel="icon" href="%s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 %s
 </head>""" % (og_title, description, canonical, og_title, description, canonical, favicon, extra_jsonld)
@@ -148,6 +148,21 @@ def dropdown_pillars():
     return "\n".join(
         '<a href="%s">%s %s</a>' % (href, icon(ic, "pillar-icon"), label)
         for href, label, ic in PILLARS
+    )
+
+
+def btn(label, href="#", variant="primary", blank=False, sm=False, block=False, extra_class=""):
+    cls = "btn btn-%s" % variant
+    if sm:
+        cls += " btn-sm"
+    if block:
+        cls += " btn-block"
+    if extra_class:
+        cls += " " + extra_class
+    target = ' target="_blank" rel="noopener sponsored"' if blank else ""
+    circle_icon = "cart" if blank else "arrow"
+    return '<a class="%s" href="%s"%s><span class="btn-label">%s</span><span class="btn-circle">%s</span></a>' % (
+        cls, href, target, label, icon(circle_icon)
     )
 
 
@@ -170,13 +185,13 @@ def header(active=""):
     <nav class="nav-desktop" id="siteNav">%s
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-primary btn-sm" href="%s" target="_blank" rel="noopener sponsored">%s<span> Ma boutique LR</span></a>
+      %s
       <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
-</header>""" % (CONFIG["site_name"], nav_items, SHOP, icon("cart"))
+</header>""" % (CONFIG["site_name"], nav_items, btn("Ma boutique LR", SHOP, variant="primary", blank=True, sm=True))
 
 
 def footer():
@@ -185,14 +200,21 @@ def footer():
     legal_li = "\n".join('<li><a href="%s">%s</a></li>' % (h, l) for h, l in LEGAL_LINKS)
     return """<footer class="site-footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-top">
       <div>
         <div class="footer-logo">%s</div>
-        <p style="color:rgba(255,255,255,.6);max-width:320px;">%s</p>
-        <ul style="display:flex;gap:14px;margin-top:18px;">
+        <p style="color:rgba(255,255,255,.65);max-width:320px;margin:0;">%s</p>
+      </div>
+      <div class="footer-badges">
+        <a class="footer-badge" href="%s" target="_blank" rel="noopener sponsored">%s<span>Ma boutique<small>LR officielle</small></span></a>
+        <a class="footer-badge" href="%s" target="_blank" rel="noopener">%s<span>Instagram<small>Suivre le compte</small></span></a>
+      </div>
+    </div>
+    <div class="footer-grid">
+      <div>
+        <ul style="display:flex;gap:14px;">
           <li><a href="mailto:%s" aria-label="Email">%s</a></li>
           <li><a href="%s" target="_blank" rel="noopener">%s</a></li>
-          <li><a href="%s" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a></li>
         </ul>
       </div>
       <div>
@@ -226,9 +248,10 @@ def footer():
 <script src="assets/js/main.js"></script>""" % (
         CONFIG["site_name"],
         CONFIG["tagline"],
+        SHOP, icon("cart"),
+        CONFIG["instagram"], icon("sparkle"),
         CONFIG["email"], icon("mail"),
         "tel:" + CONFIG["phone"].replace(" ", ""), icon("phone"),
-        CONFIG["instagram"],
         pillar_li,
         main_li,
         legal_li,
@@ -257,21 +280,20 @@ def notice(text, warn=False, ic="info"):
     )
 
 
-def cta_band(title_text, text, primary_href, primary_label, secondary_href=None, secondary_label=None, primary_blank=False):
+def cta_band(title_text, text, primary_href, primary_label, secondary_href=None, secondary_label=None, primary_blank=False, secondary_blank=False):
     secondary = ""
     if secondary_href:
-        secondary = '<a class="btn btn-outline" style="border-color:#fff;color:#fff;" href="%s">%s</a>' % (secondary_href, secondary_label)
-    target = ' target="_blank" rel="noopener sponsored"' if primary_blank else ""
+        secondary = btn(secondary_label, secondary_href, variant="white", blank=secondary_blank)
     return """<div class="cta-band" data-reveal>
   <div>
     <h2>%s</h2>
     <p>%s</p>
   </div>
   <div style="display:flex;gap:14px;flex-wrap:wrap;">
-    <a class="btn btn-primary" href="%s"%s>%s</a>
+    %s
     %s
   </div>
-</div>""" % (title_text, text, primary_href, target, primary_label, secondary)
+</div>""" % (title_text, text, btn(primary_label, primary_href, variant="terracotta", blank=primary_blank), secondary)
 
 
 def section_head(eyebrow, title, lede, center=False):
@@ -294,24 +316,32 @@ def check_list(items):
 def product_card(tag, title, desc, bullets, href, swatch_color, icon_name):
     lis = "\n".join("<li>%s</li>" % b for b in bullets)
     return """<div class="product-card" data-reveal>
-  <div class="swatch" style="background:%s;">%s</div>
+  <div class="swatch photo-block" style="background:%s;">
+    <span class="chip-float chip--tl">%s%s</span>
+    %s
+  </div>
   <div class="body">
-    <span class="tag">%s</span>
     <h3>%s</h3>
     <p>%s</p>
     <ul>%s</ul>
-    <a class="btn btn-outline btn-sm" href="%s" target="_blank" rel="noopener sponsored">Voir sur ma boutique LR %s</a>
+    <a class="btn btn-outline btn-sm" href="%s" target="_blank" rel="noopener sponsored"><span class="btn-label">Voir sur ma boutique LR</span><span class="btn-circle">%s</span></a>
   </div>
-</div>""" % (swatch_color, icon(icon_name), tag, title, desc, lis, href, icon("arrow"))
+</div>""" % (swatch_color, icon("check"), tag, icon(icon_name), title, desc, lis, href, icon("arrow"))
 
 
-def pillar_teaser_card(href, title, ic, desc):
-    return """<a href="%s" class="card" data-reveal style="display:block;">
-  <div class="icon-badge">%s</div>
-  <h3>%s</h3>
-  <p>%s</p>
-  <span class="card-link">Découvrir %s</span>
-</a>""" % (href, icon(ic), title, desc, icon("arrow"))
+def pillar_teaser_card(href, title, ic, desc, tone="", kicker="Pilier bien-être"):
+    tone_cls = ("tone-" + tone) if tone else ""
+    return """<a href="%s" class="media-card" data-reveal style="display:block;">
+  <div class="media photo-block ratio-wide %s">
+    <span class="chip-float chip--tl">%s %s</span>
+    %s
+  </div>
+  <div class="caption">
+    <h3>%s</h3>
+    <p>%s</p>
+    <span class="card-link">Découvrir %s</span>
+  </div>
+</a>""" % (href, tone_cls, icon("sparkle"), kicker, icon(ic), title, desc, icon("arrow"))
 
 
 def testimonial(stars, quote, author):
@@ -713,15 +743,16 @@ PILLAR_PAGES = [
 # PAGE D'ACCUEIL
 # --------------------------------------------------------------------------
 def build_home():
+    pillar_tones = ["", "terracotta", "gold", "", "terracotta"]
     pillar_cards = "\n".join(
-        pillar_teaser_card(href, label, ic, desc)
-        for (href, label, ic), desc in zip(PILLARS, [
+        pillar_teaser_card(href, label, ic, desc, tone=tone)
+        for (href, label, ic), desc, tone in zip(PILLARS, [
             "Un tonus stable du matin au soir, sans coup de barre.",
             "Un sommeil réparateur et une vraie récupération physique.",
             "Comprendre et soutenir le métabolisme hépatique et cellulaire.",
             "Prendre soin de son microbiote pour un confort digestif durable.",
             "Renforcer ses défenses naturelles toute l'année.",
-        ])
+        ], pillar_tones)
     )
 
     steps = [
@@ -737,31 +768,57 @@ def build_home():
     )
 
     ranges_teaser = [
-        ("Body Mission", "Silhouette & nutrition sportive", "leaf", "gammes-lr.html#body-mission"),
-        ("Health Mission", "Digestion, détente & vitalité", "shield", "gammes-lr.html#health-mission"),
-        ("Mind Master", "Énergie mentale & concentration", "bolt", "gammes-lr.html#mind-master"),
-        ("Aloe Vera", "Le rituel bien-être quotidien", "drop", "gammes-lr.html#aloe-vera"),
+        ("Body Mission", "Silhouette & nutrition sportive", "leaf", "gammes-lr.html#body-mission", ""),
+        ("Health Mission", "Digestion, détente & vitalité", "shield", "gammes-lr.html#health-mission", "terracotta"),
+        ("Mind Master", "Énergie mentale & concentration", "bolt", "gammes-lr.html#mind-master", "gold"),
+        ("Aloe Vera", "Le rituel bien-être quotidien", "drop", "gammes-lr.html#aloe-vera", ""),
     ]
     ranges_html = "\n".join(
-        """<a href="%s" class="card" data-reveal style="display:block;">
-      <div class="icon-badge terra">%s</div>
-      <h3>%s</h3><p>%s</p>
-      <span class="card-link">Voir la gamme %s</span>
-    </a>""" % (href, icon(ic), name, desc, icon("arrow")) for name, desc, ic, href in ranges_teaser
+        pillar_teaser_card(href, name, ic, desc, tone=tone, kicker="Gamme LR")
+        for name, desc, ic, href, tone in ranges_teaser
+    )
+
+    feature_accordion = """<div class="feature-accordion" data-reveal>
+  <details open>
+    <summary>Transparence totale %s</summary>
+    <div class="panel"><ul>
+      <li>%sSite personnel et indépendant, clairement identifié comme tel</li>
+      <li>%sAucune vente ni paiement traité sur ce site</li>
+      <li>%sChaque lien produit renvoie vers ma boutique officielle LR</li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Conformité stricte %s</summary>
+    <div class="panel"><ul>
+      <li>%sAucune allégation de traitement ou de guérison</li>
+      <li>%sMentions obligatoires rappelées sur chaque page</li>
+      <li>%sTémoignages présentés comme non contractuels</li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Accompagnement humain %s</summary>
+    <div class="panel"><ul>
+      <li>%sUn quiz pour clarifier votre besoin réel, sans pression</li>
+      <li>%sDes réponses possibles par email ou téléphone</li>
+      <li>%sAucune obligation d'achat, à aucun moment</li>
+    </ul></div>
+  </details>
+</div>""" % (
+        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
+        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
+        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
     )
 
     body = """
 <section class="hero">
-  <div class="hero-blob b1"></div>
-  <div class="hero-blob b2"></div>
   <div class="container hero-inner">
     <div data-reveal>
       <div class="eyebrow">%s</div>
       <h1>Votre énergie, votre immunité, votre équilibre — sans détour marketing.</h1>
       <p class="lede">%s, %s. J'aide celles et ceux qui veulent comprendre <em>vraiment</em> leur corps — énergie, récupération, foie, intestin, immunité — avant de choisir un complément adapté à leur objectif.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="quiz.html">Faire mon diagnostic gratuit %s</a>
-        <a class="btn btn-outline" href="%s" target="_blank" rel="noopener sponsored">Ma boutique LR officielle</a>
+        %s
+        %s
       </div>
       <div class="hero-stats">
         <div><strong>5</strong><span>piliers bien-être expliqués</span></div>
@@ -769,23 +826,34 @@ def build_home():
         <div><strong>1</strong><span>boutique officielle, sûre & garantie</span></div>
       </div>
     </div>
-    <div class="hero-visual" data-reveal>
-      <div class="hero-ring" style="width:120%%;height:120%%;top:-10%%;left:-10%%;"></div>
-      <div class="hero-card">
-        <span class="hero-card-badge">Quiz 100%% gratuit</span>
+    <div class="bento-hero" data-reveal>
+      <div class="bento-grid">
+        <div class="photo-block ratio-tall">
+          <span class="chip-float chip--bl">%s Cure de 4 semaines</span>
+          %s
+        </div>
+        <div class="photo-block ratio-square tone-terracotta">%s</div>
+        <div class="photo-block ratio-square tone-gold">
+          <span class="chip-float chip--tr">%s 100%% naturel</span>
+          %s
+        </div>
+      </div>
+      <div class="bento-float-card">
         <div class="icon-badge">%s</div>
-        <h3>Quel est votre vrai besoin du moment ?</h3>
-        <p>Énergie, sommeil, digestion, immunité, poids, prise de masse... En 3 minutes, identifiez la priorité qui changera vraiment votre quotidien.</p>
-        <a class="btn btn-dark btn-block" href="quiz.html">Commencer le quiz</a>
+        <div>
+          <h3>Quel est votre vrai besoin du moment ?</h3>
+          <p>Énergie, sommeil, digestion, immunité, poids, prise de masse... En 3 minutes, identifiez la priorité qui changera vraiment votre quotidien.</p>
+          %s
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding-top:70px;">
   <div class="container">
     %s
-    <div class="grid grid-3" style="grid-template-columns:repeat(5,1fr);">
+    <div class="grid grid-5">
       %s
     </div>
   </div>
@@ -806,27 +874,32 @@ def build_home():
       <div data-reveal>
         <div class="eyebrow">Pourquoi ce site</div>
         <h2>Transformer une visite en vraie clarté — pas en pression commerciale</h2>
-        <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique, comme une réponse à un besoin identifié — jamais comme un argument de vente isolé.</p>
+        <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique — jamais comme un argument de vente isolé.</p>
         %s
       </div>
-      <div class="split-visual" data-reveal>
-        <div class="tag-row"><span class="small-tag">Transparence</span><span class="small-tag">Conformité</span><span class="small-tag">Accompagnement</span></div>
-        <h3>Mon engagement envers vous</h3>
-        <p>En tant que %s, je m'engage à ne jamais présenter un produit comme un traitement ou un substitut à un avis médical. Toute commande est passée exclusivement sur la boutique officielle LR — je ne vends rien directement sur ce site.</p>
-        <a class="btn btn-outline" href="a-propos.html">En savoir plus sur mon parcours</a>
+      <div style="position:relative;" data-reveal>
+        <div class="photo-block ratio-tall tone-sage-light">%s</div>
+        <span class="chip-float chip--tl">%s Contenu vérifié</span>
+        <span class="chip-float chip--br dark">%s 0 allégation abusive</span>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-alt">
+<section class="section">
   <div class="container">
-    %s
-    <div class="grid grid-4">
-      %s
-    </div>
-    <div class="text-center" style="margin-top:20px;">
-      <a class="btn btn-primary" href="gammes-lr.html">Découvrir toutes les gammes %s</a>
+    <div class="mega-band">
+      <div class="section-head-row">
+        <div class="section-head">
+          <div class="eyebrow">Les gammes LR</div>
+          <h2>Des produits pensés pour chaque objectif</h2>
+          <p class="lede" style="color:rgba(255,255,255,.75);">Body Mission, Health Mission, Mind Master, Aloe Vera... découvrez les gammes les plus adaptées à vos priorités du moment.</p>
+        </div>
+        %s
+      </div>
+      <div class="grid grid-4">
+        %s
+      </div>
     </div>
   </div>
 </section>
@@ -849,21 +922,23 @@ def build_home():
 """ % (
         CONFIG["tagline"],
         CONFIG["partner_name"], CONFIG["partner_title"],
-        icon("arrow"), SHOP,
+        btn("Faire mon diagnostic gratuit", "quiz.html", variant="primary"),
+        btn("Ma boutique LR officielle", SHOP, variant="outline", blank=True),
+        icon("leaf"), icon("leaf"),
+        icon("bolt"),
+        icon("sparkle"), icon("shield"),
         icon("sparkle"),
+        btn("Commencer le quiz", "quiz.html", variant="dark", block=True),
         section_head("Les 5 piliers", "Comprendre votre corps, thème par thème", "Chaque pilier explore les causes, les signaux à surveiller et les leviers naturels — avant même de parler produit."),
         pillar_cards,
         section_head("Comment ça marche", "De la question à la solution, en 3 étapes", "Pas de vente sous pression : un parcours pensé pour vous aider à choisir en connaissance de cause."),
         steps_html,
-        check_list([
-            "Un contenu basé sur des repères scientifiques généraux, pas sur des promesses",
-            "Aucune vente directe sur ce site : commande 100% sécurisée sur la boutique officielle LR",
-            "Un accompagnement humain si vous le souhaitez, sans obligation d'achat",
-        ]),
-        CONFIG["partner_title"],
-        section_head("Les gammes LR", "Des produits pensés pour chaque objectif", "Body Mission, Health Mission, Mind Master, Aloe Vera... découvrez les gammes les plus adaptées à vos priorités du moment."),
+        feature_accordion,
+        icon("shield"),
+        icon("sparkle"),
+        icon("check"),
+        btn("Voir toutes les gammes", "gammes-lr.html", variant="white"),
         ranges_html,
-        icon("arrow"),
         section_head("Ils ont trouvé leur équilibre", "Des parcours inspirants", "Témoignages personnels et non contractuels."),
         testimonial(5, "Le quiz m'a évité d'acheter au hasard : j'ai enfin compris pourquoi j'étais fatiguée et ce qui pouvait vraiment m'aider.", "Aline, 38 ans"),
         testimonial(5, "Un site clair, honnête, qui explique avant de vendre. Ça change des publicités habituelles sur les compléments.", "Yohann, 45 ans"),
@@ -1143,7 +1218,7 @@ def build_gammes():
         "Un doute sur le produit qui vous correspond ?",
         "Le quiz bien-être vous oriente en 3 minutes vers la gamme la plus adaptée à votre objectif.",
         "quiz.html", "Faire le quiz gratuit",
-        "%s" % SHOP, "Accéder à ma boutique LR",
+        SHOP, "Accéder à ma boutique LR", secondary_blank=True,
     )
 
     body = intro + "".join(range_blocks) + outro

@@ -11,6 +11,7 @@ Les fichiers .html sont (re)générés à la racine du dépôt.
 """
 import json
 import os
+import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -331,8 +332,28 @@ def section_head(eyebrow, title, lede, center=False):
 </div>""" % (" center" if center else "", eyebrow, title, lede)
 
 
+def initials(name):
+    words = [w for w in re.split(r"[^A-Za-zÀ-ÿ]+", name) if len(w) >= 2 and w.upper() != "REMPLACER"]
+    letters = "".join(w[0] for w in words[:2]).upper()
+    return letters or "LR"
+
+
 def word_reveal(text):
-    words = text.split(" ")
+    raw = text.split(" ")
+    words = []
+    buffer = None
+    for w in raw:
+        if buffer is not None:
+            buffer += " " + w
+            if "</em>" in w:
+                words.append(buffer)
+                buffer = None
+        elif "<em>" in w and "</em>" not in w:
+            buffer = w
+        else:
+            words.append(w)
+    if buffer:
+        words.append(buffer)
     spans = []
     for i, w in enumerate(words):
         delay = round(i * 0.045, 3)
@@ -382,10 +403,11 @@ def pillar_teaser_card(href, title, ic, desc, tone="", kicker="Pilier bien-être
 
 def testimonial(stars, quote, author):
     return """<div class="testi" data-reveal>
+  <span class="testi-quote">&ldquo;</span>
   <div class="stars">%s</div>
-  <p>&laquo;&nbsp;%s&nbsp;&raquo;</p>
-  <footer>%s</footer>
-</div>""" % ("★" * stars, quote, author)
+  <p>%s</p>
+  <footer><span class="avatar" style="width:36px;height:36px;font-size:.72rem;">%s</span>%s</footer>
+</div>""" % ("★" * stars, quote, initials(author), author)
 
 
 ORG_JSONLD = """<script type="application/ld+json">
@@ -522,7 +544,7 @@ def build_pillar_page(cfg):
         check_list(cfg["facts"]),
         section_head("Signaux à surveiller", "Ce que votre corps essaie de vous dire", "Ces manifestations sont fréquentes et généralement liées à l'hygiène de vie. Si elles sont intenses, inhabituelles ou persistantes, consultez un professionnel de santé : ce site n'a pas vocation à poser un diagnostic."),
         signs_html,
-        section_head("Les leviers naturels", "Ce qui fait vraiment la différence au quotidien", "Avant tout complément, ce sont ces habitudes simples et régulières qui posent les fondations d'un bon équilibre."),
+        section_head("Les leviers naturels", "Ce qui fait <em>vraiment</em> la différence au quotidien", "Avant tout complément, ce sont ces habitudes simples et régulières qui posent les fondations d'un bon équilibre."),
         levers_html,
         section_head("La gamme LR associée", cfg["range_title"], cfg["range_lede"]),
         products_html,
@@ -533,7 +555,7 @@ def build_pillar_page(cfg):
         section_head("Questions fréquentes", "Vous vous demandez peut-être...", ""),
         faq_html,
         cta_band(
-            "Un accompagnement plutôt qu'une liste de produits",
+            "Un <em>accompagnement</em> plutôt qu'une liste de produits",
             "Répondez à 3 questions pour recevoir une orientation personnalisée, puis échangeons ensemble de vos objectifs.",
             "quiz.html", "Faire le quiz gratuit",
             "contact.html", "Me contacter directement",
@@ -909,7 +931,7 @@ def build_home():
     <div class="split">
       <div data-reveal>
         <div class="eyebrow">Pourquoi ce site</div>
-        <h2>Transformer une visite en vraie clarté — pas en pression commerciale</h2>
+        <h2>Transformer une visite en <em>vraie clarté</em> — pas en pression commerciale</h2>
         <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique — jamais comme un argument de vente isolé.</p>
         %s
       </div>
@@ -924,11 +946,46 @@ def build_home():
 
 <section class="section">
   <div class="container">
+    <div class="stats-band" data-reveal>
+      <div>
+        <div class="eyebrow">Comment ça s'articule</div>
+        <h2>Un accompagnement <em>qui se construit</em>, pas qui s'improvise</h2>
+        <p>Avant toute recommandation, ce site explore 5 dimensions de votre bien-être. Le quiz croise vos réponses avec ces piliers pour ne vous proposer que ce qui a du sens.</p>
+        <div class="stats-figures">
+          <div><strong>5</strong><span>piliers explorés</span></div>
+          <div><strong>3 min</strong><span>quiz de diagnostic</span></div>
+          <div><strong>0</strong><span>allégation médicale</span></div>
+        </div>
+        %s
+      </div>
+      <div class="stats-card">
+        <div class="stats-card-head"><span>Répartition des piliers explorés</span><span>Aperçu</span></div>
+        <div class="bar-chart">
+          <div class="bar" style="--h:55%%"></div>
+          <div class="bar" style="--h:70%%"></div>
+          <div class="bar is-lime" style="--h:100%%"></div>
+          <div class="bar" style="--h:62%%"></div>
+          <div class="bar" style="--h:80%%"></div>
+        </div>
+        <div class="stats-specialist">
+          <div class="avatar">%s</div>
+          <div>
+            <strong>%s</strong>
+            <span>%s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
     <div class="mega-band">
       <div class="section-head-row">
         <div class="section-head">
           <div class="eyebrow">Les gammes LR</div>
-          <h2>Des produits pensés pour chaque objectif</h2>
+          <h2>Des produits pensés pour <em>chaque objectif</em></h2>
           <p class="lede" style="color:rgba(255,255,255,.75);">Body Mission, Health Mission, Mind Master, Aloe Vera... découvrez les gammes les plus adaptées à vos priorités du moment.</p>
         </div>
         %s
@@ -957,7 +1014,7 @@ def build_home():
 </section>
 """ % (
         CONFIG["tagline"],
-        word_reveal("Votre énergie, votre immunité, votre équilibre — sans détour marketing."),
+        word_reveal("Votre énergie, votre immunité, votre équilibre — <em>sans détour</em> marketing."),
         CONFIG["partner_name"], CONFIG["partner_title"],
         btn("Faire mon diagnostic gratuit", "quiz.html", variant="primary"),
         btn("Ma boutique LR officielle", SHOP, variant="outline", blank=True),
@@ -966,7 +1023,7 @@ def build_home():
         icon("sparkle"), icon("shield"),
         icon("sparkle"),
         btn("Commencer le quiz", "quiz.html", variant="dark", block=True),
-        section_head("Les 5 piliers", "Comprendre votre corps, thème par thème", "Chaque pilier explore les causes, les signaux à surveiller et les leviers naturels — avant même de parler produit."),
+        section_head("Les 5 piliers", "Comprendre votre corps, <em>thème par thème</em>", "Chaque pilier explore les causes, les signaux à surveiller et les leviers naturels — avant même de parler produit."),
         pillar_cards,
         section_head("Comment ça marche", "De la question à la solution, en 3 étapes", "Pas de vente sous pression : un parcours pensé pour vous aider à choisir en connaissance de cause."),
         steps_html,
@@ -974,13 +1031,15 @@ def build_home():
         icon("shield"),
         icon("sparkle"),
         icon("check"),
+        btn("Faire le quiz gratuit", "quiz.html", variant="ghost"),
+        initials(CONFIG["partner_name"]), CONFIG["partner_name"], CONFIG["partner_title"],
         btn("Voir toutes les gammes", "gammes-lr.html", variant="white"),
         ranges_html,
         section_head("Ils ont trouvé leur équilibre", "Des parcours inspirants", "Témoignages personnels et non contractuels."),
         testimonial(5, "Le quiz m'a évité d'acheter au hasard : j'ai enfin compris pourquoi j'étais fatiguée et ce qui pouvait vraiment m'aider.", "Aline, 38 ans"),
         testimonial(5, "Un site clair, honnête, qui explique avant de vendre. Ça change des publicités habituelles sur les compléments.", "Yohann, 45 ans"),
         cta_band(
-            "Prêt(e) à faire le point sur votre bien-être ?",
+            "Prêt(e) à faire le point sur votre <em>bien-être</em> ?",
             "3 minutes suffisent pour une orientation personnalisée, sans engagement.",
             "quiz.html", "Faire le quiz gratuit",
             "contact.html", "Poser une question",

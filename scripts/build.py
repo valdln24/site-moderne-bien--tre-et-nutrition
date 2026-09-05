@@ -502,7 +502,7 @@ def build_pillar_page(cfg):
 <section class="section" id="gamme-associee">
   <div class="container">
     %s
-    <div class="grid grid-3">
+    <div class="grid %s">
       %s
     </div>
     <p class="form-note" style="margin-top:20px;">%s</p>
@@ -547,6 +547,7 @@ def build_pillar_page(cfg):
         section_head("Les leviers naturels", "Ce qui fait <em>vraiment</em> la différence au quotidien", "Avant tout complément, ce sont ces habitudes simples et régulières qui posent les fondations d'un bon équilibre."),
         levers_html,
         section_head("La gamme LR associée", cfg["range_title"], cfg["range_lede"]),
+        cfg.get("products_grid", "grid-3"),
         products_html,
         FOOD_SUPPLEMENT_DISCLAIMER,
         section_head("Ils en parlent", "Des parcours, pas des promesses", "Témoignages personnels et non contractuels — les résultats varient selon chaque personne et son mode de vie."),
@@ -567,6 +568,7 @@ def build_pillar_page(cfg):
 PILLAR_PAGES = [
     dict(
         slug="energie-vitalite.html",
+        products_grid="grid-4",
         eyebrow="Pilier bien-être",
         title="Énergie & Vitalité",
         lede="Retrouver un tonus stable du matin au soir, sans montagnes russes ni coups de barre à 16h : voici comment fonctionne réellement votre énergie, et comment la soutenir durablement.",
@@ -597,9 +599,54 @@ PILLAR_PAGES = [
         range_title="Mind Master — le coup de pouce ciblé",
         range_lede="Une gamme pensée pour accompagner la vigilance et l'énergie mentale au quotidien, à utiliser en complément (et non à la place) d'une bonne hygiène de vie.",
         products=[
-            dict(tag="Mind Master", title="Mind Master Extrait liquide", desc="Un format nomade pratique, à emporter partout pour les journées chargées.", bullets=["Guarana & extrait de thé vert", "Sans sucre ajouté", "Format à emporter"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="bolt"),
-            dict(tag="Mind Master", title="Mind Master Boisson", desc="À intégrer dans votre rituel du matin ou avant un moment qui demande de la concentration.", bullets=["Vitamines du groupe B", "Formule concentrée", "Goût agréable"], href=SHOP, swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="sparkle"),
-            dict(tag="Vitalité", title="Vita Active", desc="Un complexe multivitamines pensé pour accompagner un rythme de vie soutenu.", bullets=["Vitamines & minéraux", "Usage quotidien", "Format pratique"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="shield"),
+            dict(
+                tag="Mind Master Red", title="Mind Master Formula Red",
+                desc="La variante rouge à la saveur fruitée de raisin, pour une vie active et énergique.",
+                bullets=[
+                    "Thiamine & B12 : métabolisme énergétique normal",
+                    "B12 : bon fonctionnement du système nerveux et psychique",
+                    "B12 & fer : réduisent la fatigue et l'épuisement",
+                    "Vitamine E : protège les cellules du stress oxydant",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_mind_master_formula_red.html?productAlias=80950-604&casrnc=cac57",
+                swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="bolt",
+            ),
+            dict(
+                tag="Mind Master Gold", title="Mind Master Formula Gold",
+                desc="Pour l'énergie, la performance et l'équilibre mental, quoi que le quotidien réserve.",
+                bullets=[
+                    "B12 : métabolisme énergétique normal, réduit la fatigue",
+                    "Fer : fonction cognitive normale, transport de l'oxygène",
+                    "Vitamine D : ossature et fonction musculaire normales",
+                    "Vitamine E : protège les cellules du stress oxydatif",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/mind_master_formula_gold.html?productAlias=80940-4&casrnc=6ffb9",
+                swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="sparkle",
+            ),
+            dict(
+                tag="Coup de fouet", title="Mind Master Extreme",
+                desc="Le format stick à emporter partout, à consommer sans eau pour un coup de fouet rapide.",
+                bullets=[
+                    "Caféine du guarana : attention, concentration, endurance",
+                    "B6, B12 & thiamine : soutiennent la fonction psychique",
+                    "Vitamine C : fonctionnement normal du système immunitaire",
+                    "100% des besoins journaliers en vitamines E et D",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/mind_master_extreme.html?productAlias=80980-398&casrnc=2ccd7",
+                swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="bolt",
+            ),
+            dict(
+                tag="Multivitamines", title="Vita Active Fruits Rouges",
+                desc="Un concentré de 21 fruits et légumes et 10 vitamines essentielles, une cuillère à café par jour.",
+                bullets=[
+                    "Vitamines D & B6 : bon fonctionnement du système immunitaire",
+                    "Vitamine B12 : favorise la division cellulaire",
+                    "Vitamine B1 : contribue à une fonction cardiaque normale",
+                    "21 fruits et légumes concentrés, pour toute la famille",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/vita_active_fruits_rouges.html?productAlias=80301-699&casrnc=2009b",
+                swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="leaf",
+            ),
         ],
         testimonials=[
             (5, "En ajustant mon sommeil et mon petit-déjeuner, j'ai retrouvé une énergie plus stable dans la journée. Le quiz du site m'a aidée à savoir par où commencer.", "Camille, 34 ans"),
@@ -1211,11 +1258,52 @@ RANGES = [
         icon="bolt",
         name="Mind Master",
         subtitle="Énergie mentale, concentration & vigilance",
-        desc="Une gamme pensée pour les journées denses : formats nomades pour un coup de pouce ponctuel sur la vigilance et la concentration.",
+        desc="Une gamme pensée pour les journées denses : boissons Formula Red et Gold, stick Extreme à emporter, et un concentré multivitamine avec Vita Active.",
         products=[
-            dict(tag="Nomade", title="Mind Master Extrait liquide", desc="Un format pratique à emporter partout.", bullets=["Guarana & thé vert", "Sans sucre ajouté", "Format à emporter"]),
-            dict(tag="Quotidien", title="Mind Master Boisson", desc="À intégrer dans un rituel du matin ou avant un effort de concentration.", bullets=["Vitamines du groupe B", "Formule concentrée", "Goût agréable"]),
-            dict(tag="Vitalité", title="Vita Active", desc="Un complexe multivitamines pour un rythme de vie soutenu.", bullets=["Vitamines & minéraux", "Usage quotidien", "Format pratique"]),
+            dict(
+                tag="Mind Master Red", title="Mind Master Formula Red",
+                desc="La variante rouge à la saveur fruitée de raisin, pour une vie active et énergique.",
+                bullets=[
+                    "Thiamine & B12 : métabolisme énergétique normal",
+                    "B12 : bon fonctionnement du système nerveux et psychique",
+                    "B12 & fer : réduisent la fatigue et l'épuisement",
+                    "Vitamine E : protège les cellules du stress oxydant",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_mind_master_formula_red.html?productAlias=80950-604&casrnc=cac57",
+            ),
+            dict(
+                tag="Mind Master Gold", title="Mind Master Formula Gold",
+                desc="Pour l'énergie, la performance et l'équilibre mental, quoi que le quotidien réserve.",
+                bullets=[
+                    "B12 : métabolisme énergétique normal, réduit la fatigue",
+                    "Fer : fonction cognitive normale, transport de l'oxygène",
+                    "Vitamine D : ossature et fonction musculaire normales",
+                    "Vitamine E : protège les cellules du stress oxydatif",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/mind_master_formula_gold.html?productAlias=80940-4&casrnc=6ffb9",
+            ),
+            dict(
+                tag="Coup de fouet", title="Mind Master Extreme",
+                desc="Le format stick à emporter partout, à consommer sans eau pour un coup de fouet rapide.",
+                bullets=[
+                    "Caféine du guarana : attention, concentration, endurance",
+                    "B6, B12 & thiamine : soutiennent la fonction psychique",
+                    "Vitamine C : fonctionnement normal du système immunitaire",
+                    "100% des besoins journaliers en vitamines E et D",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/mind_master_extreme.html?productAlias=80980-398&casrnc=2ccd7",
+            ),
+            dict(
+                tag="Multivitamines", title="Vita Active Fruits Rouges",
+                desc="Un concentré de 21 fruits et légumes et 10 vitamines essentielles, une cuillère à café par jour.",
+                bullets=[
+                    "Vitamines D & B6 : bon fonctionnement du système immunitaire",
+                    "Vitamine B12 : favorise la division cellulaire",
+                    "Vitamine B1 : contribue à une fonction cardiaque normale",
+                    "21 fruits et légumes concentrés, pour toute la famille",
+                ],
+                href="https://shop.lrworld.com/product/fr/fr/vita_active_fruits_rouges.html?productAlias=80301-699&casrnc=2009b",
+            ),
         ],
         link="energie-vitalite.html",
         link_label="Comprendre le pilier Énergie & Vitalité",
@@ -1258,8 +1346,8 @@ def build_gammes():
     range_blocks = []
     for r in RANGES:
         cards = "\n".join(
-            product_card(tag=p["tag"], title=p["title"], desc=p["desc"], bullets=p["bullets"], href=SHOP,
-                         swatch_color=SWATCHES[i % len(SWATCHES)], icon_name=r["icon"])
+            product_card(tag=p["tag"], title=p["title"], desc=p["desc"], bullets=p["bullets"], href=p.get("href", SHOP),
+                         swatch_color=SWATCHES[i % len(SWATCHES)], icon_name=p.get("icon_name", r["icon"]))
             for i, p in enumerate(r["products"])
         )
         range_blocks.append("""

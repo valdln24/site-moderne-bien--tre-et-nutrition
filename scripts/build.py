@@ -707,7 +707,7 @@ PILLAR_PAGES = [
         range_lede="Des formules pensées pour accompagner les moments de relâchement et soutenir l'organisme dans ses phases de récupération.",
         products=[
             dict(tag="Health Mission", title="Complexe Détente", desc="Une formule à intégrer dans votre rituel du soir, en dehors des périodes de forte activité.", bullets=["Plantes traditionnellement apaisantes", "Format capsules", "Usage le soir"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="moon"),
-            dict(tag="Health Mission", title="Magnésium marin", desc="Le magnésium contribue à une fonction musculaire et psychologique normale.", bullets=["Bien toléré", "Cure de 4 semaines conseillée", "Sans excipients superflus"], href=SHOP, swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="drop"),
+            dict(tag="Oméga-3", title="Capsules Super Omega", desc="Des oméga-3 marins pour le bien-être cardiaque, issus de la pêche durable.", bullets=["Huile de poisson riche en oméga-3", "Contribue au bien-être cardiaque", "Certifié Friend of the Sea"], href="https://shop.lrworld.com/product/fr/fr/capsules_super_omega.html?productAlias=80338-699&casrnc=333bd", swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="drop"),
             dict(tag="Aloe Vera", title="Aloe Vera Drinking Gel", desc="À intégrer dans une routine bien-être quotidienne, en cure.", bullets=["Aloe Vera issu de culture contrôlée", "Format buvable", "Cure de 1 à 3 mois"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="leaf"),
         ],
         testimonials=[
@@ -1301,6 +1301,7 @@ RANGES = [
         id="health-mission",
         icon="leaf",
         kind="Gamme principale",
+        kind_type="principale",
         name="Health Mission",
         subtitle="Foie, digestion, détente & immunité — la gamme santé au quotidien",
         desc="La gamme phare pour accompagner le métabolisme hépatique, intestinal et cellulaire, ainsi que la détente et les défenses naturelles, au sein d'une alimentation variée.",
@@ -1330,10 +1331,11 @@ RANGES = [
                 icon_name="loop",
             ),
             dict(
-                tag="Détente", title="Magnésium marin",
-                desc="Contribue à une fonction musculaire et psychologique normale.",
-                bullets=["Bien toléré", "Cure de 4 semaines", "Sans excipients superflus"],
-                icon_name="moon",
+                tag="Oméga-3", title="Capsules Super Omega",
+                desc="Des oméga-3 marins pour le bien-être cardiaque, issus de la pêche durable.",
+                bullets=["Huile de poisson riche en oméga-3", "Contribue au bien-être cardiaque", "Certifié Friend of the Sea", "60 gélules"],
+                href="https://shop.lrworld.com/product/fr/fr/capsules_super_omega.html?productAlias=80338-699&casrnc=333bd",
+                icon_name="drop",
             ),
             dict(
                 tag="Immunité & digestion", title="LR LIFETAKT Colostrum Liquid",
@@ -1356,6 +1358,7 @@ RANGES = [
         id="body-mission",
         icon="dumbbell",
         kind="Gamme principale",
+        kind_type="principale",
         name="Body Mission",
         subtitle="Substituts et soutiens de repas pour la silhouette et le sport",
         desc="Une gamme complète de shakes (substituts de repas) et de compléments (soutiens de repas) pour accompagner un objectif minceur ou une prise de masse maîtrisée.",
@@ -1710,36 +1713,49 @@ SWATCHES = [
 def build_gammes():
     range_blocks = []
     for r in RANGES:
+        is_principale = r.get("kind_type") == "principale"
         cards = "\n".join(
             product_card(tag=p["tag"], title=p["title"], desc=p["desc"], bullets=p["bullets"], href=p.get("href", SHOP),
                          swatch_color=p.get("swatch_color", SWATCHES[i % len(SWATCHES)]), icon_name=p.get("icon_name", r["icon"]),
                          bestseller=p.get("bestseller", False))
             for i, p in enumerate(r["products"])
         )
-        range_blocks.append("""
-<section class="section%s" id="%s">
-  <div class="container">
-    <div class="split" style="align-items:flex-start;">
-      <div data-reveal>
-        <div class="icon-badge">%s</div>
-        <div class="eyebrow">%s</div>
+        info_col = """
+        <div class="icon-badge%s">%s</div>
+        <span class="kind-badge %s">%s</span>
         <h2>%s</h2>
         <p class="lede">%s</p>
         <p>%s</p>
-        <a class="card-link" href="%s">%s %s</a>
-      </div>
-      <div data-reveal>
-        <div class="grid %s">
-          %s
-        </div>
+        <a class="card-link" href="%s">%s %s</a>""" % (
+            " on-dark" if is_principale else "", icon(r["icon"]),
+            "principale" if is_principale else "specialiste", r.get("kind", "Spécialiste LR"),
+            r["name"], r["subtitle"], r["desc"],
+            r["link"], r["link_label"], icon("arrow"),
+        )
+        cards_col = '<div class="grid %s">%s</div>' % (r.get("products_grid", "grid-2"), cards)
+
+        if is_principale:
+            range_blocks.append("""
+<section class="section" id="%s">
+  <div class="container">
+    <div class="mega-band">
+      <div class="split" style="align-items:flex-start;">
+        <div data-reveal>%s</div>
+        <div data-reveal>%s</div>
       </div>
     </div>
   </div>
-</section>""" % (
-            " section-alt" if RANGES.index(r) % 2 else "",
-            r["id"], icon(r["icon"]), r.get("kind", "Gamme LR"), r["name"], r["subtitle"], r["desc"],
-            r["link"], r["link_label"], icon("arrow"), r.get("products_grid", "grid-2"), cards,
-        ))
+</section>""" % (r["id"], info_col, cards_col))
+        else:
+            range_blocks.append("""
+<section class="section%s" id="%s">
+  <div class="container">
+    <div class="split" style="align-items:flex-start;">
+      <div data-reveal>%s</div>
+      <div data-reveal>%s</div>
+    </div>
+  </div>
+</section>""" % (" section-alt" if RANGES.index(r) % 2 else "", r["id"], info_col, cards_col))
 
     intro = """
 <section class="page-hero">
@@ -1757,6 +1773,28 @@ def build_gammes():
         breadcrumb("Gammes LR"),
         "\n".join('<a href="#%s" class="pillar-chip">%s</a>' % (r["id"], r["name"]) for r in RANGES),
         notice("Toutes les commandes se font exclusivement sur ma boutique en ligne officielle LR — la seule plateforme autorisée pour la vente des produits LR Health & Beauty. Ce site ne traite aucun paiement.", ic="cart"),
+    )
+
+    tones_cycle = ["", "terracotta", "gold"]
+    overview_cards = "\n".join(
+        pillar_teaser_card(
+            "#%s" % r["id"], r["name"], r["icon"], r["subtitle"],
+            tone=tones_cycle[i % len(tones_cycle)],
+            kicker=r.get("kind", "Spécialiste LR"),
+        )
+        for i, r in enumerate(RANGES)
+    )
+    overview_section = """
+<section class="section-tight">
+  <div class="container">
+    %s
+    <div class="grid grid-5">
+      %s
+    </div>
+  </div>
+</section>""" % (
+        section_head("Vue d'ensemble", "Toutes les gammes, <em>en un coup d'œil</em>", "Cliquez sur une carte pour aller directement à la gamme qui vous intéresse."),
+        overview_cards,
     )
 
     promo_section = """
@@ -1778,7 +1816,7 @@ def build_gammes():
         SHOP, "Accéder à ma boutique LR", secondary_blank=True,
     )
 
-    body = intro + promo_section + "".join(range_blocks) + outro
+    body = intro + overview_section + promo_section + "".join(range_blocks) + outro
     return page("gammes-lr.html", "Gammes LR Health & Beauty : Body Mission, Health Mission, Mind Master... — %s" % CONFIG["site_name"],
                 "Découvrez les gammes LR Health & Beauty (Body Mission, Health Mission, Mind Master, Super Omega, Aloe Vera) classées par objectif bien-être, avec accès direct à la boutique officielle.",
                 body, active="gammes-lr.html")

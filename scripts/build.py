@@ -58,6 +58,7 @@ ICONS = {
     "info": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 8v.01"/></svg>',
     "warn": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4M12 17v.01"/></svg>',
     "cart": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L22 7H6"/></svg>',
+    "gift": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="12" rx="1.5"/><path d="M3 13h18M12 9v12"/><path d="M12 9C9 9 8 6.5 9.5 5S12 6 12 9ZM12 9c3 0 4-2.5 2.5-4S12 6 12 9Z"/></svg>',
     "sparkle": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg>',
     "drop": '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s7 8 7 13a7 7 0 1 1-14 0c0-5 7-13 7-13Z"/></svg>',
 }
@@ -306,6 +307,16 @@ def notice(text, warn=False, ic="info"):
     return """<div class="notice%s" data-reveal>%s<p style="margin:0;">%s</p></div>""" % (
         " warn" if warn else "", icon(ic), text
     )
+
+
+def promo_vip_band():
+    return """<div class="promo-vip" data-reveal>
+  <div class="icon-badge">%s</div>
+  <div class="eyebrow">Budget serré ?</div>
+  <div class="promo-headline">Prix VIP <em>-30%% à vie</em></div>
+  <p>Créez votre compte avantage pour seulement 10&nbsp;€ et profitez de -30%% à vie sur tous vos produits LR. Une seule fois, pour toujours.</p>
+  %s
+</div>""" % (icon("gift"), btn("Contactez-moi", "contact.html", variant="white"))
 
 
 def cta_band(title_text, text, primary_href, primary_label, secondary_href=None, secondary_label=None, primary_blank=False, secondary_blank=False):
@@ -1082,6 +1093,12 @@ def build_home():
   </div>
 </section>
 
+<section class="section-tight">
+  <div class="container">
+    %s
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
     <div class="mega-band">
@@ -1136,6 +1153,7 @@ def build_home():
         icon("check"),
         btn("Faire le quiz gratuit", "quiz.html", variant="ghost"),
         initials(CONFIG["partner_name"]), CONFIG["partner_name"], CONFIG["partner_title"],
+        promo_vip_band(),
         btn("Voir toutes les gammes", "gammes-lr.html", variant="white"),
         ranges_html,
         section_head("Ils ont trouvé leur équilibre", "Des parcours inspirants", "Témoignages personnels et non contractuels."),
@@ -1741,6 +1759,13 @@ def build_gammes():
         notice("Toutes les commandes se font exclusivement sur ma boutique en ligne officielle LR — la seule plateforme autorisée pour la vente des produits LR Health & Beauty. Ce site ne traite aucun paiement.", ic="cart"),
     )
 
+    promo_section = """
+<section class="section-tight">
+  <div class="container">
+    %s
+  </div>
+</section>""" % promo_vip_band()
+
     outro = """
 <section class="section-tight">
   <div class="container">
@@ -1753,7 +1778,7 @@ def build_gammes():
         SHOP, "Accéder à ma boutique LR", secondary_blank=True,
     )
 
-    body = intro + "".join(range_blocks) + outro
+    body = intro + promo_section + "".join(range_blocks) + outro
     return page("gammes-lr.html", "Gammes LR Health & Beauty : Body Mission, Health Mission, Mind Master... — %s" % CONFIG["site_name"],
                 "Découvrez les gammes LR Health & Beauty (Body Mission, Health Mission, Mind Master, Super Omega, Aloe Vera) classées par objectif bien-être, avec accès direct à la boutique officielle.",
                 body, active="gammes-lr.html")

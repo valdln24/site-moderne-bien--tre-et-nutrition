@@ -334,6 +334,26 @@ summary{transition:color .18s ease;}
 .feature-accordion .panel li svg{width:18px;height:18px;flex:none;margin-top:2px;color:#fff;}
 .feature-accordion details:not([open]) .panel{display:none;}
 
+/* Bannière promo VIP — grosse accroche, très visible */
+.promo-vip{
+  position:relative;overflow:hidden;text-align:center;
+  background:linear-gradient(135deg,var(--terracotta),var(--terracotta-deep));
+  border-radius:var(--radius-xl);padding:64px 32px;color:#fff;
+}
+.promo-vip::after{content:"";position:absolute;inset:0;background-image:var(--grain);mix-blend-mode:overlay;opacity:.4;}
+.promo-vip > *{position:relative;z-index:1;}
+.promo-vip .eyebrow{color:#fff;justify-content:center;display:inline-flex;}
+.promo-vip .eyebrow::before{background:#fff;}
+.promo-vip .icon-badge{margin:0 auto 22px;background:rgba(255,255,255,.18);color:#fff;}
+.promo-vip .promo-headline{
+  font-family:var(--font-body);font-weight:800;letter-spacing:-.02em;
+  font-size:clamp(2.6rem,7vw,4.6rem);line-height:1;margin:6px 0 18px;color:#fff;
+}
+.promo-vip .promo-headline em{font-family:var(--font-display);color:var(--gold);font-style:italic;}
+.promo-vip p{color:rgba(255,255,255,.92);max-width:560px;margin:0 auto 30px;font-size:1.1rem;}
+.promo-vip .btn-white{color:var(--terracotta-deep);}
+@media (max-width:700px){.promo-vip{padding:44px 22px;border-radius:var(--radius-lg);}}
+
 /* Bande sombre "preuves" à accent vert vif (façon panneau "Dedicated therapy") */
 .stats-band{
   background:radial-gradient(120% 140% at 100% 0%,#1a2b22,var(--ink) 60%);

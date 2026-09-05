@@ -29,7 +29,7 @@ CONFIG = {
     "shop_url": "https://shop.lrworld.com/home?PHP=LJp1okG7ANwL63NJr63rAA%3D%3D",
     "linkedin": "https://www.linkedin.com/in/valentin-delaine-61956533b",
     "siren": "103 127 288",
-    "domain": "https://www.votre-domaine.fr",
+    "domain": "https://vitalisd.netlify.app",
     # Domaine Plausible (https://plausible.io) pour des statistiques respectueuses
     # de la vie privée, chargées uniquement après consentement aux cookies.
     # Laissez vide ("") pour ne pas activer d'analytics.

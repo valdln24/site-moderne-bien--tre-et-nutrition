@@ -982,39 +982,20 @@ def build_home():
     )
 
     body = """
-<section class="hero">
-  <div class="container hero-inner">
-    <div data-reveal>
-      <div class="eyebrow">%s</div>
-      <h1>%s</h1>
-      <p class="lede">%s, %s. J'aide celles et ceux qui veulent comprendre <em>vraiment</em> leur corps — énergie, récupération, foie, intestin, immunité — avant de choisir un complément adapté à leur objectif.</p>
-      <div class="hero-actions">
-        %s
-        %s
+<section class="hero-photo-section">
+  <div class="container">
+    <div class="hero-photo" data-reveal>
+      <div class="hero-photo-media">
+        <img src="assets/img/hero-woman.jpg" alt="Portrait en extérieur d'une femme souriante, en lumière naturelle — l'énergie et le bien-être au quotidien" loading="eager" fetchpriority="high" width="2000" height="1333">
       </div>
-      <div class="hero-stats">
-        <div><strong>5</strong><span>piliers bien-être expliqués</span></div>
-        <div><strong>100%%</strong><span>contenu sans allégation médicale</span></div>
-        <div><strong>1</strong><span>boutique officielle, sûre & garantie</span></div>
-      </div>
-    </div>
-    <div class="bento-hero" data-reveal>
-      <div class="bento-grid" data-parallax>
-        <div class="photo-block ratio-tall" data-parallax-tile>
-          <span class="chip-float chip--bl">%s Cure de 4 semaines</span>
+      <span class="chip-float chip--tl">%s Accompagnement humain, sans pression</span>
+      <span class="chip-float chip--br dark">%s %s, France</span>
+      <div class="hero-photo-content">
+        <div class="eyebrow">%s</div>
+        <h1>%s</h1>
+        <p class="lede">%s, %s. J'aide celles et ceux qui veulent comprendre <em>vraiment</em> leur corps — énergie, récupération, foie, intestin, immunité — avant de choisir un complément adapté à leur objectif.</p>
+        <div class="hero-actions">
           %s
-        </div>
-        <div class="photo-block ratio-square tone-terracotta" data-parallax-tile>%s</div>
-        <div class="photo-block ratio-square tone-gold" data-parallax-tile>
-          <span class="chip-float chip--tr">%s 100%% naturel</span>
-          %s
-        </div>
-      </div>
-      <div class="bento-float-card">
-        <div class="icon-badge">%s</div>
-        <div>
-          <h3>Quel est votre vrai besoin du moment ?</h3>
-          <p>Énergie, sommeil, digestion, immunité, poids, prise de masse... En 3 minutes, identifiez la priorité qui changera vraiment votre quotidien.</p>
           %s
         </div>
       </div>
@@ -1022,7 +1003,25 @@ def build_home():
   </div>
 </section>
 
-<section class="section" style="padding-top:70px;">
+<section class="section-tight">
+  <div class="container">
+    <div class="hero-stats-row" data-reveal>
+      <div><strong>5</strong><span>piliers bien-être expliqués</span></div>
+      <div><strong>100%%</strong><span>contenu sans allégation médicale</span></div>
+      <div><strong>1</strong><span>boutique officielle, sûre &amp; garantie</span></div>
+    </div>
+    <div class="quiz-teaser-card" data-reveal>
+      <div class="icon-badge">%s</div>
+      <div>
+        <h3>Quel est votre vrai besoin du moment ?</h3>
+        <p>Énergie, sommeil, digestion, immunité, poids, prise de masse... En 3 minutes, identifiez la priorité qui changera vraiment votre quotidien.</p>
+        %s
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:20px;">
   <div class="container">
     %s
     <div class="grid grid-5">
@@ -1133,14 +1132,13 @@ def build_home():
   </div>
 </section>
 """ % (
+        icon("sparkle"),
+        icon("pin"), CONFIG["city"],
         CONFIG["tagline"],
         word_reveal("Votre énergie, votre immunité, votre équilibre — <em>sans détour</em> marketing."),
         CONFIG["partner_name"], CONFIG["partner_title"],
         btn("Faire mon diagnostic gratuit", "quiz.html", variant="primary"),
-        btn("Ma boutique LR officielle", SHOP, variant="outline", blank=True),
-        icon("leaf"), icon("leaf"),
-        icon("bolt"),
-        icon("sparkle"), icon("shield"),
+        btn("Ma boutique LR officielle", SHOP, variant="ghost", blank=True),
         icon("sparkle"),
         btn("Commencer le quiz", "quiz.html", variant="dark", block=True),
         section_head("Les 5 piliers", "Comprendre votre corps, <em>thème par thème</em>", "Chaque pilier explore les causes, les signaux à surveiller et les leviers naturels — avant même de parler produit."),

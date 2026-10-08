@@ -462,6 +462,24 @@ def build_pillar_page(cfg):
         for f in cfg["faq"]
     )
 
+    photo_section = ""
+    if cfg.get("photo"):
+        ph = cfg["photo"]
+        photo_section = """<section class="section">
+  <div class="container">
+    <div class="split">
+      <div class="pillar-photo" data-reveal>
+        <img src="%s" alt="%s" loading="lazy" width="%s" height="%s">
+      </div>
+      <div data-reveal>
+        <div class="eyebrow">%s</div>
+        <h2>%s</h2>
+        <p class="lede">%s</p>
+      </div>
+    </div>
+  </div>
+</section>""" % (ph["src"], ph["alt"], ph["w"], ph["h"], ph["eyebrow"], ph["title"], ph["text"])
+
     body = """
 <section class="page-hero">
   <div class="container">
@@ -496,6 +514,8 @@ def build_pillar_page(cfg):
     </div>
   </div>
 </section>
+
+%s
 
 <section class="section">
   <div class="container">
@@ -558,6 +578,7 @@ def build_pillar_page(cfg):
         cfg["understand_body"],
         cfg["facts_title"],
         check_list(cfg["facts"]),
+        photo_section,
         section_head("Signaux à surveiller", "Ce que votre corps essaie de vous dire", "Ces manifestations sont fréquentes et généralement liées à l'hygiène de vie. Si elles sont intenses, inhabituelles ou persistantes, consultez un professionnel de santé : ce site n'a pas vocation à poser un diagnostic."),
         signs_html,
         section_head("Les leviers naturels", "Ce qui fait <em>vraiment</em> la différence au quotidien", "Avant tout complément, ce sont ces habitudes simples et régulières qui posent les fondations d'un bon équilibre."),
@@ -590,6 +611,14 @@ PILLAR_PAGES = [
         lede="Retrouver un tonus stable du matin au soir, sans montagnes russes ni coups de barre à 16h : voici comment fonctionne réellement votre énergie, et comment la soutenir durablement.",
         meta_desc="Comprendre les causes du manque d'énergie et de fatigue au quotidien, et découvrir les leviers naturels et la gamme LR Mind Master pour retrouver de la vitalité.",
         intro_notice="Cette page a un objectif d'information générale sur l'hygiène de vie. Elle ne remplace pas un avis médical, en particulier en cas de fatigue intense, brutale ou qui persiste au-delà de quelques semaines.",
+        photo=dict(
+            src="assets/img/energie-silhouette.jpg",
+            alt="Silhouette d'une femme bras ouverts face à l'horizon, symbole d'énergie retrouvée",
+            w="1200", h="1984",
+            eyebrow="Retrouver son élan",
+            title="L'énergie, ça se <em>ressent</em> avant de se mesurer",
+            text="Ce n'est pas qu'une question de volonté : quand le sommeil, l'hydratation et l'alimentation sont alignés, l'énergie revient naturellement — et ça se voit dans la façon de se tenir, de bouger, d'aborder sa journée.",
+        ),
         understand_title="D'où vient vraiment la fatigue du quotidien ?",
         understand_lede="Le manque d'énergie n'a presque jamais une seule cause : c'est souvent la somme de petits déséquilibres.",
         understand_body="""<p>La fatigue « fonctionnelle » — celle qui touche la majorité des adultes actifs — résulte le plus souvent d'un cumul : nuits trop courtes ou de mauvaise qualité, hydratation insuffisante, repas déséquilibrés ou trop espacés, sédentarité, charge mentale et stress chronique. Le corps carbure alors en mode « économie d'énergie », avec cette sensation familière de devoir puiser dans ses réserves dès le milieu de matinée.</p><p>Avant de chercher une solution miracle, il est utile d'identifier lequel de ces facteurs pèse le plus dans votre quotidien : est-ce le sommeil, l'alimentation, le rythme, ou un peu des trois ? C'est exactement ce que le quiz bien-être vous aide à clarifier en quelques questions.</p>""",

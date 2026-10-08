@@ -382,14 +382,22 @@ def check_list(items, icon_name="check", modifier=""):
     return '<ul class="%s">%s</ul>' % (cls, lis)
 
 
-def product_card(tag, title, desc, bullets, href, swatch_color, icon_name, bestseller=False):
+def product_card(tag, title, desc, bullets, href, swatch_color, icon_name, bestseller=False, image=None):
     lis = "\n".join("<li>%s</li>" % b for b in bullets)
     bestseller_chip = (
         '<span class="chip-float chip--br dark">%s +60M vendues</span>' % icon("sparkle")
         if bestseller else ""
     )
+    if image:
+        swatch_cls = "swatch has-photo"
+        swatch_style = ""
+        visual = '<img src="%s" alt="%s" loading="lazy">' % (image, title)
+    else:
+        swatch_cls = "swatch photo-block"
+        swatch_style = ' style="background:%s;"' % swatch_color
+        visual = icon(icon_name)
     return """<div class="product-card" data-reveal>
-  <div class="swatch photo-block" style="background:%s;">
+  <div class="%s"%s>
     <span class="chip-float chip--tl">%s%s</span>
     %s
     %s
@@ -400,7 +408,7 @@ def product_card(tag, title, desc, bullets, href, swatch_color, icon_name, bests
     <ul>%s</ul>
     <a class="btn btn-outline btn-sm" href="%s" target="_blank" rel="noopener sponsored"><span class="btn-label">Voir sur ma boutique LR</span><span class="btn-circle">%s</span></a>
   </div>
-</div>""" % (swatch_color, icon("check"), tag, icon(icon_name), bestseller_chip, title, desc, lis, href, icon("arrow"))
+</div>""" % (swatch_cls, swatch_style, icon("check"), tag, visual, bestseller_chip, title, desc, lis, href, icon("arrow"))
 
 
 def pillar_teaser_card(href, title, ic, desc, tone="", kicker="Pilier bien-être"):
@@ -685,6 +693,7 @@ PILLAR_PAGES = [
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_mind_master_formula_red.html?productAlias=80950-604&casrnc=cac57",
                 swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="bolt",
+                image="assets/img/mind-master-red.jpg",
             ),
             dict(
                 tag="Mind Master Gold", title="Mind Master Formula Gold",
@@ -697,6 +706,7 @@ PILLAR_PAGES = [
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/mind_master_formula_gold.html?productAlias=80940-4&casrnc=6ffb9",
                 swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="sparkle",
+                image="assets/img/mind-master-gold.jpg",
             ),
             dict(
                 tag="Coup de fouet", title="Mind Master Extreme",
@@ -709,6 +719,7 @@ PILLAR_PAGES = [
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/mind_master_extreme.html?productAlias=80980-398&casrnc=2ccd7",
                 swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="bolt",
+                image="assets/img/mind-master-extreme.jpg",
             ),
             dict(
                 tag="Multivitamines", title="Vita Active Fruits Rouges",
@@ -721,6 +732,7 @@ PILLAR_PAGES = [
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/vita_active_fruits_rouges.html?productAlias=80301-699&casrnc=2009b",
                 swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="leaf",
+                image="assets/img/vita-active.jpg",
             ),
         ],
         testimonials=[
@@ -1435,6 +1447,7 @@ RANGES = [
                     "Vitamine E : protège les cellules du stress oxydant",
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/lr_lifetakt_mind_master_formula_red.html?productAlias=80950-604&casrnc=cac57",
+                image="assets/img/mind-master-red.jpg",
             ),
             dict(
                 tag="Mind Master Gold", title="Mind Master Formula Gold",
@@ -1446,6 +1459,7 @@ RANGES = [
                     "Vitamine E : protège les cellules du stress oxydatif",
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/mind_master_formula_gold.html?productAlias=80940-4&casrnc=6ffb9",
+                image="assets/img/mind-master-gold.jpg",
             ),
             dict(
                 tag="Coup de fouet", title="Mind Master Extreme",
@@ -1457,6 +1471,7 @@ RANGES = [
                     "100% des besoins journaliers en vitamines E et D",
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/mind_master_extreme.html?productAlias=80980-398&casrnc=2ccd7",
+                image="assets/img/mind-master-extreme.jpg",
             ),
             dict(
                 tag="Multivitamines", title="Vita Active Fruits Rouges",
@@ -1468,6 +1483,7 @@ RANGES = [
                     "21 fruits et légumes concentrés, pour toute la famille",
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/vita_active_fruits_rouges.html?productAlias=80301-699&casrnc=2009b",
+                image="assets/img/vita-active.jpg",
             ),
         ],
         link="energie-vitalite.html",
@@ -1740,7 +1756,7 @@ def build_gammes():
         cards = "\n".join(
             product_card(tag=p["tag"], title=p["title"], desc=p["desc"], bullets=p["bullets"], href=p.get("href", SHOP),
                          swatch_color=p.get("swatch_color", SWATCHES[i % len(SWATCHES)]), icon_name=p.get("icon_name", r["icon"]),
-                         bestseller=p.get("bestseller", False))
+                         bestseller=p.get("bestseller", False), image=p.get("image"))
             for i, p in enumerate(r["products"])
         )
         info_col = """

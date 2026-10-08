@@ -915,17 +915,43 @@ PILLAR_PAGES = [
 # PAGE D'ACCUEIL
 # --------------------------------------------------------------------------
 def build_home():
-    pillar_tones = ["", "terracotta", "gold", "", "terracotta"]
-    pillar_cards = "\n".join(
-        pillar_teaser_card(href, label, ic, desc, tone=tone)
-        for (href, label, ic), desc, tone in zip(PILLARS, [
-            "Un tonus stable du matin au soir, sans coup de barre.",
-            "Un sommeil réparateur et une vraie récupération physique.",
-            "Comprendre et soutenir le métabolisme hépatique et cellulaire.",
-            "Prendre soin de son microbiote pour un confort digestif durable.",
-            "Renforcer ses défenses naturelles toute l'année.",
-        ], pillar_tones)
-    )
+    def needs_list(items):
+        return "\n".join(
+            '<li><a href="%s">%s %s</a></li>' % (href, label, icon("arrow"))
+            for href, label in items
+        )
+
+    needs_card_bienetre = """<div class="needs-card" data-reveal>
+  <div class="needs-media"><img src="assets/img/bienetre-duo.jpg" alt="Un couple en extérieur, tapis d'exercice sous le bras, prêt pour une activité physique douce" loading="lazy" width="1400" height="2100"></div>
+  <div class="needs-body">
+    <span class="needs-tag">Bien-être</span>
+    <p class="needs-sub">Des solutions nutritionnelles pour accompagner votre quotidien.</p>
+    <ul class="needs-list">
+      %s
+    </ul>
+  </div>
+</div>""" % needs_list([
+        ("energie-vitalite.html", "Énergie"),
+        ("recuperation-sommeil.html", "Récupération"),
+        ("foie-detox.html", "Foie & détox cellulaire"),
+        ("digestion-microbiote.html", "Digestion"),
+        ("immunite.html", "Système immunitaire"),
+    ])
+
+    needs_card_nutrition = """<div class="needs-card" data-reveal>
+  <div class="needs-media"><img src="assets/img/nutrition-mesure.jpg" alt="Des mains tenant un mètre-ruban de couturier, pour le suivi d'un objectif nutritionnel" loading="lazy" width="1400" height="2100"></div>
+  <div class="needs-body">
+    <span class="needs-tag needs-tag--nutrition">Nutrition</span>
+    <p class="needs-sub">Des solutions adaptées à votre objectif et à votre alimentation.</p>
+    <ul class="needs-list">
+      %s
+    </ul>
+  </div>
+</div>""" % needs_list([
+        ("nutrition-objectifs.html#perte-de-poids", "Perte de poids"),
+        ("nutrition-objectifs.html#reequilibrage-alimentaire", "Rééquilibrage alimentaire"),
+        ("nutrition-objectifs.html#prise-de-masse", "Prise de masse"),
+    ])
 
     steps = [
         ("01", "Je fais le point", "3 minutes de quiz pour identifier votre priorité bien-être du moment (énergie, sommeil, digestion, immunité, poids...)."),
@@ -1024,7 +1050,8 @@ def build_home():
 <section class="section" style="padding-top:20px;">
   <div class="container">
     %s
-    <div class="grid grid-5">
+    <div class="needs-grid">
+      %s
       %s
     </div>
   </div>
@@ -1141,8 +1168,8 @@ def build_home():
         btn("Ma boutique LR officielle", SHOP, variant="ghost", blank=True),
         icon("sparkle"),
         btn("Commencer le quiz", "quiz.html", variant="dark", block=True),
-        section_head("Les 5 piliers", "Comprendre votre corps, <em>thème par thème</em>", "Chaque pilier explore les causes, les signaux à surveiller et les leviers naturels — avant même de parler produit."),
-        pillar_cards,
+        section_head("Votre point de départ", "Deux besoins, <em>une approche</em> personnalisée", "Quel que soit votre objectif, le quiz identifie en 3 minutes la priorité qui a vraiment du sens pour vous — voici les deux grandes familles de besoins que j'accompagne.", center=True),
+        needs_card_bienetre, needs_card_nutrition,
         section_head("Comment ça marche", "De la question à la solution, en 3 étapes", "Pas de vente sous pression : un parcours pensé pour vous aider à choisir en connaissance de cause."),
         steps_html,
         feature_accordion,
@@ -1181,6 +1208,7 @@ def build_nutrition():
     <p class="lede" style="max-width:680px;">Que votre objectif soit d'affiner votre silhouette ou de prendre du muscle, la réussite tient d'abord à quelques principes simples de nutrition — les compléments viennent ensuite, en soutien.</p>
     <div class="pillar-nav">
       <a href="#perte-de-poids" class="pillar-chip">Perte de poids</a>
+      <a href="#reequilibrage-alimentaire" class="pillar-chip">Rééquilibrage alimentaire</a>
       <a href="#prise-de-masse" class="pillar-chip">Prise de masse</a>
       <a href="#gamme-associee" class="pillar-chip">Gamme Body Mission</a>
     </div>
@@ -1209,7 +1237,23 @@ def build_nutrition():
   </div>
 </section>
 
-<section class="section section-alt" id="prise-de-masse">
+<section class="section section-alt" id="reequilibrage-alimentaire">
+  <div class="container">
+    %s
+    <div class="split">
+      <div data-reveal>
+        <p>Rééquilibrer son alimentation ne veut pas dire la restreindre : c'est retrouver une structure de repas régulière, variée et sans aliment interdit, adaptée à votre rythme de vie réel plutôt qu'à un modèle unique.</p>
+        <p>C'est souvent l'étape la plus utile avant même de viser une perte de poids ou une prise de masse — et celle qui tient le mieux dans la durée, parce qu'elle ne repose pas sur la privation.</p>
+      </div>
+      <div class="split-visual" data-reveal>
+        <h3 style="margin-bottom:18px;">Les repères d'un rééquilibrage durable</h3>
+        %s
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="prise-de-masse">
   <div class="container">
     %s
     <div class="split reverse">
@@ -1256,6 +1300,13 @@ def build_nutrition():
             "Un apport en protéines suffisant pour préserver le muscle",
             "Une activité physique régulière, cardio et renforcement",
             "Un sommeil de qualité, qui régule l'appétit et le stockage des graisses",
+        ]),
+        section_head("Objectif rééquilibrage", "Retrouver une alimentation stable", "Pas de liste d'aliments interdits : des repères simples à tenir sur la durée."),
+        check_list([
+            "Des repas structurés et réguliers, sans sauter de repas",
+            "Une alimentation variée, sans groupe alimentaire exclu",
+            "Des apports ajustés à votre activité réelle, pas à un modèle tout fait",
+            "De la constance plutôt que des régimes ponctuels à répétition",
         ]),
         section_head("Objectif prise de masse", "Construire du muscle, proprement", "Pas de raccourci : progression, régularité et récupération sont vos meilleurs alliés."),
         check_list([

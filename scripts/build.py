@@ -376,9 +376,10 @@ def breadcrumb(label):
     return '<p class="breadcrumb"><a href="index.html">Accueil</a> &nbsp;/&nbsp; %s</p>' % label
 
 
-def check_list(items):
-    lis = "\n".join('<li>%s<span>%s</span></li>' % (icon("check"), t) for t in items)
-    return '<ul class="check-list">%s</ul>' % lis
+def check_list(items, icon_name="check", modifier=""):
+    lis = "\n".join('<li>%s<span>%s</span></li>' % (icon(icon_name), t) for t in items)
+    cls = "check-list " + modifier if modifier else "check-list"
+    return '<ul class="%s">%s</ul>' % (cls, lis)
 
 
 def product_card(tag, title, desc, bullets, href, swatch_color, icon_name, bestseller=False):
@@ -462,6 +463,45 @@ def build_pillar_page(cfg):
         for f in cfg["faq"]
     )
 
+    hero_section = """<section class="page-hero">
+  <div class="container">
+    %s
+    <div class="eyebrow">%s</div>
+    <h1 style="max-width:820px;">%s</h1>
+    <p class="lede" style="max-width:680px;">%s</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="quiz.html">Faire mon diagnostic bien-être %s</a>
+      <a class="btn btn-outline" href="#gamme-associee">Voir la gamme associée</a>
+    </div>
+  </div>
+</section>""" % (breadcrumb(cfg["title"]), cfg["eyebrow"], cfg["title"], cfg["lede"], icon("arrow"))
+
+    notice_section = """<section class="section-tight">
+  <div class="container">
+    %s
+  </div>
+</section>""" % notice(cfg["intro_notice"])
+
+    understand_section = """<section class="section section-alt">
+  <div class="container">
+    %s
+    <div class="split">
+      <div data-reveal>
+        %s
+      </div>
+      <div class="split-visual" data-reveal>
+        <h3 style="margin-bottom:18px;">%s</h3>
+        %s
+      </div>
+    </div>
+  </div>
+</section>""" % (
+        section_head("Comprendre", cfg["understand_title"], cfg["understand_lede"]),
+        cfg["understand_body"],
+        cfg["facts_title"],
+        check_list(cfg["facts"]),
+    )
+
     photo_section = ""
     if cfg.get("photo"):
         ph = cfg["photo"]
@@ -480,62 +520,59 @@ def build_pillar_page(cfg):
   </div>
 </section>""" % (ph["src"], ph["alt"], ph["w"], ph["h"], ph["eyebrow"], ph["title"], ph["text"])
 
-    body = """
-<section class="page-hero">
+    signs_section = """<section class="section">
   <div class="container">
     %s
-    <div class="eyebrow">%s</div>
-    <h1 style="max-width:820px;">%s</h1>
-    <p class="lede" style="max-width:680px;">%s</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="quiz.html">Faire mon diagnostic bien-être %s</a>
-      <a class="btn btn-outline" href="#gamme-associee">Voir la gamme associée</a>
+    <div class="grid grid-4">
+      %s
     </div>
   </div>
-</section>
+</section>""" % (
+        section_head("Signaux à surveiller", "Ce que votre corps essaie de vous dire", "Ces manifestations sont fréquentes et généralement liées à l'hygiène de vie. Si elles sont intenses, inhabituelles ou persistantes, consultez un professionnel de santé : ce site n'a pas vocation à poser un diagnostic."),
+        signs_html,
+    )
 
-<section class="section-tight">
+    levers_section = """<section class="section section-sage">
   <div class="container">
     %s
+    <div class="grid grid-4">
+      %s
+    </div>
   </div>
-</section>
+</section>""" % (
+        section_head("Les leviers naturels", "Ce qui fait <em>vraiment</em> la différence au quotidien", "Avant tout complément, ce sont ces habitudes simples et régulières qui posent les fondations d'un bon équilibre."),
+        levers_html,
+    )
 
-<section class="section section-alt">
+    merged_section = ""
+    if cfg.get("merge_understand"):
+        signs_items = ["%s — %s" % (s["title"], s["text"]) for s in cfg["signs"]]
+        levers_items = ["%s — %s" % (l["title"], l["text"]) for l in cfg["levers"]]
+        merged_section = """<section class="section section-alt" id="comprendre">
   <div class="container">
     %s
-    <div class="split">
+    <div class="understand-copy" data-reveal>
+      %s
+    </div>
+    <div class="grid grid-2">
       <div data-reveal>
+        <h3 class="mini-list-title warn">%s Signaux à surveiller</h3>
         %s
       </div>
-      <div class="split-visual" data-reveal>
-        <h3 style="margin-bottom:18px;">%s</h3>
+      <div data-reveal>
+        <h3 class="mini-list-title">%s Les leviers naturels</h3>
         %s
       </div>
     </div>
   </div>
-</section>
+</section>""" % (
+            section_head("Comprendre & agir", cfg["understand_title"], cfg["understand_lede"]),
+            cfg["understand_body"],
+            icon("warn"), check_list(signs_items, icon_name="warn", modifier="warn-list"),
+            icon("leaf"), check_list(levers_items),
+        )
 
-%s
-
-<section class="section">
-  <div class="container">
-    %s
-    <div class="grid grid-4">
-      %s
-    </div>
-  </div>
-</section>
-
-<section class="section section-sage">
-  <div class="container">
-    %s
-    <div class="grid grid-4">
-      %s
-    </div>
-  </div>
-</section>
-
-<section class="section" id="gamme-associee">
+    products_section = """<section class="section" id="gamme-associee">
   <div class="container">
     %s
     <div class="grid %s">
@@ -543,9 +580,14 @@ def build_pillar_page(cfg):
     </div>
     <p class="form-note" style="margin-top:20px;">%s</p>
   </div>
-</section>
+</section>""" % (
+        section_head("La gamme LR associée", cfg["range_title"], cfg["range_lede"]),
+        cfg.get("products_grid", "grid-3"),
+        products_html,
+        FOOD_SUPPLEMENT_DISCLAIMER,
+    )
 
-<section class="section section-alt">
+    testimonials_section = """<section class="section section-alt">
   <div class="container">
     %s
     <div class="grid grid-2">
@@ -553,52 +595,39 @@ def build_pillar_page(cfg):
       %s
     </div>
   </div>
-</section>
+</section>""" % (
+        section_head("Ils en parlent", "Des parcours, pas des promesses", "Témoignages personnels et non contractuels — les résultats varient selon chaque personne et son mode de vie."),
+        testimonial(*cfg["testimonials"][0]),
+        testimonial(*cfg["testimonials"][1]),
+    )
 
-<section class="section">
+    faq_section = """<section class="section">
   <div class="container" style="max-width:840px;">
     %s
     %s
   </div>
-</section>
+</section>""" % (
+        section_head("Questions fréquentes", "Vous vous demandez peut-être...", ""),
+        faq_html,
+    )
 
-<section class="section-tight">
+    cta_section = """<section class="section-tight">
   <div class="container">
     %s
   </div>
-</section>
-""" % (
-        breadcrumb(cfg["title"]),
-        cfg["eyebrow"],
-        cfg["title"],
-        cfg["lede"],
-        icon("arrow"),
-        notice(cfg["intro_notice"]),
-        section_head("Comprendre", cfg["understand_title"], cfg["understand_lede"]),
-        cfg["understand_body"],
-        cfg["facts_title"],
-        check_list(cfg["facts"]),
-        photo_section,
-        section_head("Signaux à surveiller", "Ce que votre corps essaie de vous dire", "Ces manifestations sont fréquentes et généralement liées à l'hygiène de vie. Si elles sont intenses, inhabituelles ou persistantes, consultez un professionnel de santé : ce site n'a pas vocation à poser un diagnostic."),
-        signs_html,
-        section_head("Les leviers naturels", "Ce qui fait <em>vraiment</em> la différence au quotidien", "Avant tout complément, ce sont ces habitudes simples et régulières qui posent les fondations d'un bon équilibre."),
-        levers_html,
-        section_head("La gamme LR associée", cfg["range_title"], cfg["range_lede"]),
-        cfg.get("products_grid", "grid-3"),
-        products_html,
-        FOOD_SUPPLEMENT_DISCLAIMER,
-        section_head("Ils en parlent", "Des parcours, pas des promesses", "Témoignages personnels et non contractuels — les résultats varient selon chaque personne et son mode de vie."),
-        testimonial(*cfg["testimonials"][0]),
-        testimonial(*cfg["testimonials"][1]),
-        section_head("Questions fréquentes", "Vous vous demandez peut-être...", ""),
-        faq_html,
-        cta_band(
-            "Un <em>accompagnement</em> plutôt qu'une liste de produits",
-            "Répondez à 3 questions pour recevoir une orientation personnalisée, puis échangeons ensemble de vos objectifs.",
-            "quiz.html", "Faire le quiz gratuit",
-            "contact.html", "Me contacter directement",
-        ),
+</section>""" % cta_band(
+        "Un <em>accompagnement</em> plutôt qu'une liste de produits",
+        "Répondez à 3 questions pour recevoir une orientation personnalisée, puis échangeons ensemble de vos objectifs.",
+        "quiz.html", "Faire le quiz gratuit",
+        "contact.html", "Me contacter directement",
     )
+
+    if cfg.get("merge_understand"):
+        sections = [hero_section, notice_section, photo_section, products_section, merged_section, testimonials_section, faq_section, cta_section]
+    else:
+        sections = [hero_section, notice_section, understand_section, photo_section, signs_section, levers_section, products_section, testimonials_section, faq_section, cta_section]
+
+    body = "\n\n".join(s for s in sections if s)
     return page(cfg["slug"], cfg["title"] + " — " + CONFIG["site_name"], cfg["meta_desc"], body, active=cfg["slug"], extra_jsonld=faq_jsonld)
 
 
@@ -606,6 +635,7 @@ PILLAR_PAGES = [
     dict(
         slug="energie-vitalite.html",
         products_grid="grid-4",
+        merge_understand=True,
         eyebrow="Pilier bien-être",
         title="Énergie & Vitalité",
         lede="Retrouver un tonus stable du matin au soir, sans montagnes russes ni coups de barre à 16h : voici comment fonctionne réellement votre énergie, et comment la soutenir durablement.",

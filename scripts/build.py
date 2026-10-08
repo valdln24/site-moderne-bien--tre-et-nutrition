@@ -706,7 +706,6 @@ PILLAR_PAGES = [
         range_title="Health Mission — le rituel détente",
         range_lede="Des formules pensées pour accompagner les moments de relâchement et soutenir l'organisme dans ses phases de récupération.",
         products=[
-            dict(tag="Health Mission", title="Complexe Détente", desc="Une formule à intégrer dans votre rituel du soir, en dehors des périodes de forte activité.", bullets=["Plantes traditionnellement apaisantes", "Format capsules", "Usage le soir"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="moon"),
             dict(tag="Oméga-3", title="Capsules Super Omega", desc="Des oméga-3 marins pour le bien-être cardiaque, issus de la pêche durable.", bullets=["Huile de poisson riche en oméga-3", "Contribue au bien-être cardiaque", "Certifié Friend of the Sea"], href="https://shop.lrworld.com/product/fr/fr/capsules_super_omega.html?productAlias=80338-699&casrnc=333bd", swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="drop"),
             dict(tag="Aloe Vera", title="Aloe Vera Drinking Gel", desc="À intégrer dans une routine bien-être quotidienne, en cure.", bullets=["Aloe Vera issu de culture contrôlée", "Format buvable", "Cure de 1 à 3 mois"], href=SHOP, swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="leaf"),
         ],

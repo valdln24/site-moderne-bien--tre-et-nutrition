@@ -964,48 +964,6 @@ def build_home():
     </div>""" % s for s in steps
     )
 
-    ranges_teaser = [
-        ("Body Mission", "Silhouette & nutrition sportive", "leaf", "gammes-lr.html#body-mission", ""),
-        ("Health Mission", "Digestion, détente & vitalité", "shield", "gammes-lr.html#health-mission", "terracotta"),
-        ("Mind Master", "Énergie mentale & concentration", "bolt", "gammes-lr.html#mind-master", "gold"),
-        ("Aloe Vera", "Le rituel bien-être quotidien", "drop", "gammes-lr.html#aloe-vera", ""),
-    ]
-    ranges_html = "\n".join(
-        pillar_teaser_card(href, name, ic, desc, tone=tone, kicker="Gamme LR")
-        for name, desc, ic, href, tone in ranges_teaser
-    )
-
-    feature_accordion = """<div class="feature-accordion" data-reveal>
-  <details open>
-    <summary>Transparence totale %s</summary>
-    <div class="panel"><ul>
-      <li>%sSite personnel et indépendant, clairement identifié comme tel</li>
-      <li>%sAucune vente ni paiement traité sur ce site</li>
-      <li>%sChaque lien produit renvoie vers ma boutique officielle LR</li>
-    </ul></div>
-  </details>
-  <details>
-    <summary>Conformité stricte %s</summary>
-    <div class="panel"><ul>
-      <li>%sAucune allégation de traitement ou de guérison</li>
-      <li>%sMentions obligatoires rappelées sur chaque page</li>
-      <li>%sTémoignages présentés comme non contractuels</li>
-    </ul></div>
-  </details>
-  <details>
-    <summary>Accompagnement humain %s</summary>
-    <div class="panel"><ul>
-      <li>%sUn quiz pour clarifier votre besoin réel, sans pression</li>
-      <li>%sDes réponses possibles par email ou téléphone</li>
-      <li>%sAucune obligation d'achat, à aucun moment</li>
-    </ul></div>
-  </details>
-</div>""" % (
-        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
-        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
-        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
-    )
-
     body = """
 <section class="hero-photo-section">
   <div class="container">
@@ -1067,24 +1025,6 @@ def build_home():
 
 <section class="section">
   <div class="container">
-    <div class="split">
-      <div data-reveal>
-        <div class="eyebrow">Pourquoi ce site</div>
-        <h2>Transformer une visite en <em>vraie clarté</em> — pas en pression commerciale</h2>
-        <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique — jamais comme un argument de vente isolé.</p>
-        %s
-      </div>
-      <div style="position:relative;" data-reveal>
-        <div class="photo-block ratio-tall tone-sage-light">%s</div>
-        <span class="chip-float chip--tl">%s Contenu vérifié</span>
-        <span class="chip-float chip--br dark">%s 0 allégation abusive</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
     <div class="stats-band" data-reveal>
       <div>
         <div class="eyebrow">Comment ça s'articule</div>
@@ -1126,24 +1066,6 @@ def build_home():
 
 <section class="section">
   <div class="container">
-    <div class="mega-band">
-      <div class="section-head-row">
-        <div class="section-head">
-          <div class="eyebrow">Les gammes LR</div>
-          <h2>Des produits pensés pour <em>chaque objectif</em></h2>
-          <p class="lede" style="color:rgba(255,255,255,.75);">Body Mission, Health Mission, Mind Master, Aloe Vera... découvrez les gammes les plus adaptées à vos priorités du moment.</p>
-        </div>
-        %s
-      </div>
-      <div class="grid grid-4">
-        %s
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
     %s
     <div class="grid grid-2">
       %s
@@ -1171,15 +1093,9 @@ def build_home():
         needs_card_bienetre, needs_card_nutrition,
         section_head("Comment ça marche", "De la question à la solution, en 3 étapes", "Pas de vente sous pression : un parcours pensé pour vous aider à choisir en connaissance de cause."),
         steps_html,
-        feature_accordion,
-        icon("shield"),
-        icon("sparkle"),
-        icon("check"),
         btn("Faire le quiz gratuit", "quiz.html", variant="ghost"),
         initials(CONFIG["partner_name"]), CONFIG["partner_name"], CONFIG["partner_title"],
         promo_vip_band(),
-        btn("Voir toutes les gammes", "gammes-lr.html", variant="white"),
-        ranges_html,
         section_head("Ils ont trouvé leur équilibre", "Des parcours inspirants", "Témoignages personnels et non contractuels."),
         testimonial(5, "Le quiz m'a évité d'acheter au hasard : j'ai enfin compris pourquoi j'étais fatiguée et ce qui pouvait vraiment m'aider.", "Aline, 38 ans"),
         testimonial(5, "Un site clair, honnête, qui explique avant de vendre. Ça change des publicités habituelles sur les compléments.", "Yohann, 45 ans"),
@@ -1968,6 +1884,48 @@ def build_quiz():
 # À PROPOS
 # --------------------------------------------------------------------------
 def build_apropos():
+    ranges_teaser = [
+        ("Body Mission", "Silhouette & nutrition sportive", "leaf", "gammes-lr.html#body-mission", ""),
+        ("Health Mission", "Digestion, détente & vitalité", "shield", "gammes-lr.html#health-mission", "terracotta"),
+        ("Mind Master", "Énergie mentale & concentration", "bolt", "gammes-lr.html#mind-master", "gold"),
+        ("Aloe Vera", "Le rituel bien-être quotidien", "drop", "gammes-lr.html#aloe-vera", ""),
+    ]
+    ranges_html = "\n".join(
+        pillar_teaser_card(href, name, ic, desc, tone=tone, kicker="Gamme LR")
+        for name, desc, ic, href, tone in ranges_teaser
+    )
+
+    feature_accordion = """<div class="feature-accordion" data-reveal>
+  <details open>
+    <summary>Transparence totale %s</summary>
+    <div class="panel"><ul>
+      <li>%sSite personnel et indépendant, clairement identifié comme tel</li>
+      <li>%sAucune vente ni paiement traité sur ce site</li>
+      <li>%sChaque lien produit renvoie vers ma boutique officielle LR</li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Conformité stricte %s</summary>
+    <div class="panel"><ul>
+      <li>%sAucune allégation de traitement ou de guérison</li>
+      <li>%sMentions obligatoires rappelées sur chaque page</li>
+      <li>%sTémoignages présentés comme non contractuels</li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Accompagnement humain %s</summary>
+    <div class="panel"><ul>
+      <li>%sUn quiz pour clarifier votre besoin réel, sans pression</li>
+      <li>%sDes réponses possibles par email ou téléphone</li>
+      <li>%sAucune obligation d'achat, à aucun moment</li>
+    </ul></div>
+  </details>
+</div>""" % (
+        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
+        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
+        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
+    )
+
     body = """
 <section class="page-hero">
   <div class="container">
@@ -1998,11 +1956,47 @@ def build_apropos():
 
 <section class="section section-alt">
   <div class="container">
+    <div class="split">
+      <div data-reveal>
+        <div class="eyebrow">Pourquoi ce site</div>
+        <h2>Transformer une visite en <em>vraie clarté</em> — pas en pression commerciale</h2>
+        <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique — jamais comme un argument de vente isolé.</p>
+        %s
+      </div>
+      <div style="position:relative;" data-reveal>
+        <div class="photo-block ratio-tall tone-sage-light">%s</div>
+        <span class="chip-float chip--tl">%s Contenu vérifié</span>
+        <span class="chip-float chip--br dark">%s 0 allégation abusive</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
     %s
     <div class="grid grid-3">
       <div class="card" data-reveal><div class="icon-badge">%s</div><h3>Statut transparent</h3><p>%s</p></div>
       <div class="card" data-reveal><div class="icon-badge terra">%s</div><h3>Zéro allégation abusive</h3><p>Aucun produit n'est présenté comme un traitement médical. L'information prime sur la promesse.</p></div>
       <div class="card" data-reveal><div class="icon-badge gold">%s</div><h3>Une seule boutique</h3><p>Toutes les commandes passent exclusivement par ma boutique officielle LR, sécurisée et garantie.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="mega-band">
+      <div class="section-head-row">
+        <div class="section-head">
+          <div class="eyebrow">Les gammes LR</div>
+          <h2>Des produits pensés pour <em>chaque objectif</em></h2>
+          <p class="lede" style="color:rgba(255,255,255,.75);">Body Mission, Health Mission, Mind Master, Aloe Vera... découvrez les gammes les plus adaptées à vos priorités du moment.</p>
+        </div>
+        %s
+      </div>
+      <div class="grid grid-4">
+        %s
+      </div>
     </div>
   </div>
 </section>
@@ -2017,11 +2011,17 @@ def build_apropos():
         CONFIG["partner_name"], CONFIG["partner_title"], CONFIG["city"],
         icon("sparkle"),
         check_list(["Contenu rédigé avec honnêteté, sans exagération", "Une approche par objectif, pas par catalogue", "Un accompagnement humain si vous le souhaitez"]),
+        feature_accordion,
+        icon("shield"),
+        icon("sparkle"),
+        icon("check"),
         section_head("Mes engagements", "Ce que vous pouvez attendre de moi", ""),
         icon("shield"),
         "Ce site est un espace personnel indépendant. LR Health & Beauty Systems GmbH n'édite ni ne contrôle son contenu éditorial.",
         icon("info"),
         icon("cart"),
+        btn("Voir toutes les gammes", "gammes-lr.html", variant="white"),
+        ranges_html,
         cta_band(
             "Une question avant de vous lancer ?",
             "Je suis disponible pour échanger sur votre situation, sans pression commerciale.",

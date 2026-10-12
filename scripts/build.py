@@ -259,7 +259,7 @@ def footer():
     <p class="footer-disclaimer">%s</p>
     <p class="footer-disclaimer">%s</p>
     <div class="footer-bottom">
-      <span>© <span data-year></span> %s — %s</span>
+      <span>© <span data-year></span> %s, %s</span>
       <span>Site indépendant · Vente exclusivement via la boutique officielle LR</span>
     </div>
   </div>
@@ -554,8 +554,8 @@ def build_pillar_page(cfg):
 
     merged_section = ""
     if cfg.get("merge_understand"):
-        signs_items = ["%s — %s" % (s["title"], s["text"]) for s in cfg["signs"]]
-        levers_items = ["%s — %s" % (l["title"], l["text"]) for l in cfg["levers"]]
+        signs_items = ["%s. %s" % (s["title"], s["text"]) for s in cfg["signs"]]
+        levers_items = ["%s. %s" % (l["title"], l["text"]) for l in cfg["levers"]]
         merged_section = """<section class="section section-alt" id="comprendre">
   <div class="container">
     %s
@@ -604,7 +604,7 @@ def build_pillar_page(cfg):
     </div>
   </div>
 </section>""" % (
-        section_head("Ils en parlent", "Des parcours, pas des promesses", "Témoignages personnels et non contractuels — les résultats varient selon chaque personne et son mode de vie."),
+        section_head("Ils en parlent", "Des parcours, pas des promesses", "Témoignages personnels et non contractuels. Les résultats varient selon chaque personne et son mode de vie."),
         testimonial(*cfg["testimonials"][0]),
         testimonial(*cfg["testimonials"][1]),
     )
@@ -636,7 +636,7 @@ def build_pillar_page(cfg):
         sections = [hero_section, notice_section, understand_section, photo_section, signs_section, levers_section, products_section, testimonials_section, faq_section, cta_section]
 
     body = "\n\n".join(s for s in sections if s)
-    return page(cfg["slug"], cfg["title"] + " — " + CONFIG["site_name"], cfg["meta_desc"], body, active=cfg["slug"], extra_jsonld=faq_jsonld)
+    return page(cfg["slug"], cfg["title"] + " : " + CONFIG["site_name"], cfg["meta_desc"], body, active=cfg["slug"], extra_jsonld=faq_jsonld)
 
 
 PILLAR_PAGES = [
@@ -655,14 +655,14 @@ PILLAR_PAGES = [
             w="1200", h="1984",
             eyebrow="Retrouver son élan",
             title="L'énergie, ça se <em>ressent</em> avant de se mesurer",
-            text="Ce n'est pas qu'une question de volonté : quand le sommeil, l'hydratation et l'alimentation sont alignés, l'énergie revient naturellement — et ça se voit dans la façon de se tenir, de bouger, d'aborder sa journée.",
+            text="Ce n'est pas qu'une question de volonté : quand le sommeil, l'hydratation et l'alimentation sont alignés, l'énergie revient naturellement. Et ça se voit dans la façon de se tenir, de bouger, d'aborder sa journée.",
         ),
         understand_title="D'où vient vraiment la fatigue du quotidien ?",
         understand_lede="Le manque d'énergie n'a presque jamais une seule cause : c'est souvent la somme de petits déséquilibres.",
-        understand_body="""<p>La fatigue « fonctionnelle » — celle qui touche la majorité des adultes actifs — résulte le plus souvent d'un cumul : nuits trop courtes ou de mauvaise qualité, hydratation insuffisante, repas déséquilibrés ou trop espacés, sédentarité, charge mentale et stress chronique. Le corps carbure alors en mode « économie d'énergie », avec cette sensation familière de devoir puiser dans ses réserves dès le milieu de matinée.</p><p>Avant de chercher une solution miracle, il est utile d'identifier lequel de ces facteurs pèse le plus dans votre quotidien : est-ce le sommeil, l'alimentation, le rythme, ou un peu des trois ? C'est exactement ce que le quiz bien-être vous aide à clarifier en quelques questions.</p>""",
+        understand_body="""<p>La fatigue « fonctionnelle », celle qui touche la majorité des adultes actifs, résulte le plus souvent d'un cumul : nuits trop courtes ou de mauvaise qualité, hydratation insuffisante, repas déséquilibrés ou trop espacés, sédentarité, charge mentale et stress chronique. Le corps carbure alors en mode « économie d'énergie ». Il puise dans ses réserves dès le milieu de matinée.</p><p>Avant de chercher une solution miracle, il est utile d'identifier lequel de ces facteurs pèse le plus dans votre quotidien : est-ce le sommeil, l'alimentation, le rythme, ou un peu des trois ? C'est exactement ce que le quiz bien-être vous aide à clarifier en quelques questions.</p>""",
         facts_title="4 repères à connaître",
         facts=[
-            "Une baisse d'énergie en début d'après-midi est normale (rythme circadien) — elle ne signifie pas forcément un problème de fond.",
+            "Une baisse d'énergie en début d'après-midi est normale (rythme circadien). Elle ne signifie pas forcément un problème de fond.",
             "La déshydratation, même légère (1 à 2%), suffit à réduire la vigilance et la concentration.",
             "Les glucides rapides donnent un pic d'énergie... suivi d'une chute plus marquée une heure plus tard.",
             "L'activité physique régulière augmente l'énergie disponible à moyen terme, même si l'effet immédiat est une sensation de fatigue.",
@@ -679,7 +679,7 @@ PILLAR_PAGES = [
             dict(icon="apple", title="Des repas équilibrés", text="Associer protéines, bonnes graisses et fibres limite les pics puis les chutes de glycémie."),
             dict(icon="bolt", title="Du mouvement quotidien", text="20 à 30 minutes de marche active suffisent à relancer la circulation et l'oxygénation."),
         ],
-        range_title="Mind Master — le coup de pouce ciblé",
+        range_title="Mind Master : le coup de pouce ciblé",
         range_lede="Une gamme pensée pour accompagner la vigilance et l'énergie mentale au quotidien, à utiliser en complément (et non à la place) d'une bonne hygiène de vie.",
         products=[
             dict(
@@ -742,19 +742,19 @@ PILLAR_PAGES = [
         faq=[
             dict(q="Un complément alimentaire peut-il suffire à lui seul contre la fatigue ?", a="Non : un complément vient en soutien d'une alimentation variée et d'un mode de vie sain, il ne les remplace pas. Si la fatigue persiste, consultez un médecin pour écarter une cause à explorer médicalement."),
             dict(q="Combien de temps pour ressentir une différence sur mon énergie ?", a="Cela dépend entièrement de la personne et des habitudes mises en place. Les effets d'un changement d'hygiène de vie s'observent en général sur plusieurs semaines, avec de la régularité."),
-            dict(q="Où puis-je commander les produits évoqués ?", a="Uniquement sur ma boutique en ligne officielle LR, seule plateforme autorisée pour la vente des produits — le lien est disponible en haut de chaque page."),
+            dict(q="Où puis-je commander les produits évoqués ?", a="Uniquement sur ma boutique en ligne officielle LR, seule plateforme autorisée pour la vente des produits. Le lien est disponible en haut de chaque page."),
         ],
     ),
     dict(
         slug="recuperation-sommeil.html",
         eyebrow="Pilier bien-être",
         title="Récupération & Sommeil",
-        lede="Le sommeil est le moment où le corps répare, régénère et consolide la mémoire. Mieux le comprendre, c'est se donner les moyens de vraiment récupérer — pas seulement de dormir plus longtemps.",
+        lede="Le sommeil est le moment où le corps répare, régénère et consolide la mémoire. Mieux le comprendre, c'est se donner les moyens de vraiment récupérer, pas seulement de dormir plus longtemps.",
         meta_desc="Mieux comprendre la récupération et le sommeil : signaux d'alerte, leviers naturels et accompagnement Health Mission pour un repos vraiment réparateur.",
         intro_notice="Ce contenu est informatif et ne se substitue pas à un avis médical. En cas de troubles du sommeil sévères ou prolongés (insomnie, apnée suspectée...), consultez un professionnel de santé.",
         understand_title="Dormir plus ne veut pas dire récupérer mieux",
         understand_lede="La qualité du sommeil compte souvent davantage que sa durée brute.",
-        understand_body="""<p>Une nuit se compose de plusieurs cycles de sommeil léger, profond et paradoxal. C'est le sommeil profond qui assure la récupération physique, et le sommeil paradoxal qui consolide la mémoire et régule les émotions. Le stress, les écrans en soirée, la caféine tardive ou un dîner trop copieux fragmentent ces cycles — on peut alors dormir 8 heures et se réveiller quand même fatigué.</p><p>La récupération concerne aussi le corps après l'effort physique ou une période de forte charge mentale : elle passe par le repos, mais aussi par l'hydratation, la nutrition et la gestion du stress.</p>""",
+        understand_body="""<p>Une nuit se compose de plusieurs cycles de sommeil léger, profond et paradoxal. C'est le sommeil profond qui assure la récupération physique, et le sommeil paradoxal qui consolide la mémoire et régule les émotions. Le stress, les écrans en soirée, la caféine tardive ou un dîner trop copieux fragmentent ces cycles. On peut alors dormir 8 heures et se réveiller quand même fatigué.</p><p>La récupération concerne aussi le corps après l'effort physique ou une période de forte charge mentale : elle passe par le repos, mais aussi par l'hydratation, la nutrition et la gestion du stress.</p>""",
         facts_title="4 repères à connaître",
         facts=[
             "Un cycle de sommeil dure environ 90 minutes ; on en enchaîne 4 à 6 par nuit.",
@@ -774,7 +774,7 @@ PILLAR_PAGES = [
             dict(icon="drop", title="Limiter les excitants", text="Réduire caféine et alcool en fin de journée améliore nettement la qualité du sommeil."),
             dict(icon="apple", title="Un dîner léger", text="Un repas trop riche ou trop tardif retarde et perturbe l'endormissement."),
         ],
-        range_title="Health Mission — le rituel détente",
+        range_title="Health Mission : le rituel détente",
         range_lede="Des formules pensées pour accompagner les moments de relâchement et soutenir l'organisme dans ses phases de récupération.",
         products=[
             dict(tag="Oméga-3", title="Capsules Super Omega", desc="Des oméga-3 marins pour le bien-être cardiaque, issus de la pêche durable.", bullets=["Huile de poisson riche en oméga-3", "Contribue au bien-être cardiaque", "Certifié Friend of the Sea"], href="https://shop.lrworld.com/product/fr/fr/capsules_super_omega.html?productAlias=80338-699&casrnc=333bd", swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="drop"),
@@ -794,12 +794,12 @@ PILLAR_PAGES = [
         slug="foie-detox.html",
         eyebrow="Pilier bien-être",
         title="Foie & Détox cellulaire",
-        lede="Le foie est l'organe le plus sollicité de votre métabolisme : il filtre, transforme et élimine en continu. Comprendre son fonctionnement aide à savoir comment vraiment l'accompagner — sans mythes ni promesses irréalistes.",
+        lede="Le foie est l'organe le plus sollicité de votre métabolisme : il filtre, transforme et élimine en continu. Comprendre son fonctionnement aide à savoir comment vraiment l'accompagner, sans mythes ni promesses irréalistes.",
         meta_desc="Comprendre le rôle du foie et du métabolisme cellulaire, les signaux d'un organisme surchargé, et les leviers naturels pour l'accompagner au quotidien.",
         intro_notice="Le foie fonctionne 24h/24 sans intervention extérieure nécessaire chez une personne en bonne santé. Aucun produit ne \"détoxifie\" le foie au sens médical : cette page vise à expliquer son rôle et comment ne pas le surcharger inutilement. En cas de troubles digestifs persistants ou de douleurs, consultez un médecin.",
         understand_title="Ce que fait vraiment votre foie chaque jour",
         understand_lede="Avant de parler « détox », comprenons ce que cet organe accomplit déjà, en permanence.",
-        understand_body="""<p>Le foie assure plus de 500 fonctions : il transforme les nutriments issus de la digestion, stocke l'énergie, produit la bile nécessaire à la digestion des graisses, et neutralise les substances dont l'organisme n'a plus besoin (alcool, certains médicaments, déchets métaboliques). C'est un organe qui se régénère remarquablement bien — à condition de ne pas être en permanence sursollicité.</p><p>Le terme « détox » est souvent utilisé de façon marketing : en réalité, le foie et les reins assurent déjà ce rôle d'élimination en continu chez une personne en bonne santé. Le plus utile n'est donc pas de « détoxifier » mais d'éviter de le surcharger : excès d'alcool, de sucres, de graisses saturées, sédentarité prolongée.</p>""",
+        understand_body="""<p>Le foie assure plus de 500 fonctions : il transforme les nutriments issus de la digestion, stocke l'énergie, produit la bile nécessaire à la digestion des graisses, et neutralise les substances dont l'organisme n'a plus besoin (alcool, certains médicaments, déchets métaboliques). C'est un organe qui se régénère remarquablement bien, à condition de ne pas être en permanence sursollicité.</p><p>Le terme « détox » est souvent utilisé de façon marketing : en réalité, le foie et les reins assurent déjà ce rôle d'élimination en continu chez une personne en bonne santé. Le plus utile n'est donc pas de « détoxifier » mais d'éviter de le surcharger : excès d'alcool, de sucres, de graisses saturées, sédentarité prolongée.</p>""",
         facts_title="4 repères à connaître",
         facts=[
             "Le foie est le seul organe interne capable de se régénérer partiellement.",
@@ -819,7 +819,7 @@ PILLAR_PAGES = [
             dict(icon="leaf", title="Faire des pauses alimentaires", text="Laisser un temps de digestion suffisant entre les repas, éviter le grignotage permanent."),
             dict(icon="bolt", title="Bouger régulièrement", text="L'activité physique améliore la sensibilité à l'insuline et le métabolisme des graisses."),
         ],
-        range_title="Health Mission — le soin du foie et du métabolisme",
+        range_title="Health Mission : le soin du foie et du métabolisme",
         range_lede="Liver Support en produit phare, associé à l'Aloe Vera et aux fibres pour accompagner le métabolisme hépatique, intestinal et cellulaire.",
         products=[
             dict(
@@ -846,7 +846,7 @@ PILLAR_PAGES = [
         faq=[
             dict(q="Existe-t-il un produit qui \"nettoie\" le foie ?", a="Non, aucun produit ne remplace la fonction naturelle du foie. Certaines plantes sont traditionnellement associées au confort digestif, mais toujours en complément d'une hygiène de vie adaptée."),
             dict(q="Une cure détox est-elle utile après les fêtes ?", a="Reprendre une alimentation équilibrée, bien s'hydrater et bouger davantage est le geste le plus efficace. Une cure peut accompagner cette reprise, sans se substituer à elle."),
-            dict(q="Quand faut-il consulter un médecin ?", a="En cas de douleurs, de jaunisse, de troubles digestifs sévères ou persistants, une consultation médicale est indispensable — ce site ne remplace pas un diagnostic."),
+            dict(q="Quand faut-il consulter un médecin ?", a="En cas de douleurs, de jaunisse, de troubles digestifs sévères ou persistants, une consultation médicale est indispensable. Ce site ne remplace pas un diagnostic."),
         ],
     ),
     dict(
@@ -857,7 +857,7 @@ PILLAR_PAGES = [
         meta_desc="Comprendre le rôle du microbiote intestinal dans la digestion et l'équilibre général, et découvrir les leviers naturels et compléments associés.",
         intro_notice="Ce contenu est informatif et généraliste. En cas de troubles digestifs sévères, de douleurs abdominales importantes ou de symptômes persistants, consultez un professionnel de santé.",
         understand_title="Le microbiote, un écosystème à part entière",
-        understand_lede="Des milliers de milliards de bactéries vivent dans votre intestin — et leur équilibre influence bien plus que votre digestion.",
+        understand_lede="Des milliers de milliards de bactéries vivent dans votre intestin. Leur équilibre influence bien plus que votre digestion.",
         understand_body="""<p>Le microbiote intestinal participe à la digestion, à la synthèse de certaines vitamines, et communique en permanence avec le système immunitaire (près de 70% des cellules immunitaires se trouvent au niveau de l'intestin) ainsi qu'avec le cerveau via ce que l'on appelle l'axe intestin-cerveau. Un microbiote déséquilibré peut se traduire par des ballonnements, un transit irrégulier, ou une sensation de fatigue digestive.</p><p>Cet équilibre se façonne au quotidien : diversité alimentaire, fibres, hydratation, gestion du stress et qualité du sommeil influencent directement la composition de cette flore intestinale.</p>""",
         facts_title="4 repères à connaître",
         facts=[
@@ -878,7 +878,7 @@ PILLAR_PAGES = [
             dict(icon="drop", title="S'hydrater suffisamment", text="L'eau facilite le transit et le travail des fibres alimentaires."),
             dict(icon="moon", title="Gérer son stress", text="La cohérence cardiaque ou la marche peuvent apaiser l'axe intestin-cerveau."),
         ],
-        range_title="Health Mission — le confort digestif",
+        range_title="Health Mission : le confort digestif",
         range_lede="Pro 12+ et Colostrum en formules ciblées, associés aux fibres pour accompagner l'équilibre digestif au quotidien.",
         products=[
             dict(
@@ -902,7 +902,7 @@ PILLAR_PAGES = [
             (4, "Le complément en fibres m'aide vraiment, mais c'est surtout le fait de manger plus lentement qui a tout changé pour moi.", "Marc, 52 ans"),
         ],
         faq=[
-            dict(q="Faut-il prendre des probiotiques en continu ?", a="En général, une cure de 4 semaines renouvelable est recommandée, en fonction de vos besoins — demandez conseil pour un accompagnement personnalisé."),
+            dict(q="Faut-il prendre des probiotiques en continu ?", a="En général, une cure de 4 semaines renouvelable est recommandée, en fonction de vos besoins. Demandez conseil pour un accompagnement personnalisé."),
             dict(q="Les probiotiques traitent-ils le syndrome de l'intestin irritable ?", a="Non, ce site n'a pas vocation à traiter une pathologie. En cas de syndrome diagnostiqué ou de douleurs importantes, seul un médecin ou un gastro-entérologue peut vous accompagner."),
             dict(q="Quels aliments favorisent un bon microbiote ?", a="Les fibres (légumes, légumineuses, céréales complètes) et les aliments fermentés (yaourt, choucroute, kéfir) sont généralement recommandés dans le cadre d'une alimentation variée."),
         ],
@@ -916,7 +916,7 @@ PILLAR_PAGES = [
         meta_desc="Comprendre le fonctionnement du système immunitaire, les facteurs qui l'affaiblissent, et les leviers naturels et compléments pour soutenir vos défenses naturelles.",
         intro_notice="Ce contenu est informatif et généraliste et ne constitue pas un avis médical. En cas d'infections répétées ou de fièvre, consultez un professionnel de santé.",
         understand_title="Une immunité qui se construit toute l'année",
-        understand_lede="Le système immunitaire n'est pas un simple bouclier : c'est un réseau qui dépend directement de votre mode de vie.",
+        understand_lede="Le système immunitaire est un réseau qui dépend directement de votre mode de vie, bien plus qu'un simple bouclier.",
         understand_body="""<p>Le système immunitaire est étroitement lié au sommeil, à la nutrition, à l'activité physique et... à l'intestin, puisque près de 70% des cellules immunitaires y sont concentrées. Le stress chronique, le manque de sommeil et les carences en certains micronutriments (vitamine D, zinc, vitamine C) sont des facteurs qui peuvent fragiliser les défenses naturelles.</p><p>Plutôt que d'attendre les premiers symptômes de l'hiver, l'idée est d'adopter des habitudes qui soutiennent l'immunité tout au long de l'année, avec un renfort ciblé lors des périodes plus à risque (changement de saison, fatigue accumulée, reprise après une maladie).</p>""",
         facts_title="4 repères à connaître",
         facts=[
@@ -937,13 +937,13 @@ PILLAR_PAGES = [
             dict(icon="bolt", title="Bouger modérément", text="Une activité physique régulière et modérée soutient l'immunité (l'excès inverse l'effet)."),
             dict(icon="loop", title="Chouchouter son intestin", text="Un microbiote équilibré est l'un des meilliers alliés de vos défenses naturelles."),
         ],
-        range_title="Reishi, Pro 12+, Cistus Incanus & Colostrum — le soutien ciblé",
+        range_title="Reishi, Pro 12+, Cistus Incanus & Colostrum : le soutien ciblé",
         range_lede="Quatre approches complémentaires pour accompagner vos défenses naturelles lors des périodes de fatigue saisonnière ou de sollicitation accrue.",
         products=[
             dict(
                 tag="Cœur & vitalité", title="Reishi Plus en gélules",
                 desc="Un champignon utilisé depuis des siècles dans la tradition asiatique, associé à la vitamine C.",
-                bullets=["Contribue à un métabolisme énergétique normal", "Aide à réduire la fatigue et l'épuisement", "Végan, sans lactose — 30 gélules"],
+                bullets=["Contribue à un métabolisme énergétique normal", "Aide à réduire la fatigue et l'épuisement", "Végan, sans lactose, 30 gélules"],
                 href="https://shop.lrworld.com/product/fr/fr/reishi_plus_en_gelules.html?productAlias=80331-799&casrnc=29c02",
                 swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="leaf",
             ),
@@ -957,7 +957,7 @@ PILLAR_PAGES = [
             dict(
                 tag="Immunité", title="Cistus Incanus en gélules",
                 desc="Extrait concentré de Cistus Incanus, associé au zinc et à la vitamine C.",
-                bullets=["Extrait de Cistus Incanus à 72%", "100% des AJR en vitamine C, 20% en zinc", "Gélules à enveloppe végétale — 60 gélules"],
+                bullets=["Extrait de Cistus Incanus à 72%", "100% des AJR en vitamine C, 20% en zinc", "Gélules à enveloppe végétale, 60 gélules"],
                 href="https://shop.lrworld.com/product/fr/fr/cistus_incanus_en_gelules.html?productAlias=80325-699&casrnc=f06f7",
                 swatch_color="linear-gradient(135deg,#d9a441,#a8752c)", icon_name="shield",
             ),
@@ -1040,14 +1040,14 @@ def build_home():
   <div class="container">
     <div class="hero-photo" data-reveal>
       <div class="hero-photo-media">
-        <img src="assets/img/hero-woman.jpg" alt="Portrait en extérieur d'une femme souriante, en lumière naturelle — l'énergie et le bien-être au quotidien" loading="eager" fetchpriority="high" width="2000" height="1333">
+        <img src="assets/img/hero-woman.jpg" alt="Portrait en extérieur d'une femme souriante, en lumière naturelle, l'énergie et le bien-être au quotidien" loading="eager" fetchpriority="high" width="2000" height="1333">
       </div>
       <span class="chip-float chip--tl">%s Accompagnement humain, sans pression</span>
       <span class="chip-float chip--br dark">%s %s, France</span>
       <div class="hero-photo-content">
         <div class="eyebrow">%s</div>
         <h1>%s</h1>
-        <p class="lede">%s, %s. J'aide celles et ceux qui veulent comprendre <em>vraiment</em> leur corps — énergie, récupération, foie, intestin, immunité — avant de choisir un complément adapté à leur objectif.</p>
+        <p class="lede">%s, %s. J'aide celles et ceux qui veulent comprendre <em>vraiment</em> leur corps : énergie, récupération, foie, intestin, immunité, avant de choisir un complément adapté à leur objectif.</p>
         <div class="hero-actions">
           %s
           %s
@@ -1154,13 +1154,13 @@ def build_home():
         icon("sparkle"),
         icon("pin"), CONFIG["city"],
         CONFIG["tagline"],
-        word_reveal("Votre énergie, votre immunité, votre équilibre — <em>sans détour</em> marketing."),
+        word_reveal("Votre énergie, votre immunité, votre équilibre. <em>Sans détour</em> marketing."),
         CONFIG["partner_name"], CONFIG["partner_title"],
         btn("Faire mon diagnostic gratuit", "quiz.html", variant="primary"),
         btn("Ma boutique LR officielle", SHOP, variant="ghost", blank=True),
         icon("sparkle"),
         btn("Commencer le quiz", "quiz.html", variant="dark", block=True),
-        section_head("Votre point de départ", "Deux besoins, <em>une approche</em> personnalisée", "Quel que soit votre objectif, le quiz identifie en 3 minutes la priorité qui a vraiment du sens pour vous — voici les deux grandes familles de besoins que j'accompagne.", center=True),
+        section_head("Votre point de départ", "Deux besoins, <em>une approche</em> personnalisée", "Quel que soit votre objectif, le quiz identifie en 3 minutes la priorité qui a vraiment du sens pour vous. Voici les deux grandes familles de besoins que j'accompagne.", center=True),
         needs_card_bienetre, needs_card_nutrition,
         section_head("Comment ça marche", "De la question à la solution, en 3 étapes", "Pas de vente sous pression : un parcours pensé pour vous aider à choisir en connaissance de cause."),
         steps_html,
@@ -1177,7 +1177,7 @@ def build_home():
             "contact.html", "Poser une question",
         ),
     )
-    return page("index.html", "%s — %s" % (CONFIG["site_name"], CONFIG["tagline"]),
+    return page("index.html", "%s : %s" % (CONFIG["site_name"], CONFIG["tagline"]),
                 "Site indépendant d'accompagnement bien-être : énergie, récupération, foie, digestion, immunité et nutrition sportive. Diagnostic gratuit et gammes LR Health & Beauty.",
                 body, active="", extra_jsonld=ORG_JSONLD)
 
@@ -1191,7 +1191,7 @@ def build_nutrition():
     %s
     <div class="eyebrow">Nutrition sportive</div>
     <h1 style="max-width:820px;">Nutrition, perte de poids & prise de masse</h1>
-    <p class="lede" style="max-width:680px;">Que votre objectif soit d'affiner votre silhouette ou de prendre du muscle, la réussite tient d'abord à quelques principes simples de nutrition — les compléments viennent ensuite, en soutien.</p>
+    <p class="lede" style="max-width:680px;">Que votre objectif soit d'affiner votre silhouette ou de prendre du muscle, la réussite tient d'abord à quelques principes simples de nutrition. Les compléments viennent ensuite, en soutien.</p>
     <div class="pillar-nav">
       <a href="#perte-de-poids" class="pillar-chip">Perte de poids</a>
       <a href="#reequilibrage-alimentaire" class="pillar-chip">Rééquilibrage alimentaire</a>
@@ -1212,7 +1212,7 @@ def build_nutrition():
     %s
     <div class="split">
       <div data-reveal>
-        <p>Perdre du poids durablement repose sur un déficit calorique modéré et tenable dans le temps — pas sur une restriction extrême, souvent suivie d'un effet rebond. L'objectif est de préserver la masse musculaire pendant la perte de poids, ce qui suppose un apport suffisant en protéines et une activité physique régulière, y compris du renforcement musculaire.</p>
+        <p>Perdre du poids durablement repose sur un déficit calorique modéré et tenable dans le temps, pas sur une restriction extrême souvent suivie d'un effet rebond. L'objectif est de préserver la masse musculaire pendant la perte de poids, ce qui suppose un apport suffisant en protéines et une activité physique régulière, y compris du renforcement musculaire.</p>
         <p>Les repas minceur (shakes, soupes, en-cas) peuvent être utiles pour structurer certains repas de la semaine, en particulier lorsque le temps manque, mais ne doivent pas remplacer une alimentation variée sur le long terme.</p>
       </div>
       <div class="split-visual" data-reveal>
@@ -1229,7 +1229,7 @@ def build_nutrition():
     <div class="split">
       <div data-reveal>
         <p>Rééquilibrer son alimentation ne veut pas dire la restreindre : c'est retrouver une structure de repas régulière, variée et sans aliment interdit, adaptée à votre rythme de vie réel plutôt qu'à un modèle unique.</p>
-        <p>C'est souvent l'étape la plus utile avant même de viser une perte de poids ou une prise de masse — et celle qui tient le mieux dans la durée, parce qu'elle ne repose pas sur la privation.</p>
+        <p>C'est souvent l'étape la plus utile avant même de viser une perte de poids ou une prise de masse. Et c'est celle qui tient le mieux dans la durée, parce qu'elle ne repose pas sur la privation.</p>
       </div>
       <div class="split-visual" data-reveal>
         <h3 style="margin-bottom:18px;">Les repères d'un rééquilibrage durable</h3>
@@ -1301,7 +1301,7 @@ def build_nutrition():
             "Un entraînement en résistance progressif (charges, répétitions)",
             "Un temps de récupération suffisant entre les séances",
         ]),
-        section_head("La gamme Body Mission", "Des repas et compléments pensés pour votre objectif", "Shakes, soupes, en-cas et compléments protéinés — à intégrer dans une alimentation globale équilibrée."),
+        section_head("La gamme Body Mission", "Des repas et compléments pensés pour votre objectif", "Shakes, soupes, en-cas et compléments protéinés, à intégrer dans une alimentation globale équilibrée."),
         "\n".join([
             product_card(tag="Body Mission", title="Shake Repas Minceur", desc="Un repas complet et équilibré pour remplacer occasionnellement un repas classique.", bullets=["Riche en protéines", "Plusieurs saveurs", "Pratique en déplacement"], href=SHOP, swatch_color="linear-gradient(135deg,#5f7a5a,#3f5a3c)", icon_name="apple"),
             product_card(tag="Body Mission", title="Protein Power", desc="Un concentré de protéines pour soutenir la construction et le maintien musculaire.", bullets=["Haute teneur en protéines", "Idéal post-entraînement", "Se prépare en 30 secondes"], href=SHOP, swatch_color="linear-gradient(135deg,#c96f4a,#a8552f)", icon_name="dumbbell"),
@@ -1324,7 +1324,7 @@ def build_nutrition():
             "contact.html", "Échanger avec moi",
         ),
     )
-    return page("nutrition-objectifs.html", "Nutrition sportive : perte de poids & prise de masse — %s" % CONFIG["site_name"],
+    return page("nutrition-objectifs.html", "Nutrition sportive, perte de poids et prise de masse : %s" % CONFIG["site_name"],
                 "Conseils nutrition pour la perte de poids et la prise de masse musculaire, et découverte de la gamme Body Mission LR Health & Beauty.",
                 body, active="nutrition-objectifs.html")
 
@@ -1338,7 +1338,7 @@ RANGES = [
         kind="Gamme principale",
         kind_type="principale",
         name="Health Mission",
-        subtitle="Foie, digestion, détente & immunité — la gamme santé au quotidien",
+        subtitle="Foie, digestion, détente et immunité : la gamme santé au quotidien",
         desc="Notre gamme la plus importante : elle agit sur le métabolisme hépatique, cellulaire et intestinal, au sein d'une alimentation variée. Disponible en abonnement sur ma boutique officielle LR, pour ne jamais être à court.",
         products=[
             dict(
@@ -1438,7 +1438,7 @@ RANGES = [
     dict(
         id="mind-master",
         icon="bolt",
-        kind="Spécialiste LR — Performance, énergie et récup",
+        kind="Spécialiste LR : performance, énergie et récup",
         name="Mind Master",
         subtitle="Énergie mentale, concentration & vigilance",
         desc="Une gamme pensée pour les journées denses : boissons Formula Red et Gold, stick Extreme à emporter, et un concentré multivitamine avec Vita Active.",
@@ -1587,7 +1587,7 @@ RANGES = [
                     "Contribue à un métabolisme énergétique normal",
                     "Aide à réduire la fatigue et l'épuisement",
                     "Extraits et poudre de Reishi + vitamine C",
-                    "Végan, sans lactose — 30 gélules",
+                    "Végan, sans lactose, 30 gélules",
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/reishi_plus_en_gelules.html?productAlias=80331-799&casrnc=29c02",
                 icon_name="leaf",
@@ -1633,7 +1633,7 @@ RANGES = [
                     "Extrait de Cistus Incanus à 72%",
                     "100% des AJR en vitamine C, 20% en zinc",
                     "Zinc & vitamine C : fonctionnement normal du système immunitaire",
-                    "Gélules à enveloppe végétale — 60 gélules",
+                    "Gélules à enveloppe végétale, 60 gélules",
                 ],
                 href="https://shop.lrworld.com/product/fr/fr/cistus_incanus_en_gelules.html?productAlias=80325-699&casrnc=f06f7",
                 icon_name="shield",
@@ -1740,7 +1740,7 @@ RANGES = [
         desc="Deux shots quotidiens pensés différemment selon vos besoins : éclat et vitalité pour elle, force et énergie pour lui.",
         products=[
             dict(
-                tag="Beauté — Femme", title="Beauty Elixir 5en1",
+                tag="Beauté féminine", title="Beauty Elixir 5en1",
                 desc="Un shot quotidien pensé pour révéler éclat, vitalité et confiance en soi.",
                 bullets=[
                     "Gel d'Aloe Vera & collagène hydrolysé",
@@ -1753,7 +1753,7 @@ RANGES = [
                 swatch_color="linear-gradient(135deg,#e08bab,#a84e6c)",
             ),
             dict(
-                tag="Beauté — Homme", title="5in1 Men's Shot",
+                tag="Beauté masculine", title="5in1 Men's Shot",
                 desc="Un shot quotidien pensé pour la force, l'énergie et le charisme au masculin.",
                 bullets=[
                     "Gel d'Aloe Vera, collagène & extrait de ginseng",
@@ -1879,7 +1879,7 @@ def build_gammes():
 </section>""" % (
         breadcrumb("Gammes LR"),
         "\n".join('<a href="#%s" class="pillar-chip">%s</a>' % (r["id"], r["name"]) for r in RANGES),
-        notice("Toutes les commandes se font exclusivement sur ma boutique en ligne officielle LR — la seule plateforme autorisée pour la vente des produits LR Health & Beauty. Ce site ne traite aucun paiement.", ic="cart"),
+        notice("Toutes les commandes se font exclusivement sur ma boutique en ligne officielle LR, la seule plateforme autorisée pour la vente des produits LR Health & Beauty. Ce site ne traite aucun paiement.", ic="cart"),
     )
 
     tones_cycle = ["", "terracotta", "gold"]
@@ -1924,7 +1924,7 @@ def build_gammes():
     )
 
     body = intro + overview_section + promo_section + "".join(range_blocks) + outro
-    return page("gammes-lr.html", "Gammes LR Health & Beauty : Body Mission, Health Mission, Mind Master... — %s" % CONFIG["site_name"],
+    return page("gammes-lr.html", "Gammes LR Health & Beauty, Body Mission, Health Mission, Mind Master : %s" % CONFIG["site_name"],
                 "Découvrez les gammes LR Health & Beauty (Body Mission, Health Mission, Mind Master, Super Omega, Aloe Vera) classées par objectif bien-être, avec accès direct à la boutique officielle.",
                 body, active="gammes-lr.html")
 
@@ -1956,7 +1956,7 @@ def build_quiz():
     %s
     <div class="eyebrow center" style="justify-content:center;display:flex;">Diagnostic bien-être</div>
     <h1 class="center" style="max-width:720px;">Quel accompagnement vous correspond&nbsp;?</h1>
-    <p class="lede center" style="max-width:600px;">3 questions, 2 minutes, une orientation claire — sans obligation d'achat.</p>
+    <p class="lede center" style="max-width:600px;">3 questions, 2 minutes, une orientation claire, sans obligation d'achat.</p>
   </div>
 </section>
 
@@ -2019,7 +2019,7 @@ def build_quiz():
         q1_html, q2_html, icon("arrow"), q3_html, icon("arrow"),
         notice("Ce quiz est un outil d'orientation générale et non un test médical ou diagnostique. Il ne remplace en aucun cas l'avis d'un professionnel de santé.", ic="info"),
     )
-    return page("quiz.html", "Quiz bien-être gratuit : quel accompagnement vous correspond ? — %s" % CONFIG["site_name"],
+    return page("quiz.html", "Quiz bien-être gratuit. Quel accompagnement vous correspond : %s" % CONFIG["site_name"],
                 "Faites le point en 3 minutes sur votre priorité bien-être (énergie, sommeil, digestion, immunité, poids) et recevez une orientation personnalisée.",
                 body, active="quiz.html", extra_scripts='<script src="assets/js/quiz.js"></script>')
 
@@ -2075,7 +2075,7 @@ def build_apropos():
     %s
     <div class="eyebrow">À propos</div>
     <h1 style="max-width:760px;">Bonjour, je suis %s</h1>
-    <p class="lede" style="max-width:640px;">%s, basé à %s. Les produits LR ne sont pas une découverte récente pour moi : je les connais depuis plus de 20 ans et je les utilise depuis toujours, bien avant de devenir partenaire. Le bien-être n'est pas un sujet que j'ai découvert un jour — c'est une valeur transmise par ma famille, pour qui il a toujours été une priorité.</p>
+    <p class="lede" style="max-width:640px;">%s, basé à %s. Je connais les produits LR depuis plus de 20 ans et je les utilise depuis toujours, bien avant de devenir partenaire. Le bien-être est une valeur transmise par ma famille, pour qui il a toujours été une priorité.</p>
   </div>
 </section>
 
@@ -2090,7 +2090,7 @@ def build_apropos():
       <div data-reveal>
         <div class="eyebrow">Ma philosophie</div>
         <h2>De l'information avant la vente</h2>
-        <p>Je crois qu'un bon accompagnement commence par comprendre son propre corps — pas par acheter le premier produit venu. C'est pour ça que ce site prend le temps d'expliquer l'énergie, le sommeil, la digestion, l'immunité et la nutrition sportive, avant même de parler produits.</p>
+        <p>Je crois qu'un bon accompagnement commence par comprendre son propre corps, pas par acheter le premier produit venu. C'est pour ça que ce site prend le temps d'expliquer l'énergie, le sommeil, la digestion, l'immunité et la nutrition sportive, avant même de parler produits.</p>
         %s
       </div>
     </div>
@@ -2102,8 +2102,8 @@ def build_apropos():
     <div class="split">
       <div data-reveal>
         <div class="eyebrow">Pourquoi ce site</div>
-        <h2>Transformer une visite en <em>vraie clarté</em> — pas en pression commerciale</h2>
-        <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique — jamais comme un argument de vente isolé.</p>
+        <h2>Transformer une visite en <em>vraie clarté</em>, pas en pression commerciale</h2>
+        <p>Trop de sites autour des compléments alimentaires promettent des miracles. Ici, l'objectif est inverse : vous donner une information honnête sur votre corps, pour que le produit vienne en toute logique, jamais comme un argument de vente isolé.</p>
         %s
       </div>
       <div style="position:relative;" data-reveal>
@@ -2172,7 +2172,7 @@ def build_apropos():
             "quiz.html", "Faire le quiz",
         ),
     )
-    return page("a-propos.html", "À propos — %s" % CONFIG["site_name"],
+    return page("a-propos.html", "À propos : %s" % CONFIG["site_name"],
                 "Découvrez le parcours et la philosophie derrière %s, site d'accompagnement bien-être et partenaire indépendant LR Health & Beauty." % CONFIG["site_name"],
                 body, active="a-propos.html")
 
@@ -2234,7 +2234,7 @@ def build_contact():
         <div class="card">
           <div class="icon-badge gold">%s</div>
           <h3>Secteur</h3>
-          <p>%s — échanges possibles à distance partout en France.</p>
+          <p>%s, échanges possibles à distance partout en France.</p>
         </div>
       </div>
     </div>
@@ -2253,7 +2253,7 @@ def build_contact():
         icon("pin"), CONFIG["city"],
         notice("Pour toute commande, rendez-vous directement sur ma boutique en ligne officielle LR : ce formulaire sert uniquement à échanger et vous conseiller.", ic="cart"),
     )
-    return page("contact.html", "Contact — %s" % CONFIG["site_name"],
+    return page("contact.html", "Contact : %s" % CONFIG["site_name"],
                 "Contactez %s, %s, pour toute question sur l'énergie, l'immunité, la nutrition ou les produits LR Health & Beauty." % (CONFIG["partner_name"], CONFIG["partner_title"]),
                 body, active="contact.html")
 
@@ -2277,19 +2277,19 @@ def legal_page(slug, title, meta_desc, content_html):
   </div>
 </section>
 """ % (breadcrumb(title), title, content_html)
-    return page(slug, "%s — %s" % (title, CONFIG["site_name"]), meta_desc, body, active=slug)
+    return page(slug, "%s : %s" % (title, CONFIG["site_name"]), meta_desc, body, active=slug)
 
 
 def build_mentions_legales():
     content = """
-<p><em>Dernière mise à jour : [À COMPLÉTER — date de mise en ligne].</em></p>
+<p><em>Dernière mise à jour : [À COMPLÉTER, date de mise en ligne].</em></p>
 
 <h2>1. Éditeur du site</h2>
 <p>Le présent site, %s (ci-après « le Site »), est édité à titre personnel par :</p>
 <ul>
   <li>Nom et prénom : %s</li>
   <li>Statut professionnel : %s</li>
-  <li>Ville : %s ([À COMPLÉTER — adresse postale complète ou domiciliation professionnelle])</li>
+  <li>Ville : %s ([À COMPLÉTER, adresse postale complète ou domiciliation professionnelle])</li>
   <li>Numéro SIREN : %s</li>
   <li>Email : %s</li>
   <li>Téléphone : %s</li>
@@ -2304,7 +2304,7 @@ def build_mentions_legales():
 <p>Conformément aux règles contractuelles applicables aux partenaires LR, <strong>aucune commande, aucun paiement et aucune transaction ne sont réalisés sur ce Site</strong>. Chaque bouton « Boutique LR » ou « Commander » redirige vers la boutique en ligne officielle et personnelle du partenaire, hébergée et exploitée par LR Health &amp; Beauty, seule plateforme autorisée pour l'achat des produits de la marque. Ce Site ne constitue donc pas un site de commerce électronique au sens du droit de la consommation ; il a une vocation strictement informative et d'orientation.</p>
 
 <h2>4. Hébergement</h2>
-<p>Le Site est hébergé par : Netlify, Inc. — 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis — <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a>.</p>
+<p>Le Site est hébergé par Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis. Site : <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a>.</p>
 
 <h2>5. Propriété intellectuelle</h2>
 <p>Les contenus éditoriaux du Site (textes, structure, mise en page, code) sont la propriété de %s, sauf mention contraire. Toute reproduction non autorisée est interdite. Les marques, logos et dénominations LR Health &amp; Beauty restent la propriété de leur titulaire.</p>
@@ -2358,7 +2358,7 @@ def build_confidentialite():
 <p>Les données issues du formulaire de contact et du quiz sont conservées pendant une durée maximale de 3 ans à compter du dernier contact, sauf obligation légale contraire ou demande de suppression anticipée de votre part.</p>
 
 <h2>5. Destinataires</h2>
-<p>Seul(e) %s, ainsi que ses éventuels prestataires techniques (hébergeur, outil d'emailing ou de formulaire — voir ci-dessous), ont accès à ces données, dans la stricte limite de leurs missions.</p>
+<p>Seul(e) %s, ainsi que ses éventuels prestataires techniques (hébergeur, outil d'emailing ou de formulaire, voir ci-dessous), ont accès à ces données, dans la stricte limite de leurs missions.</p>
 <p>Prestataires techniques utilisés : Netlify, Inc. (hébergement du Site et traitement des soumissions des formulaires de contact et du quiz). Netlify agit en tant que sous-traitant au sens du RGPD ; sa politique de confidentialité est consultable sur <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">netlify.com/privacy</a>.</p>
 
 <h2>6. Cookies</h2>
@@ -2366,7 +2366,7 @@ def build_confidentialite():
 
 <h2>7. Vos droits</h2>
 <p>Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données. Vous pouvez exercer ces droits en écrivant à <a href="mailto:%s">%s</a>.</p>
-<p>Vous disposez également du droit d'introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL) — <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
+<p>Vous disposez également du droit d'introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL). Site : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
 
 <h2>8. Sécurité</h2>
 <p>Des mesures raisonnables sont mises en œuvre pour protéger vos données contre la perte, l'accès non autorisé ou la divulgation. Aucun système n'étant infaillible, une sécurité absolue ne peut être garantie.</p>
@@ -2433,7 +2433,7 @@ def build_404():
     <div class="eyebrow center" style="justify-content:center;display:flex;">Erreur 404</div>
     <h1 style="font-size:clamp(3.4rem,9vw,6rem);">Perdu·e en chemin ?</h1>
     <p class="lede center" style="margin:0 auto 8px;">
-      Cette page n'existe pas ou plus — mais votre objectif bien-être, lui, existe toujours.
+      Cette page n'existe pas ou plus, mais votre objectif bien-être, lui, existe toujours.
       Repartons du bon pied.
     </p>
     <div class="hero-actions" style="justify-content:center;margin-top:30px;">
@@ -2450,7 +2450,7 @@ def build_404():
         btn("Faire le quiz bien-être", "quiz.html", variant="outline"),
         pillar_links,
     )
-    return page("404.html", "Page introuvable (404) — %s" % CONFIG["site_name"],
+    return page("404.html", "Page introuvable (404) : %s" % CONFIG["site_name"],
                 "Cette page n'existe pas. Retrouvez l'accueil, le quiz bien-être ou les univers thématiques du site.",
                 body, active="", noindex=True)
 
@@ -2480,7 +2480,7 @@ def build_merci():
         btn("Retour à l'accueil", "index.html", variant="primary"),
         btn("Découvrir les gammes LR", "gammes-lr.html", variant="outline"),
     )
-    return page("merci.html", "Message envoyé — %s" % CONFIG["site_name"],
+    return page("merci.html", "Message envoyé : %s" % CONFIG["site_name"],
                 "Votre message a bien été envoyé, merci de votre confiance.",
                 body, active="", noindex=True)
 

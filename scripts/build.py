@@ -2041,32 +2041,20 @@ def build_apropos():
     feature_accordion = """<div class="feature-accordion" data-reveal>
   <details open>
     <summary>Transparence totale %s</summary>
-    <div class="panel"><ul>
-      <li>%sSite personnel et indépendant, clairement identifié comme tel</li>
-      <li>%sAucune vente ni paiement traité sur ce site</li>
-      <li>%sChaque lien produit renvoie vers ma boutique officielle LR</li>
-    </ul></div>
+    <div class="panel"><p>Ce site est personnel et indépendant, clairement identifié comme tel. Aucune vente ni paiement n'y est traité, et chaque lien produit renvoie vers ma boutique officielle LR.</p></div>
   </details>
   <details>
     <summary>Conformité stricte %s</summary>
-    <div class="panel"><ul>
-      <li>%sAucune allégation de traitement ou de guérison</li>
-      <li>%sMentions obligatoires rappelées sur chaque page</li>
-      <li>%sTémoignages présentés comme non contractuels</li>
-    </ul></div>
+    <div class="panel"><p>Je ne fais aucune allégation de traitement ou de guérison. Les mentions obligatoires sont rappelées sur chaque page, et les témoignages sont présentés comme non contractuels.</p></div>
   </details>
   <details>
     <summary>Accompagnement humain %s</summary>
-    <div class="panel"><ul>
-      <li>%sUn quiz pour clarifier votre besoin réel, sans pression</li>
-      <li>%sDes réponses possibles par email ou téléphone</li>
-      <li>%sAucune obligation d'achat, à aucun moment</li>
-    </ul></div>
+    <div class="panel"><p>Le quiz vous aide à clarifier votre besoin réel, sans pression. Des réponses restent possibles par email ou par téléphone, sans aucune obligation d'achat.</p></div>
   </details>
 </div>""" % (
-        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
-        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
-        icon("chevron", "chev"), icon("check"), icon("check"), icon("check"),
+        icon("chevron", "chev"),
+        icon("chevron", "chev"),
+        icon("chevron", "chev"),
     )
 
     body = """
@@ -2090,8 +2078,7 @@ def build_apropos():
       <div data-reveal>
         <div class="eyebrow">Ma philosophie</div>
         <h2>De l'information avant la vente</h2>
-        <p>Je crois qu'un bon accompagnement commence par comprendre son propre corps, pas par acheter le premier produit venu. C'est pour ça que ce site prend le temps d'expliquer l'énergie, le sommeil, la digestion, l'immunité et la nutrition sportive, avant même de parler produits.</p>
-        %s
+        <p>Je crois qu'un bon accompagnement commence par comprendre son propre corps, pas par acheter le premier produit venu. C'est pour ça que ce site prend le temps d'expliquer l'énergie, le sommeil, la digestion, l'immunité et la nutrition sportive, avant même de parler produits. Le contenu est rédigé avec honnêteté, par objectif plutôt que par catalogue, et un accompagnement humain reste possible si vous le souhaitez.</p>
       </div>
     </div>
   </div>
@@ -2153,7 +2140,6 @@ def build_apropos():
         breadcrumb("À propos"),
         CONFIG["partner_name"], CONFIG["partner_title"], CONFIG["city"],
         icon("sparkle"),
-        check_list(["Contenu rédigé avec honnêteté, sans exagération", "Une approche par objectif, pas par catalogue", "Un accompagnement humain si vous le souhaitez"]),
         feature_accordion,
         icon("shield"),
         icon("sparkle"),

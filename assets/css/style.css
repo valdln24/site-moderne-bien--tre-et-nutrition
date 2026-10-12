@@ -405,9 +405,7 @@ p{margin:0 0 1em;color:var(--ink-soft);}
 .feature-accordion .panel{padding:0 26px 24px;}
 details .panel{overflow:hidden;transition:height .32s var(--ease-premium);}
 summary{transition:color .18s ease;}
-.feature-accordion .panel ul{display:flex;flex-direction:column;gap:10px;}
-.feature-accordion .panel li{display:flex;gap:10px;color:rgba(255,255,255,.88);font-size:.94rem;align-items:flex-start;}
-.feature-accordion .panel li svg{width:18px;height:18px;flex:none;margin-top:2px;color:#fff;}
+.feature-accordion .panel p{color:rgba(255,255,255,.88);font-size:.94rem;margin:0;}
 .feature-accordion details:not([open]) .panel{display:none;}
 
 /* Bannière promo VIP — grosse accroche, très visible */

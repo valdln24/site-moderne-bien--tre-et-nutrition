@@ -172,7 +172,9 @@ p{margin:0 0 1em;color:var(--ink-soft);}
 }
 .site-header .container{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;height:82px;}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.35rem;color:var(--ink);font-weight:800;}
-.logo .dot{width:10px;height:10px;border-radius:50%;background:var(--terracotta);}
+.logo-mark{width:30px;height:30px;flex:none;}
+.footer-logo{display:flex;align-items:center;gap:10px;}
+.footer-logo .logo-mark{width:26px;height:26px;flex:none;}
 .nav-desktop{display:flex;align-items:center;gap:34px;}
 .nav-desktop a{font-size:.94rem;font-weight:600;color:var(--ink-soft);position:relative;padding:6px 0;transition:color .2s ease;}
 .nav-desktop a:hover,.nav-desktop a.active{color:var(--sage-deep);}

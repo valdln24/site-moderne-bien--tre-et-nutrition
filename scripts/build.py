@@ -73,6 +73,17 @@ def icon(name, cls=""):
     return svg
 
 
+def logo_mark():
+    """La marque Vitalis : une feuille sur un rond vert forêt, reprise à l'identique
+    partout où le logo apparaît (en-tête, pied de page, favicon, image de partage)."""
+    return (
+        '<svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">'
+        '<circle cx="50" cy="50" r="47" fill="var(--sage-deep)" stroke="rgba(255,255,255,.3)" stroke-width="2"/>'
+        '<path d="M50 20c-16 16-16 44 0 60 16-16 16-44 0-60Z" fill="var(--terracotta)"/>'
+        '</svg>'
+    )
+
+
 # --------------------------------------------------------------------------
 # NAVIGATION — structure des pages
 # --------------------------------------------------------------------------
@@ -128,7 +139,7 @@ def head(title, description, path, extra_jsonld="", noindex=False):
     favicon = (
         "data:image/svg+xml,"
         "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E"
-        "%3Ccircle cx='50' cy='50' r='48' fill='%230d4a32'/%3E"
+        "%3Ccircle cx='50' cy='50' r='47' fill='%230d4a32' stroke='%23ffffff' stroke-opacity='0.3' stroke-width='2'/%3E"
         "%3Cpath d='M50 20c-16 16-16 44 0 60 16-16 16-44 0-60Z' fill='%23c96f4a'/%3E"
         "%3C/svg%3E"
     )
@@ -207,7 +218,7 @@ def header(active=""):
 
     return """<header class="site-header">
   <div class="container">
-    <a href="index.html" class="logo"><span class="dot"></span>%s</a>
+    <a href="index.html" class="logo">%s%s</a>
     <nav class="nav-desktop" id="siteNav">%s
     </nav>
     <div class="nav-cta">
@@ -217,7 +228,7 @@ def header(active=""):
       </button>
     </div>
   </div>
-</header>""" % (CONFIG["site_name"], nav_items, btn("Ma boutique LR", SHOP, variant="primary", blank=True, sm=True))
+</header>""" % (logo_mark(), CONFIG["site_name"], nav_items, btn("Ma boutique LR", SHOP, variant="primary", blank=True, sm=True))
 
 
 def footer():
@@ -228,7 +239,7 @@ def footer():
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-logo">%s</div>
+        <div class="footer-logo">%s%s</div>
         <p style="color:rgba(255,255,255,.65);max-width:320px;margin:0;">%s</p>
       </div>
       <div class="footer-badges">
@@ -272,7 +283,7 @@ def footer():
   </div>
 </div>
 <script src="assets/js/main.js"></script>""" % (
-        CONFIG["site_name"],
+        logo_mark(), CONFIG["site_name"],
         CONFIG["tagline"],
         SHOP, icon("cart"),
         CONFIG["linkedin"], icon("sparkle"),

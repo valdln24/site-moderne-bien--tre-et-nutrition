@@ -1962,16 +1962,24 @@ def build_quiz():
     q3_html = "\n".join('<button type="button" class="quiz-option" data-value="%s">%s %s</button>' % (v, l, icon("chevron")) for v, l in q3_opts)
 
     body = """
-<section class="page-hero">
+<section class="quiz-hero">
   <div class="container">
-    %s
-    <div class="eyebrow center" style="justify-content:center;display:flex;">Diagnostic bien-être</div>
-    <h1 class="center" style="max-width:720px;">Quel accompagnement vous correspond&nbsp;?</h1>
-    <p class="lede center" style="max-width:600px;">3 questions, 2 minutes, une orientation claire, sans obligation d'achat.</p>
+    <div class="quiz-hero-inner" data-reveal>
+      <div class="eyebrow">Diagnostic bien-être personnalisé</div>
+      <h1>Quel accompagnement <em>vous correspond</em>&nbsp;?</h1>
+      <p class="lede">Trois questions pour une orientation claire, sans obligation d'achat.</p>
+      <div class="quiz-stats-row">
+        <div><strong>3</strong><span>questions</span></div>
+        <div><strong>2 min</strong><span>pour répondre</span></div>
+        <div><strong>0&nbsp;€</strong><span>obligation d'achat</span></div>
+      </div>
+      %s
+      <p class="quiz-hero-note">Conseils bien-être, ne remplace pas un avis médical.</p>
+    </div>
   </div>
 </section>
 
-<section class="section-tight">
+<section class="section-tight" id="quiz">
   <div class="container">
     <div class="quiz-shell" data-quiz>
       <div class="quiz-progress"><div class="quiz-progress-bar"></div></div>
@@ -2026,7 +2034,7 @@ def build_quiz():
   </div>
 </section>
 """ % (
-        breadcrumb("Quiz bien-être"),
+        btn("Commencer le diagnostic", "#quiz", variant="lime"),
         q1_html, q2_html, icon("arrow"), q3_html, icon("arrow"),
         notice("Ce quiz est un outil d'orientation générale et non un test médical ou diagnostique. Il ne remplace en aucun cas l'avis d'un professionnel de santé.", ic="info"),
     )
